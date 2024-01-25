@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Spoons Game</string>
-    <string name="three_players">Three players</string>
-    <string name="four_players">Four players</string>
-    <string name="five_players">Five players</string>
+    <string name="three_players">Three players game</string>
+    <string name="four_players">Four players game</string>
+    <string name="five_players">Five players game</string>
     <string name="high_scores">High scores</string>
     <string name="load_last_game">Load last game</string>
 </resources>

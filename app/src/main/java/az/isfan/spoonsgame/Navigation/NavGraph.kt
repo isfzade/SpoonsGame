@@ -1,5 +1,6 @@
 package az.isfan.spoonsgame.Navigation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -10,6 +11,7 @@ import az.isfan.spoonsgame.Screens.Game.GameScreen
 import az.isfan.spoonsgame.Screens.Menu.MenuScreen
 
 @Composable
+@ExperimentalMaterial3Api
 fun NavGraph(
     navController: NavHostController = rememberNavController(),
 ) {
