@@ -11,6 +11,7 @@
 /.idea/deploymentTargetDropDown.xml
 /.idea/kotlinc.xml
 /.idea/vcs.xml
+gradle.xml
 /buildgradle.xml
 /captures
 .externalNativeBuild
