@@ -14,12 +14,17 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import az.isfan.spoonsgame.Data.Models.CardData
+import az.isfan.spoonsgame.Data.Models.PlayerData
 import az.isfan.spoonsgame.R
 
 @Composable
 @ExperimentalMaterial3Api
 fun GameContent(
     title: String,
+    players: List<PlayerData>,
+    availableDeckCards: List<CardData>,
+    discardedDeckCards: List<CardData>,
     onBackButtonClick: () -> Unit,
 ) {
     Scaffold(
@@ -48,7 +53,11 @@ fun GameContent(
                 .padding(padding)
                 .fillMaxWidth()
         ) {
-
+            GameDesign(
+                players = players,
+                availableDeckCards = availableDeckCards,
+                discardedDeckCards = discardedDeckCards
+            )
         }
     }
 }

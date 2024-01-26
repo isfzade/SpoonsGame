@@ -33,6 +33,8 @@ fun GameScreen(
     gameViewModel: GameViewModel = hiltViewModel()
 ) {
     val players = gameViewModel.players.collectAsStateWithLifecycle().value
+    val availableDeckCards = gameViewModel.availableDeckCards.collectAsStateWithLifecycle().value
+    val discardedDeckCards = gameViewModel.discardedDeckCards.collectAsStateWithLifecycle().value
 
     when (players) {
         is Cavab.Success -> {
@@ -42,6 +44,9 @@ fun GameScreen(
                     4 -> stringResource(R.string.four_players)
                     else -> stringResource(R.string.five_players)
                 },
+                players = players.data,
+                availableDeckCards = availableDeckCards,
+                discardedDeckCards = discardedDeckCards,
                 onBackButtonClick = {
                     navController.navigateUp()
                 }

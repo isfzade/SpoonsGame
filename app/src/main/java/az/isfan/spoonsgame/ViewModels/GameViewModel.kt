@@ -2,6 +2,7 @@ package az.isfan.spoonsgame.ViewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import az.isfan.spoonsgame.Data.Enums.ChairEnum
 import az.isfan.spoonsgame.Data.Enums.RankEnum
 import az.isfan.spoonsgame.Data.Enums.SuitEnum
 import az.isfan.spoonsgame.Data.Models.CardData
@@ -44,8 +45,9 @@ class GameViewModel: ViewModel() {
         repeat(playerCount) { iteration ->
             generatedPlayers.add(
                 PlayerData(
-                    name = if (iteration == 0) "Me" else "Bot $iteration",
-                    isBot = iteration != 0,
+                    name = if (iteration == 0) "Me" else "Bot ${iteration+1}",
+                    isLocalUser = iteration == 0,
+                    chair = ChairEnum.getById(iteration)
                 )
             )
         }
