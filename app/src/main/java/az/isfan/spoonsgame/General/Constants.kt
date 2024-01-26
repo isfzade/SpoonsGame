@@ -6,7 +6,7 @@ import az.isfan.spoonsgame.Data.Enums.SuitEnum
 class Constants {
     companion object {
         val CARD_IMAGE_LINKS = hashMapOf<String, String>(
-            "back" to "https://github.com/hanhaechi/playing-cards/blob/master/back_light.png?raw=true",
+            "back" to "https://github.com/hanhaechi/playing-cards/blob/master/back_dark.png?raw=true",
 
             "${RankEnum.CLUB}-${SuitEnum.ACE}" to "https://github.com/hanhaechi/playing-cards/blob/master/clubs_A.png?raw=true",
             "${RankEnum.CLUB}-${SuitEnum.KING}" to "https://github.com/hanhaechi/playing-cards/blob/master/clubs_K.png?raw=true",

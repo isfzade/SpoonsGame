@@ -1,5 +1,6 @@
 package az.isfan.spoonsgame.Screens.Game.components
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
@@ -41,7 +43,10 @@ fun LocalPlayerCards(
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.spacedBy(
+            space = 5.dp,
+            alignment = Alignment.CenterHorizontally
+        )
     ) {
         cards.forEach{ card ->
             AsyncImage(
@@ -49,6 +54,7 @@ fun LocalPlayerCards(
                 contentDescription = null,
                 modifier = Modifier
                     .size(height = 100.dp, width = 60.dp)
+                    .border(width = 2.dp, color = Color.Black)
             )
         }
     }

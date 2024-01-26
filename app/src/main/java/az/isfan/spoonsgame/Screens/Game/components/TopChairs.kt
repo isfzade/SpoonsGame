@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
 import az.isfan.spoonsgame.Data.Models.PlayerData
 
@@ -45,11 +46,15 @@ fun TopChairs(
 fun TopChair(
     player: PlayerData
 ) {
+    val cards = player.cards.collectAsStateWithLifecycle().value
+
     Column(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        TopBotCards(cards)
+
         PlayerName(player.name, player.chair)
     }
 }
