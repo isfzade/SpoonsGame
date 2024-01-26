@@ -62,7 +62,7 @@ class GameViewModel: ViewModel() {
                     CardData(
                         suit = suit,
                         rank = rank,
-                        cardImageLink = Constants.CARD_IMAGE_LINKS["$rank-$suit"]!!
+                        imageLink = Constants.CARD_IMAGE_LINKS["$rank-$suit"]!!
                     )
                 )
             }

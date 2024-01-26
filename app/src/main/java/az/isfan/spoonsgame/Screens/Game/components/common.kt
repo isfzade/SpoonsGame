@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
+import az.isfan.spoonsgame.Data.Models.CardData
 
 @Composable
 fun PlayerName(
