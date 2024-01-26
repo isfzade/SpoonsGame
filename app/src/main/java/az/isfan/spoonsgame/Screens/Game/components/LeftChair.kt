@@ -1,8 +1,10 @@
 package az.isfan.spoonsgame.Screens.Game.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,11 +20,24 @@ fun LeftChair(
 
     Row(
         modifier = Modifier
-            .fillMaxHeight(),
-        verticalAlignment = Alignment.CenterVertically
+            .fillMaxSize(),
     ) {
-        SideBotCards(cards)
+        Box(
+            modifier = Modifier
+                .weight(2f)
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            SideBotCards(cards)
+        }
 
-        PlayerName(player.name, player.chair)
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            PlayerName(player.name, player.chair)
+        }
     }
 }
