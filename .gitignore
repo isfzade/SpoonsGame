@@ -12,6 +12,8 @@
 /.idea/kotlinc.xml
 /.idea/vcs.xml
 /.idea/gradle.xml
+/.idea/Project_Default.xml
+/.idea/misc.xml
 /buildgradle.xml
 /captures
 .externalNativeBuild
