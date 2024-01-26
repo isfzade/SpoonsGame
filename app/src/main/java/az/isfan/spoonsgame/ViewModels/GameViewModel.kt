@@ -31,7 +31,7 @@ class GameViewModel: ViewModel() {
     fun setupGame(playerCount: Int) {
         viewModelScope.launch(Dispatchers.Default) {
             _players.update { Cavab.Loading }
-            val generatedPlayers = getPlayers(playerCount-1)
+            val generatedPlayers = getPlayers(playerCount)
             val generatedCards = getAllCards()
             val deckCards = giveFourCardsToPlayersAndGetRest(generatedCards, generatedPlayers)
             _allCards.update { generatedCards }
