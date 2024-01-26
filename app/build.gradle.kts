@@ -69,6 +69,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    // Collector
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.6")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")

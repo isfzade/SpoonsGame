@@ -6,6 +6,7 @@ import az.isfan.spoonsgame.Data.Enums.RankEnum
 import az.isfan.spoonsgame.Data.Enums.SuitEnum
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.PlayerData
+import az.isfan.spoonsgame.General.Cavab
 import az.isfan.spoonsgame.General.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class GameViewModel: ViewModel() {
-    private val _players = MutableStateFlow<List<PlayerData>>(emptyList())
+    private val _players = MutableStateFlow<Cavab<List<PlayerData>>>(Cavab.StandBy)
     val players = _players.asStateFlow()
 
     private val _discardedDeckCards = MutableStateFlow<List<CardData>>(emptyList())
@@ -28,12 +29,13 @@ class GameViewModel: ViewModel() {
 
     fun setupGame(playerCount: Int) {
         viewModelScope.launch(Dispatchers.Default) {
+            _players.update { Cavab.Loading }
             val generatedPlayers = getPlayers(playerCount-1)
             val generatedCards = getAllCards()
             val deckCards = giveFourCardsToPlayersAndGetRest(generatedCards, generatedPlayers)
-            _players.update { generatedPlayers }
             _allCards.update { generatedCards }
             _availableDeckCards.update { deckCards }
+            _players.update { Cavab.Success(generatedPlayers) }
         }
     }
 
