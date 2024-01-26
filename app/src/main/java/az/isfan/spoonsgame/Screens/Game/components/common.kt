@@ -1,5 +1,6 @@
 package az.isfan.spoonsgame.Screens.Game.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,12 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.General.Constants
+import az.isfan.spoonsgame.R
 import coil.compose.AsyncImage
 
 @Composable
@@ -57,18 +60,12 @@ fun SideBotCards(
         )
     ) {
         cards.forEach{
-            Box(
+            Image(
+                painter = painterResource(R.drawable.back_dark),
+                contentDescription = null,
                 modifier = Modifier
-                    .size(height = 35.dp, width = 60.dp)
-            ) {
-                AsyncImage(
-                    model = Constants.CARD_IMAGE_LINKS["back"],
-                    contentDescription = null,
-                    modifier = Modifier
-                        .rotate(90f)
-                        .fillMaxSize()
-                )
-            }
+                    .rotate(90f)
+            )
         }
     }
 }
@@ -90,9 +87,9 @@ fun TopBotCards(
                 modifier = Modifier
                     .size(height = 60.dp, width = 35.dp)
             ) {
-                AsyncImage(
-                    model = Constants.CARD_IMAGE_LINKS["back"],
-                    contentDescription = null,
+                Image(
+                    painter = painterResource(R.drawable.back_dark),
+                    contentDescription = null
                 )
             }
         }

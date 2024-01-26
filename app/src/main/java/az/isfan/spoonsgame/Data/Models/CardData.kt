@@ -6,5 +6,4 @@ import az.isfan.spoonsgame.Data.Enums.SuitEnum
 data class CardData(
     val suit: SuitEnum,
     val rank: RankEnum,
-    val imageLink: String,
 )

@@ -50,11 +50,25 @@ fun TopChair(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TopBotCards(cards)
+        Box(
+            modifier = Modifier
+                .weight(2f)
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            TopBotCards(cards)
+        }
 
-        PlayerName(player.name, player.chair)
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            PlayerName(player.name, player.chair)
+        }
     }
 }

@@ -9,6 +9,7 @@ import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.PlayerData
 import az.isfan.spoonsgame.General.Cavab
 import az.isfan.spoonsgame.General.Constants
+import az.isfan.spoonsgame.General.getCardImageResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -62,7 +63,6 @@ class GameViewModel: ViewModel() {
                     CardData(
                         suit = suit,
                         rank = rank,
-                        imageLink = Constants.CARD_IMAGE_LINKS["$rank-$suit"]!!
                     )
                 )
             }
