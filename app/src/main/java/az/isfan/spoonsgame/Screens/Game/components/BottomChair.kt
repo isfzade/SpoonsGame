@@ -1,6 +1,7 @@
 package az.isfan.spoonsgame.Screens.Game.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,26 +15,10 @@ fun BottomChair(
     player: PlayerData
 ) {
     Column(
+        modifier = Modifier
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         PlayerName(player.name, player.chair)
     }
-}
-
-@Composable
-fun PlayerName(
-    name: String,
-    chair: ChairEnum
-) {
-    Text(
-        text = name,
-        modifier = Modifier
-            .rotate(
-                when (chair) {
-                    ChairEnum.LEFT -> -90f
-                    ChairEnum.RIGHT -> 90f
-                    else -> 0f
-                }
-            )
-    )
 }
