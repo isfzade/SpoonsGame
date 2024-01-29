@@ -95,7 +95,7 @@ class GameViewModel: ViewModel() {
             availablePlayers.forEach { it.setPlayTurn(false) }
             oldFirstPlayer.setLastPlayerInRounds(true)
             var nextPlayer: PlayerData? = null
-            var currentChairId = availablePlayers.first{it.firstPlayerInRound.value}.chair.chairId
+            var currentChairId = oldFirstPlayer.chair.chairId
             while (nextPlayer == null) {
                 currentChairId += 1
                 if (currentChairId > availablePlayers.maxOf { it.chair.chairId }) {
