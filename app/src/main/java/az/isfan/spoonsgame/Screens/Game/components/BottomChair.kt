@@ -71,7 +71,9 @@ fun LocalPlayerCards(
         cards.forEach{ card ->
             Image(
                 painter = painterResource(getCardImageResource(card.rank, card.suit)),
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier
+                    .size(width = 100.dp, height = 160.dp)
             )
         }
     }

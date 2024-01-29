@@ -33,17 +33,9 @@ fun PlayerName(
     Text(
         text = name,
         modifier = Modifier
-            .rotate(
-                when (chair) {
-                    ChairEnum.LEFT -> 90f
-                    ChairEnum.RIGHT -> -90f
-                    else -> 0f
-                }
-            )
-            .fillMaxSize(),
+            .fillMaxWidth(),
         textAlign = TextAlign.Center,
         maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
     )
 }
 
@@ -65,6 +57,7 @@ fun SideBotCards(
                 contentDescription = null,
                 modifier = Modifier
                     .rotate(90f)
+                    .size(width = 35.dp, 60.dp)
             )
         }
     }
@@ -83,15 +76,12 @@ fun TopBotCards(
         )
     ) {
         cards.forEach{
-            Box(
+            Image(
+                painter = painterResource(R.drawable.back_dark),
+                contentDescription = null,
                 modifier = Modifier
                     .size(height = 60.dp, width = 35.dp)
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.back_dark),
-                    contentDescription = null
-                )
-            }
+            )
         }
     }
 }

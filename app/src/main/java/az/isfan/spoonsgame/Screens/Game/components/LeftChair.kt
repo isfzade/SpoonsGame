@@ -24,7 +24,7 @@ fun LeftChair(
     ) {
         Box(
             modifier = Modifier
-                .weight(2f)
+                .weight(1f)
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {

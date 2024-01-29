@@ -69,7 +69,7 @@ fun GameDesign(
 
         Box(
             modifier = Modifier
-                .weight(1f)
+                .weight(2f)
                 .fillMaxSize()
         ) {
             BottomChair(player = players.first { it.chair == ChairEnum.BOTTOM })
