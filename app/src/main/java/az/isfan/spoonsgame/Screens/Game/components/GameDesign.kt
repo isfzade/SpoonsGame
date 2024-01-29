@@ -1,5 +1,6 @@
 package az.isfan.spoonsgame.Screens.Game.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.PlayerData
@@ -32,8 +34,8 @@ fun GameDesign(
 
         Box(
             modifier = Modifier
-                .weight(5f)
-                .fillMaxSize()
+                .weight(3f)
+                .fillMaxSize(),
         ) {
             Row(
                 modifier = Modifier
@@ -49,8 +51,9 @@ fun GameDesign(
 
                 Box(
                     modifier = Modifier
-                        .weight(3f)
+                        .weight(2f)
                         .fillMaxSize()
+                        .background(color = Color.Green.copy(alpha=0.4f)),
                 ) {
                     GameTable(
                         availableCards = availableDeckCards,

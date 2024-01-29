@@ -80,6 +80,7 @@ fun LocalPlayerCards(
                 contentDescription = null,
                 modifier = Modifier
                     .size(width = 60.dp, height = 100.dp)
+                    .border(width = 1.dp, color = Color.Black)
                     .clickable {
                         onCardClick(card)
                     }

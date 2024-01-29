@@ -43,7 +43,7 @@ fun GameTable(
 
                 Box(
                     modifier = Modifier
-                        .size(width = 50.dp, height = 90.dp)
+                        .size(width = 35.dp, height = 60.dp)
                         .border(width = 2.dp, color = Color.Black),
                     contentAlignment = Alignment.Center
                 ) {
@@ -74,7 +74,7 @@ fun GameTable(
 
                 Box(
                     modifier = Modifier
-                        .size(width = 50.dp, height = 90.dp)
+                        .size(width = 35.dp, height = 60.dp)
                         .border(width = 2.dp, color = Color.Black),
                     contentAlignment = Alignment.Center
                 ) {

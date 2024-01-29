@@ -46,7 +46,7 @@ class GameViewModel: ViewModel() {
             toPlayer.addCard(card)
             _availableDeckCards.update { existingCards ->
                 existingCards.filter {
-                    it.rank != card.rank && it.suit != card.suit
+                    !(it.rank == card.rank && it.suit == card.suit)
                 }
             }
         }
