@@ -105,8 +105,17 @@ class GameViewModel: ViewModel() {
         }
     }
 
-    fun pickCardFromDeck(card: CardData, toPlayer: PlayerData) {
+    fun pickCardFromDeck(toPlayer: PlayerData) {
         viewModelScope.launch {
+            var card = availableDeckCards.value.firstOrNull()
+            if (card == null) {
+                discardedDeckCards.value.forEach {
+                    it.setHolder(Constants.AVAILABLE)
+                }
+                _availableDeckCards.update { discardedDeckCards.value.shuffled(random = Random(seed = System.currentTimeMillis())) }
+                _discardedDeckCards.update { emptyList() }
+                card = availableDeckCards.value.first()
+            }
             toPlayer.addCard(card)
             _availableDeckCards.update { existingCards ->
                 existingCards.filter {
