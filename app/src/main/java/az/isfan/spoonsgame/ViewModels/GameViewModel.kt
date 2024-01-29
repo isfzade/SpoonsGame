@@ -13,6 +13,7 @@ import az.isfan.spoonsgame.General.getCardImageResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.toCollection
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -28,6 +29,22 @@ class GameViewModel: ViewModel() {
     val availableDeckCards = _availableDeckCards.asStateFlow()
 
     private val _allCards = MutableStateFlow<List<CardData>>(emptyList())
+
+    init {
+        viewModelScope.launch {
+            players.collect { cavab ->
+                if (cavab is Cavab.Success) {
+                    cavab.data.forEach { player ->
+                        player.playTurn.collect { playTurn ->
+                            if (playTurn && player.firstPlayerInRound.value) {
+                                pickCardFromDeck(player)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     fun setupGame(playerCount: Int) {
         viewModelScope.launch {
@@ -105,22 +122,20 @@ class GameViewModel: ViewModel() {
         }
     }
 
-    fun pickCardFromDeck(toPlayer: PlayerData) {
-        viewModelScope.launch {
-            var card = availableDeckCards.value.firstOrNull()
-            if (card == null) {
-                discardedDeckCards.value.forEach {
-                    it.setHolder(Constants.AVAILABLE)
-                }
-                _availableDeckCards.update { discardedDeckCards.value.shuffled(random = Random(seed = System.currentTimeMillis())) }
-                _discardedDeckCards.update { emptyList() }
-                card = availableDeckCards.value.first()
+    private fun pickCardFromDeck(toPlayer: PlayerData) {
+        var card = availableDeckCards.value.firstOrNull()
+        if (card == null) {
+            discardedDeckCards.value.forEach {
+                it.setHolder(Constants.AVAILABLE)
             }
-            toPlayer.addCard(card)
-            _availableDeckCards.update { existingCards ->
-                existingCards.filter {
-                    !(it.rank == card.rank && it.suit == card.suit)
-                }
+            _availableDeckCards.update { discardedDeckCards.value.shuffled(random = Random(seed = System.currentTimeMillis())) }
+            _discardedDeckCards.update { emptyList() }
+            card = availableDeckCards.value.first()
+        }
+        toPlayer.addCard(card)
+        _availableDeckCards.update { existingCards ->
+            existingCards.filter {
+                !(it.rank == card.rank && it.suit == card.suit)
             }
         }
     }

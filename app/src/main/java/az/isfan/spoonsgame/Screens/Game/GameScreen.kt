@@ -50,8 +50,8 @@ fun GameScreen(
                 onBackButtonClick = {
                     navController.navigateUp()
                 },
-                onCardClick = {
-
+                onCardClick = { card ->
+                    gameViewModel.discardCard(card)
                 }
             )
         }

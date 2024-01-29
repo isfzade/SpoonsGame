@@ -10,7 +10,7 @@ data class PlayerData(
     val isLocalUser: Boolean,
     val chair: ChairEnum,
 ) {
-    private val _playTurn = MutableStateFlow<Boolean>(false)
+    private val _playTurn = MutableStateFlow(false)
     val playTurn = _playTurn.asStateFlow()
 
     private val _cards = MutableStateFlow<List<CardData>>(emptyList())
