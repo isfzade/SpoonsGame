@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toCollection
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -41,10 +42,16 @@ class GameViewModel: ViewModel() {
             players.collect { cavab ->
                 if (cavab is Cavab.Success) {
                     cavab.data.forEach { player ->
-                        player.playTurn.collect { playTurn ->
-                            Log.i(TAG, "init: player=$player, playTurn=$playTurn, firstPlayerInRound=${player.firstPlayerInRound.value}")
-                            if (playTurn && player.firstPlayerInRound.value) {
-                                pickCardFromDeck(player)
+                        launch {
+                            player.playTurn.collect { playTurn ->
+                                Log.i(TAG, "init: player=$player, playTurn=$playTurn")
+                                if (playTurn && player.firstPlayerInRound.value) {
+                                    pickCardFromDeck(player)
+                                }
+
+                                if (playTurn && !player.isLocalUser) {
+                                    discardCardFromBot(player)
+                                }
                             }
                         }
                     }
@@ -94,6 +101,21 @@ class GameViewModel: ViewModel() {
         }
     }
 
+    private fun discardCardFromBot(player: PlayerData) {
+        Log.i(TAG, "discardCardFromBot: player = $player")
+
+        val cardCount = hashMapOf<SuitEnum, Int>()
+        SuitEnum.entries.forEach {  suit ->
+            val count = player.cards.value.count { it.suit == suit }
+            if (count > 0) {
+                cardCount[suit] = count
+            }
+        }
+        discardCard(player.cards.value.first { card ->
+            card.suit == cardCount.minBy { it.value }.key
+        })
+    }
+
     fun discardCard(card: CardData) {
         Log.i(TAG, "discardCard: card=$card")
 
@@ -107,7 +129,11 @@ class GameViewModel: ViewModel() {
                     _discardedDeckCards.update {
                         it + card
                     }
-                    if (fromPlayer.has4EqualCards()) {
+                    if (!fromPlayer.has4EqualCards()) {
+                        fromPlayer.setPlayTurn(false)
+                        availablePlayers.first{it.firstPlayerInRound.value}.setPlayTurn(true)
+                    }
+                    else {
                         setupNewRound()
                     }
                 }
