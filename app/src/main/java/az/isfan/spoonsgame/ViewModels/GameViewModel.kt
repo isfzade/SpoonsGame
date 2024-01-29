@@ -1,5 +1,6 @@
 package az.isfan.spoonsgame.ViewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
@@ -11,6 +12,7 @@ import az.isfan.spoonsgame.General.Cavab
 import az.isfan.spoonsgame.General.Constants
 import az.isfan.spoonsgame.General.getCardImageResource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.toCollection
@@ -19,6 +21,8 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class GameViewModel: ViewModel() {
+    private val TAG = "isf_GameViewModel"
+
     private val _players = MutableStateFlow<Cavab<List<PlayerData>>>(Cavab.StandBy)
     val players = _players.asStateFlow()
 
@@ -31,11 +35,14 @@ class GameViewModel: ViewModel() {
     private val _allCards = MutableStateFlow<List<CardData>>(emptyList())
 
     init {
+        Log.i(TAG, "init: ")
+
         viewModelScope.launch {
             players.collect { cavab ->
                 if (cavab is Cavab.Success) {
                     cavab.data.forEach { player ->
                         player.playTurn.collect { playTurn ->
+                            Log.i(TAG, "init: player=$player, playTurn=$playTurn, firstPlayerInRound=${player.firstPlayerInRound.value}")
                             if (playTurn && player.firstPlayerInRound.value) {
                                 pickCardFromDeck(player)
                             }
@@ -47,6 +54,8 @@ class GameViewModel: ViewModel() {
     }
 
     fun setupGame(playerCount: Int) {
+        Log.i(TAG, "setupGame: playerCount=$playerCount")
+
         viewModelScope.launch {
             _players.update { Cavab.Loading }
             val generatedPlayers = getPlayers(playerCount)
@@ -59,6 +68,8 @@ class GameViewModel: ViewModel() {
     }
 
     fun setupNewRound() {
+        Log.i(TAG, "setupNewRound: ")
+
         viewModelScope.launch {
             val generatedCards = getAllCards()
             val availablePlayers = (players.value as Cavab.Success).data.filter{it.isPlaying.value}
@@ -84,6 +95,8 @@ class GameViewModel: ViewModel() {
     }
 
     fun discardCard(card: CardData) {
+        Log.i(TAG, "discardCard: card=$card")
+
         viewModelScope.launch {
             card.holder.value?.let{ holder ->
                 val availablePlayers = (players.value as Cavab.Success).data.filter{it.isPlaying.value}
@@ -123,6 +136,8 @@ class GameViewModel: ViewModel() {
     }
 
     private fun pickCardFromDeck(toPlayer: PlayerData) {
+        Log.i(TAG, "pickCardFromDeck: toPlayer=$toPlayer")
+
         var card = availableDeckCards.value.firstOrNull()
         if (card == null) {
             discardedDeckCards.value.forEach {
@@ -141,6 +156,8 @@ class GameViewModel: ViewModel() {
     }
 
     private fun getPlayers(playerCount: Int): List<PlayerData> {
+        Log.i(TAG, "getPlayers: playerCount=$playerCount")
+
         val generatedPlayers = mutableListOf<PlayerData>()
         repeat(playerCount) { iteration ->
             val player = PlayerData(
@@ -158,6 +175,8 @@ class GameViewModel: ViewModel() {
     }
 
     private fun getAllCards(): List<CardData> {
+        Log.i(TAG, "getAllCards: ")
+
         val generatedCards = mutableListOf<CardData>()
         RankEnum.entries.forEach { rank ->
             SuitEnum.entries.forEach { suit ->
@@ -173,6 +192,8 @@ class GameViewModel: ViewModel() {
     }
 
     private fun giveFourCardsToPlayersAndGetRemainingCards(generatedCards: List<CardData>, generatedPlayers: List<PlayerData>): List<CardData> {
+        Log.i(TAG, "giveFourCardsToPlayersAndGetRemainingCards: ")
+
         val shuffledCards = generatedCards.shuffled(random = Random(seed = System.currentTimeMillis())).toMutableList()
         generatedPlayers.forEach { player ->
             if (player.isPlaying.value) {

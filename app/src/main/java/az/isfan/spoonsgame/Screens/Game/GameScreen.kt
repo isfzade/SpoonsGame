@@ -1,5 +1,6 @@
 package az.isfan.spoonsgame.Screens.Game
 
+import android.util.Log
 import android.widget.ProgressBar
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
