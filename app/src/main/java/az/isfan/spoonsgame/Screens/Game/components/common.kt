@@ -38,17 +38,13 @@ fun SideBotCards(
         )
     ) {
         cards.forEach{
-            Box(
+            Image(
+                painter = painterResource(R.drawable.back_dark),
+                contentDescription = null,
                 modifier = Modifier
-                    .size(width = 35.dp, 60.dp)
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.back_dark),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .rotate(90f)
-                )
-            }
+                    .rotate(90f)
+                    .then(Modifier.size(width = 60.dp, height = 35.dp))
+            )
         }
     }
 }
