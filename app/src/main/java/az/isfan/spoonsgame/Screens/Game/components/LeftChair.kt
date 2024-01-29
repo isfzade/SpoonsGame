@@ -15,30 +15,34 @@ import az.isfan.spoonsgame.Data.Models.PlayerData
 
 @Composable
 fun LeftChair(
-    player: PlayerData
+    players: List<PlayerData>
 ) {
-    val cards = player.cards.collectAsStateWithLifecycle().value
+    if (players.isNotEmpty()) {
+        val player = players.first()
+        val cards = player.cards.collectAsStateWithLifecycle().value
 
-    Row(
-        modifier = Modifier
-            .fillMaxSize(),
-    ) {
-        Box(
+        Row(
             modifier = Modifier
-                .weight(1f)
                 .fillMaxSize(),
-            contentAlignment = Alignment.Center
         ) {
-            SideBotCards(cards)
-        }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                SideBotCards(cards)
+            }
 
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(player.name)
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(player.name)
+            }
         }
     }
+
 }

@@ -46,7 +46,7 @@ fun GameDesign(
                         .weight(1f)
                         .fillMaxSize()
                 ) {
-                    LeftChair(player = players.first { it.chair == ChairEnum.LEFT })
+                    LeftChair(players = players.filter { it.chair == ChairEnum.LEFT })
                 }
 
                 Box(
@@ -66,7 +66,7 @@ fun GameDesign(
                         .weight(1f)
                         .fillMaxSize()
                 ) {
-                    RightChair(player = players.first { it.chair == ChairEnum.RIGHT })
+                    RightChair(players = players.filter { it.chair == ChairEnum.RIGHT })
                 }
             }
         }
