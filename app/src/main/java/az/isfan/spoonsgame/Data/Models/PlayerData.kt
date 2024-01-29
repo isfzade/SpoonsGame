@@ -42,7 +42,7 @@ data class PlayerData(
     fun removeCard(card: CardData) {
         Log.i(TAG, "removeCard: card=$card, player=$this")
 
-        val newCards = cards.value.filter { it.rank != card.rank && it.suit != card.suit }
+        val newCards = cards.value.filter { !(it.rank == card.rank && it.suit == card.suit) }
         card.setHolder(null)
         setCards(newCards)
     }
