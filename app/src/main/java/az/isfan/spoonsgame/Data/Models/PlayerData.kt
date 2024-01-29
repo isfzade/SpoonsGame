@@ -19,10 +19,12 @@ data class PlayerData(
 
     fun addCard(card: CardData) {
         setCards(cards.value+card)
+        card.setHolder(name)
     }
 
     fun removeCard(card: CardData) {
         val newCards = cards.value.filter { it.rank != card.rank && it.suit != card.suit }
+        card.setHolder(null)
         setCards(newCards)
     }
 }

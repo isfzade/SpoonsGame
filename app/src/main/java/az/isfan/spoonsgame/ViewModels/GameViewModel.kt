@@ -30,7 +30,7 @@ class GameViewModel: ViewModel() {
     private val _allCards = MutableStateFlow<List<CardData>>(emptyList())
 
     fun setupGame(playerCount: Int) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             _players.update { Cavab.Loading }
             val generatedPlayers = getPlayers(playerCount)
             val generatedCards = getAllCards()
@@ -38,6 +38,34 @@ class GameViewModel: ViewModel() {
             _allCards.update { generatedCards }
             _availableDeckCards.update { deckCards }
             _players.update { Cavab.Success(generatedPlayers) }
+        }
+    }
+
+    fun pickCardFromDeck(card: CardData, toPlayer: PlayerData) {
+        viewModelScope.launch {
+            toPlayer.addCard(card)
+            _availableDeckCards.update { existingCards ->
+                existingCards.filter {
+                    it.rank != card.rank && it.suit != card.suit
+                }
+            }
+        }
+    }
+
+    fun discardCard(card: CardData, fromPlayer: PlayerData) {
+        viewModelScope.launch {
+            fromPlayer.removeCard(card)
+            card.setHolder(Constants.DISCARDED)
+            _discardedDeckCards.update {
+                it + card
+            }
+        }
+    }
+
+    fun passCard(card: CardData, fromPlayer: PlayerData, toPlayer: PlayerData) {
+        viewModelScope.launch {
+            fromPlayer.removeCard(card)
+            toPlayer.addCard(card)
         }
     }
 
@@ -59,12 +87,12 @@ class GameViewModel: ViewModel() {
         val generatedCards = mutableListOf<CardData>()
         RankEnum.entries.forEach { rank ->
             SuitEnum.entries.forEach { suit ->
-                generatedCards.add(
-                    CardData(
-                        suit = suit,
-                        rank = rank,
-                    )
+                val newCard = CardData(
+                    suit = suit,
+                    rank = rank,
                 )
+                newCard.setHolder(Constants.AVAILABLE)
+                generatedCards.add(newCard)
             }
         }
         return generatedCards
@@ -74,7 +102,8 @@ class GameViewModel: ViewModel() {
         val shuffledCards = generatedCards.shuffled(random = Random(seed = System.currentTimeMillis())).toMutableList()
         generatedPlayers.forEach { player ->
             repeat(4) {
-                player.addCard(shuffledCards[0])
+                val selectedCard = shuffledCards[0]
+                player.addCard(selectedCard)
                 shuffledCards.removeAt(0)
             }
         }

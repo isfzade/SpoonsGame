@@ -5,4 +5,6 @@
     <string name="five_players">Five players game</string>
     <string name="high_scores">High scores</string>
     <string name="load_last_game">Load last game</string>
+    <string name="available">Available</string>
+    <string name="discarded">Discarded</string>
 </resources>
