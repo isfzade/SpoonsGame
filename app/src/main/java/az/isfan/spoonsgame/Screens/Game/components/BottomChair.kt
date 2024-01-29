@@ -96,7 +96,7 @@ fun LocalPlayerCards(
                         color = if (playTurn) Color.Blue else Color.Black
                     )
                     .clickable {
-                        onCardClick(card)
+                        if (playTurn) onCardClick(card)
                     }
             )
         }
