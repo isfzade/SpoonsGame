@@ -34,10 +34,34 @@ class GameViewModel: ViewModel() {
             _players.update { Cavab.Loading }
             val generatedPlayers = getPlayers(playerCount)
             val generatedCards = getAllCards()
-            val deckCards = giveFourCardsToPlayersAndGetRest(generatedCards, generatedPlayers)
+            val deckCards = giveFourCardsToPlayersAndGetRemainingCards(generatedCards, generatedPlayers)
             _allCards.update { generatedCards }
             _availableDeckCards.update { deckCards }
             _players.update { Cavab.Success(generatedPlayers) }
+        }
+    }
+
+    fun discardCard(card: CardData) {
+        viewModelScope.launch {
+            card.holder.value?.let{ holder ->
+                val allPlayers = (players.value as Cavab.Success).data
+                val fromPLayer = allPlayers.first { it.name == holder }
+                if (fromPLayer.lastPlayerInRound.value) {
+                    discardCardToDeck(card, fromPLayer)
+                }
+                else {
+                    var currentChairId = fromPLayer.chair.chairId
+                    var nextPlayer: PlayerData? = null
+                    while (nextPlayer != null) {
+                        currentChairId += 1
+                        if (currentChairId > allPlayers.filter{it.isPlaying.value}.maxOf { it.chair.chairId }) {
+                            currentChairId = 0
+                        }
+                        nextPlayer = allPlayers.firstOrNull { currentChairId == it.chair.chairId }
+                    }
+                    passCard(card, fromPLayer, nextPlayer!!)
+                }
+            }
         }
     }
 
@@ -52,33 +76,31 @@ class GameViewModel: ViewModel() {
         }
     }
 
-    fun discardCard(card: CardData, fromPlayer: PlayerData) {
-        viewModelScope.launch {
-            fromPlayer.removeCard(card)
-            card.setHolder(Constants.DISCARDED)
-            _discardedDeckCards.update {
-                it + card
-            }
+    private fun discardCardToDeck(card: CardData, fromPlayer: PlayerData) {
+        fromPlayer.removeCard(card)
+        card.setHolder(Constants.DISCARDED)
+        _discardedDeckCards.update {
+            it + card
         }
     }
 
-    fun passCard(card: CardData, fromPlayer: PlayerData, toPlayer: PlayerData) {
-        viewModelScope.launch {
-            fromPlayer.removeCard(card)
-            toPlayer.addCard(card)
-        }
+    private fun passCard(card: CardData, fromPlayer: PlayerData, toPlayer: PlayerData) {
+        fromPlayer.removeCard(card)
+        toPlayer.addCard(card)
     }
 
     private fun getPlayers(playerCount: Int): List<PlayerData> {
         val generatedPlayers = mutableListOf<PlayerData>()
         repeat(playerCount) { iteration ->
-            generatedPlayers.add(
-                PlayerData(
-                    name = if (iteration == 0) "Me" else "Bot ${iteration+1}",
-                    isLocalUser = iteration == 0,
-                    chair = ChairEnum.getById(iteration)
-                )
+            val player = PlayerData(
+                name = if (iteration == 0) "Me" else "Bot $iteration",
+                isLocalUser = iteration == 0,
+                chair = ChairEnum.getById(iteration)
             )
+            player.setFirstPlayerInRounds(iteration == 0)
+            player.setLastPlayerInRounds(iteration == playerCount-1)
+            player.setIsPlaying(true)
+            generatedPlayers.add(player)
         }
         return generatedPlayers
     }
@@ -98,13 +120,15 @@ class GameViewModel: ViewModel() {
         return generatedCards
     }
 
-    private fun giveFourCardsToPlayersAndGetRest(generatedCards: List<CardData>, generatedPlayers: List<PlayerData>): List<CardData> {
+    private fun giveFourCardsToPlayersAndGetRemainingCards(generatedCards: List<CardData>, generatedPlayers: List<PlayerData>): List<CardData> {
         val shuffledCards = generatedCards.shuffled(random = Random(seed = System.currentTimeMillis())).toMutableList()
         generatedPlayers.forEach { player ->
-            repeat(4) {
-                val selectedCard = shuffledCards[0]
-                player.addCard(selectedCard)
-                shuffledCards.removeAt(0)
+            if (player.isPlaying.value) {
+                repeat(4) {
+                    val selectedCard = shuffledCards[0]
+                    player.addCard(selectedCard)
+                    shuffledCards.removeAt(0)
+                }
             }
         }
         return shuffledCards

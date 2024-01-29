@@ -10,8 +10,20 @@ data class PlayerData(
     val isLocalUser: Boolean,
     val chair: ChairEnum,
 ) {
+    private val _playTurn = MutableStateFlow<Boolean>(false)
+    val playTurn = _playTurn.asStateFlow()
+
     private val _cards = MutableStateFlow<List<CardData>>(emptyList())
     val cards = _cards.asStateFlow()
+
+    private val _firstPlayerInRound = MutableStateFlow(false)
+    val firstPlayerInRound = _firstPlayerInRound.asStateFlow()
+
+    private val _lastPlayerInRound = MutableStateFlow(false)
+    val lastPlayerInRound = _lastPlayerInRound.asStateFlow()
+
+    private val _isPlaying = MutableStateFlow(true)
+    val isPlaying = _isPlaying.asStateFlow()
 
     private fun setCards(newCards: List<CardData>){
         _cards.update { newCards }
@@ -26,5 +38,21 @@ data class PlayerData(
         val newCards = cards.value.filter { it.rank != card.rank && it.suit != card.suit }
         card.setHolder(null)
         setCards(newCards)
+    }
+
+    fun setPlayTurn(isPlayerTurn: Boolean) {
+        _playTurn.update { isPlayerTurn }
+    }
+
+    fun setFirstPlayerInRounds(isFirst: Boolean) {
+        _firstPlayerInRound.update { isFirst }
+    }
+
+    fun setLastPlayerInRounds(isLast: Boolean) {
+        _lastPlayerInRound.update { isLast }
+    }
+
+    fun setIsPlaying(playing: Boolean) {
+        _isPlaying.update { playing }
     }
 }
