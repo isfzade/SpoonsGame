@@ -41,19 +41,43 @@ class GameViewModel: ViewModel() {
         }
     }
 
+    fun setupNewRound() {
+        viewModelScope.launch {
+            val generatedCards = getAllCards()
+            val availablePlayers = (players.value as Cavab.Success).data.filter{it.isPlaying.value}
+            val deckCards = giveFourCardsToPlayersAndGetRemainingCards(generatedCards, availablePlayers)
+            _allCards.update { generatedCards }
+            _availableDeckCards.update { deckCards }
+            _discardedDeckCards.update { emptyList()}
+
+            val oldFirstPlayer = availablePlayers.first{it.firstPlayerInRound.value}
+            oldFirstPlayer.setLastPlayerInRounds(true)
+            var nextPlayer: PlayerData? = null
+            var currentChairId = availablePlayers.first{it.firstPlayerInRound.value}.chair.chairId
+            while (nextPlayer == null) {
+                currentChairId += 1
+                if (currentChairId > availablePlayers.maxOf { it.chair.chairId }) {
+                    currentChairId = 0
+                }
+                nextPlayer = availablePlayers.firstOrNull { currentChairId == it.chair.chairId }
+            }
+            nextPlayer.setFirstPlayerInRounds(true)
+        }
+    }
+
     fun discardCard(card: CardData) {
         viewModelScope.launch {
             card.holder.value?.let{ holder ->
-                val allPlayers = (players.value as Cavab.Success).data
-                val fromPlayer = allPlayers.first { it.name == holder }
+                val availablePlayers = (players.value as Cavab.Success).data.filter{it.isPlaying.value}
+                val fromPlayer = availablePlayers.first { it.name == holder }
                 var currentChairId = fromPlayer.chair.chairId
                 var nextPlayer: PlayerData? = null
                 while (nextPlayer == null) {
                     currentChairId += 1
-                    if (currentChairId > allPlayers.filter{it.isPlaying.value}.maxOf { it.chair.chairId }) {
+                    if (currentChairId > availablePlayers.maxOf { it.chair.chairId }) {
                         currentChairId = 0
                     }
-                    nextPlayer = allPlayers.firstOrNull { currentChairId == it.chair.chairId }
+                    nextPlayer = availablePlayers.firstOrNull { currentChairId == it.chair.chairId }
                 }
                 fromPlayer.removeCard(card)
                 fromPlayer.setPlayTurn(false)
@@ -97,6 +121,7 @@ class GameViewModel: ViewModel() {
             player.setFirstPlayerInRounds(iteration == 0)
             player.setLastPlayerInRounds(iteration == playerCount-1)
             player.setIsPlaying(true)
+            player.setPlayTurn(iteration == 0)
             generatedPlayers.add(player)
         }
         return generatedPlayers
