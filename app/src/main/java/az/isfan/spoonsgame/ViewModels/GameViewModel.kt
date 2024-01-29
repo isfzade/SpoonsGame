@@ -71,20 +71,35 @@ class GameViewModel: ViewModel() {
             card.holder.value?.let{ holder ->
                 val availablePlayers = (players.value as Cavab.Success).data.filter{it.isPlaying.value}
                 val fromPlayer = availablePlayers.first { it.name == holder }
-                var currentChairId = fromPlayer.chair.chairId
-                var nextPlayer: PlayerData? = null
-                while (nextPlayer == null) {
-                    currentChairId += 1
-                    if (currentChairId > availablePlayers.maxOf { it.chair.chairId }) {
-                        currentChairId = 0
+                if (fromPlayer.lastPlayerInRound.value) {
+                    fromPlayer.removeCard(card)
+                    card.setHolder(Constants.DISCARDED)
+                    _discardedDeckCards.update {
+                        it + card
                     }
-                    nextPlayer = availablePlayers.firstOrNull { currentChairId == it.chair.chairId }
+                    if (fromPlayer.has4EqualCards()) {
+                        setupNewRound()
+                    }
                 }
-                fromPlayer.removeCard(card)
-                fromPlayer.setPlayTurn(false)
-                if (!fromPlayer.has4EqualCards()) {
-                    nextPlayer.addCard(card)
-                    nextPlayer.setPlayTurn(true)
+                else {
+                    var currentChairId = fromPlayer.chair.chairId
+                    var nextPlayer: PlayerData? = null
+                    while (nextPlayer == null) {
+                        currentChairId += 1
+                        if (currentChairId > availablePlayers.maxOf { it.chair.chairId }) {
+                            currentChairId = 0
+                        }
+                        nextPlayer = availablePlayers.firstOrNull { currentChairId == it.chair.chairId }
+                    }
+                    fromPlayer.removeCard(card)
+                    fromPlayer.setPlayTurn(false)
+                    if (!fromPlayer.has4EqualCards()) {
+                        nextPlayer.addCard(card)
+                        nextPlayer.setPlayTurn(true)
+                    }
+                    else {
+                        setupNewRound()
+                    }
                 }
             }
         }
@@ -97,16 +112,6 @@ class GameViewModel: ViewModel() {
                 existingCards.filter {
                     !(it.rank == card.rank && it.suit == card.suit)
                 }
-            }
-        }
-    }
-
-    fun discardCardToDeck(card: CardData, fromPlayer: PlayerData) {
-        viewModelScope.launch {
-            fromPlayer.removeCard(card)
-            card.setHolder(Constants.DISCARDED)
-            _discardedDeckCards.update {
-                it + card
             }
         }
     }

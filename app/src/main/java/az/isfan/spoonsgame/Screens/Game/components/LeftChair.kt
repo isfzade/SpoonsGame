@@ -52,7 +52,7 @@ fun LeftChair(
                 Text(
                     text = player.name,
                     fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
-                    color = if (playTurn) Color.Yellow else Color.Black
+                    color = if (playTurn) Color.Blue else Color.Black
                 )
             }
         }

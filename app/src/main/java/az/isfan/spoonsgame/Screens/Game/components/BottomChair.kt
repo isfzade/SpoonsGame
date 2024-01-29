@@ -50,7 +50,7 @@ fun BottomChair(
             Text(
                 text = player.name,
                 fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
-                color = if (playTurn) Color.Yellow else Color.Black
+                color = if (playTurn) Color.Blue else Color.Black
             )
         }
 
@@ -93,7 +93,7 @@ fun LocalPlayerCards(
                     .size(width = 60.dp, height = 100.dp)
                     .border(
                         width = if (playTurn) 2.dp else 1.dp,
-                        color = if (playTurn) Color.Yellow else Color.Black
+                        color = if (playTurn) Color.Blue else Color.Black
                     )
                     .clickable {
                         onCardClick(card)

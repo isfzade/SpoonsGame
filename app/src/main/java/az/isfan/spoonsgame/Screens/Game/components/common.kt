@@ -47,7 +47,7 @@ fun SideBotCards(
                     .then(
                         Modifier
                             .size(width = 60.dp, height = 35.dp)
-                            .border(if (playTurn) 1.dp else 0.dp, color  = if (playTurn) Color.Yellow else Color.Transparent)
+                            .border(if (playTurn) 1.dp else 0.dp, color  = if (playTurn) Color.Blue else Color.Transparent)
                     )
             )
         }
@@ -73,7 +73,7 @@ fun TopBotCards(
                 contentDescription = null,
                 modifier = Modifier
                     .size(height = 60.dp, width = 35.dp)
-                    .border(if (playTurn) 1.dp else 0.dp, color  = if (playTurn) Color.Yellow else Color.Transparent)
+                    .border(if (playTurn) 1.dp else 0.dp, color  = if (playTurn) Color.Blue else Color.Transparent)
             )
         }
     }
