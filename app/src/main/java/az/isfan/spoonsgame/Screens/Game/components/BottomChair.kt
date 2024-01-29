@@ -42,7 +42,7 @@ fun BottomChair(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            PlayerName(player.name, player.chair)
+            Text(player.name)
         }
 
         Box(
@@ -73,7 +73,7 @@ fun LocalPlayerCards(
                 painter = painterResource(getCardImageResource(card.rank, card.suit)),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(width = 100.dp, height = 160.dp)
+                    .size(width = 60.dp, height = 100.dp)
             )
         }
     }

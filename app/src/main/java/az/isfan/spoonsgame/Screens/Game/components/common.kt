@@ -26,20 +26,6 @@ import az.isfan.spoonsgame.R
 import coil.compose.AsyncImage
 
 @Composable
-fun PlayerName(
-    name: String,
-    chair: ChairEnum
-) {
-    Text(
-        text = name,
-        modifier = Modifier
-            .fillMaxWidth(),
-        textAlign = TextAlign.Center,
-        maxLines = 1,
-    )
-}
-
-@Composable
 fun SideBotCards(
     cards: List<CardData>
 ) {
@@ -52,13 +38,17 @@ fun SideBotCards(
         )
     ) {
         cards.forEach{
-            Image(
-                painter = painterResource(R.drawable.back_dark),
-                contentDescription = null,
+            Box(
                 modifier = Modifier
-                    .rotate(90f)
                     .size(width = 35.dp, 60.dp)
-            )
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.back_dark),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .rotate(90f)
+                )
+            }
         }
     }
 }
