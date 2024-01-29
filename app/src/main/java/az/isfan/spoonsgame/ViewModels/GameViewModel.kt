@@ -45,21 +45,21 @@ class GameViewModel: ViewModel() {
         viewModelScope.launch {
             card.holder.value?.let{ holder ->
                 val allPlayers = (players.value as Cavab.Success).data
-                val fromPLayer = allPlayers.first { it.name == holder }
-                if (fromPLayer.lastPlayerInRound.value) {
-                    discardCardToDeck(card, fromPLayer)
-                }
-                else {
-                    var currentChairId = fromPLayer.chair.chairId
-                    var nextPlayer: PlayerData? = null
-                    while (nextPlayer != null) {
-                        currentChairId += 1
-                        if (currentChairId > allPlayers.filter{it.isPlaying.value}.maxOf { it.chair.chairId }) {
-                            currentChairId = 0
-                        }
-                        nextPlayer = allPlayers.firstOrNull { currentChairId == it.chair.chairId }
+                val fromPlayer = allPlayers.first { it.name == holder }
+                var currentChairId = fromPlayer.chair.chairId
+                var nextPlayer: PlayerData? = null
+                while (nextPlayer == null) {
+                    currentChairId += 1
+                    if (currentChairId > allPlayers.filter{it.isPlaying.value}.maxOf { it.chair.chairId }) {
+                        currentChairId = 0
                     }
-                    passCard(card, fromPLayer, nextPlayer!!)
+                    nextPlayer = allPlayers.firstOrNull { currentChairId == it.chair.chairId }
+                }
+                fromPlayer.removeCard(card)
+                fromPlayer.setPlayTurn(false)
+                if (!fromPlayer.has4EqualCards()) {
+                    nextPlayer.addCard(card)
+                    nextPlayer.setPlayTurn(true)
                 }
             }
         }
@@ -76,17 +76,14 @@ class GameViewModel: ViewModel() {
         }
     }
 
-    private fun discardCardToDeck(card: CardData, fromPlayer: PlayerData) {
-        fromPlayer.removeCard(card)
-        card.setHolder(Constants.DISCARDED)
-        _discardedDeckCards.update {
-            it + card
+    fun discardCardToDeck(card: CardData, fromPlayer: PlayerData) {
+        viewModelScope.launch {
+            fromPlayer.removeCard(card)
+            card.setHolder(Constants.DISCARDED)
+            _discardedDeckCards.update {
+                it + card
+            }
         }
-    }
-
-    private fun passCard(card: CardData, fromPlayer: PlayerData, toPlayer: PlayerData) {
-        fromPlayer.removeCard(card)
-        toPlayer.addCard(card)
     }
 
     private fun getPlayers(playerCount: Int): List<PlayerData> {

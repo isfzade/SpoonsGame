@@ -9,6 +9,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
 import az.isfan.spoonsgame.Data.Models.PlayerData
@@ -48,19 +50,26 @@ fun TopChair(
     player: PlayerData
 ) {
     val cards = player.cards.collectAsStateWithLifecycle().value
+    val isPlaying = player.isPlaying.collectAsStateWithLifecycle().value
+    val playTurn = player.playTurn.collectAsStateWithLifecycle().value
 
     Column(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
-            modifier = Modifier
-                .weight(2f)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            TopBotCards(cards)
+        if (isPlaying) {
+            Box(
+                modifier = Modifier
+                    .weight(2f)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                TopBotCards(
+                    playTurn = playTurn,
+                    cards = cards,
+                )
+            }
         }
 
         Box(
@@ -69,7 +78,11 @@ fun TopChair(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(player.name)
+            Text(
+                text = player.name,
+                fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
+                color = if (playTurn) Color.Yellow else Color.Black
+            )
         }
     }
 }

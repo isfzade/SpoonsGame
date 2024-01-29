@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
@@ -32,6 +33,8 @@ fun BottomChair(
     onCardClick: (card: CardData) -> Unit,
 ) {
     val cards = player.cards.collectAsStateWithLifecycle().value
+    val isPlaying = player.isPlaying.collectAsStateWithLifecycle().value
+    val playTurn = player.playTurn.collectAsStateWithLifecycle().value
 
     Column(
         modifier = Modifier
@@ -44,25 +47,33 @@ fun BottomChair(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(player.name)
+            Text(
+                text = player.name,
+                fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
+                color = if (playTurn) Color.Yellow else Color.Black
+            )
         }
 
-        Box(
-            modifier = Modifier
-                .weight(2f)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            LocalPlayerCards(
-                cards = cards,
-                onCardClick = onCardClick
-            )
+        if (isPlaying) {
+            Box(
+                modifier = Modifier
+                    .weight(2f)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                LocalPlayerCards(
+                    playTurn = playTurn,
+                    cards = cards,
+                    onCardClick = onCardClick
+                )
+            }
         }
     }
 }
 
 @Composable
 fun LocalPlayerCards(
+    playTurn: Boolean,
     cards: List<CardData>,
     onCardClick: (card: CardData) -> Unit,
 ) {
@@ -80,7 +91,10 @@ fun LocalPlayerCards(
                 contentDescription = null,
                 modifier = Modifier
                     .size(width = 60.dp, height = 100.dp)
-                    .border(width = 1.dp, color = Color.Black)
+                    .border(
+                        width = if (playTurn) 2.dp else 1.dp,
+                        color = if (playTurn) Color.Yellow else Color.Black
+                    )
                     .clickable {
                         onCardClick(card)
                     }

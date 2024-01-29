@@ -55,4 +55,9 @@ data class PlayerData(
     fun setIsPlaying(playing: Boolean) {
         _isPlaying.update { playing }
     }
+
+    fun has4EqualCards(): Boolean {
+        if (cards.value.size != 4) return false
+        return cards.value.count {it.suit == cards.value.first().suit} == 4
+    }
 }

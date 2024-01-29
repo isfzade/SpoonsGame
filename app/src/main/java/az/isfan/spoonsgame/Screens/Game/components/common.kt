@@ -27,6 +27,7 @@ import coil.compose.AsyncImage
 
 @Composable
 fun SideBotCards(
+    playTurn: Boolean,
     cards: List<CardData>
 ) {
     Column(
@@ -43,7 +44,11 @@ fun SideBotCards(
                 contentDescription = null,
                 modifier = Modifier
                     .rotate(90f)
-                    .then(Modifier.size(width = 60.dp, height = 35.dp))
+                    .then(
+                        Modifier
+                            .size(width = 60.dp, height = 35.dp)
+                            .border(if (playTurn) 1.dp else 0.dp, color  = if (playTurn) Color.Yellow else Color.Transparent)
+                    )
             )
         }
     }
@@ -51,6 +56,7 @@ fun SideBotCards(
 
 @Composable
 fun TopBotCards(
+    playTurn: Boolean,
     cards: List<CardData>
 ) {
     Row(
@@ -67,6 +73,7 @@ fun TopBotCards(
                 contentDescription = null,
                 modifier = Modifier
                     .size(height = 60.dp, width = 35.dp)
+                    .border(if (playTurn) 1.dp else 0.dp, color  = if (playTurn) Color.Yellow else Color.Transparent)
             )
         }
     }
