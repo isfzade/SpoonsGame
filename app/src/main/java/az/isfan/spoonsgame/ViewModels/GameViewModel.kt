@@ -148,8 +148,8 @@ class GameViewModel: ViewModel() {
                         nextPlayer = availablePlayers.firstOrNull { currentChairId == it.chair.chairId }
                     }
                     fromPlayer.removeCard(card)
-                    fromPlayer.setPlayTurn(false)
                     if (!fromPlayer.has4EqualCards()) {
+                        fromPlayer.setPlayTurn(false)
                         nextPlayer.addCard(card)
                         nextPlayer.setPlayTurn(true)
                     }
@@ -214,22 +214,22 @@ class GameViewModel: ViewModel() {
                 generatedCards.add(newCard)
             }
         }
-        return generatedCards
+        return generatedCards.shuffled(random = Random(seed = System.currentTimeMillis())).toMutableList()
     }
 
     private fun giveFourCardsToPlayersAndGetRemainingCards(generatedCards: List<CardData>, generatedPlayers: List<PlayerData>): List<CardData> {
         Log.i(TAG, "giveFourCardsToPlayersAndGetRemainingCards: ")
 
-        val shuffledCards = generatedCards.shuffled(random = Random(seed = System.currentTimeMillis())).toMutableList()
+        val mutableCards = generatedCards.toMutableList()
         generatedPlayers.forEach { player ->
             if (player.isPlaying.value) {
                 repeat(4) {
-                    val selectedCard = shuffledCards[0]
+                    val selectedCard = mutableCards[0]
                     player.addCard(selectedCard)
-                    shuffledCards.removeAt(0)
+                    mutableCards.removeAt(0)
                 }
             }
         }
-        return shuffledCards
+        return mutableCards
     }
 }
