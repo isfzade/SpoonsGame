@@ -78,6 +78,10 @@ class GameViewModel: ViewModel() {
         Log.i(TAG, "setupNewRound: ")
 
         viewModelScope.launch {
+            val allPlayers = (players.value as Cavab.Success).data
+            allPlayers.forEach {
+                it.removeAllCards()
+            }
             val generatedCards = getAllCards()
             val availablePlayers = (players.value as Cavab.Success).data.filter{it.isPlaying.value}
             val deckCards = giveFourCardsToPlayersAndGetRemainingCards(generatedCards, availablePlayers)
@@ -86,6 +90,9 @@ class GameViewModel: ViewModel() {
             _discardedDeckCards.update { emptyList()}
 
             val oldFirstPlayer = availablePlayers.first{it.firstPlayerInRound.value}
+            availablePlayers.forEach { it.setFirstPlayerInRounds(false) }
+            availablePlayers.forEach { it.setLastPlayerInRounds(false) }
+            availablePlayers.forEach { it.setPlayTurn(false) }
             oldFirstPlayer.setLastPlayerInRounds(true)
             var nextPlayer: PlayerData? = null
             var currentChairId = availablePlayers.first{it.firstPlayerInRound.value}.chair.chairId

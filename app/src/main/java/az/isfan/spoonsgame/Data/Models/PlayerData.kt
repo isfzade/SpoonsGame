@@ -47,6 +47,12 @@ data class PlayerData(
         setCards(newCards)
     }
 
+    fun removeAllCards() {
+        Log.i(TAG, "removeAllCards: player=$this")
+
+        _cards.update { emptyList() }
+    }
+
     fun setPlayTurn(isPlayerTurn: Boolean) {
         Log.i(TAG, "setPlayTurn: isPlayerTurn=$isPlayerTurn, player=$this")
 
