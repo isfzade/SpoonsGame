@@ -16,6 +16,7 @@ fun GameDesign(
     players: List<PlayerData>,
     availableDeckCards: List<CardData>,
     discardedDeckCards: List<CardData>,
+    onCardClick: (card: CardData) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -72,7 +73,10 @@ fun GameDesign(
                 .weight(2f)
                 .fillMaxSize()
         ) {
-            BottomChair(player = players.first { it.chair == ChairEnum.BOTTOM })
+            BottomChair(
+                player = players.first { it.chair == ChairEnum.BOTTOM },
+                onCardClick = onCardClick,
+            )
         }
     }
 }

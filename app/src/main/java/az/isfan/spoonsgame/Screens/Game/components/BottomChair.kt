@@ -2,6 +2,7 @@ package az.isfan.spoonsgame.Screens.Game.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,7 +28,8 @@ import coil.compose.AsyncImage
 
 @Composable
 fun BottomChair(
-    player: PlayerData
+    player: PlayerData,
+    onCardClick: (card: CardData) -> Unit,
 ) {
     val cards = player.cards.collectAsStateWithLifecycle().value
 
@@ -51,14 +53,18 @@ fun BottomChair(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            LocalPlayerCards(cards)
+            LocalPlayerCards(
+                cards = cards,
+                onCardClick = onCardClick
+            )
         }
     }
 }
 
 @Composable
 fun LocalPlayerCards(
-    cards: List<CardData>
+    cards: List<CardData>,
+    onCardClick: (card: CardData) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -74,6 +80,9 @@ fun LocalPlayerCards(
                 contentDescription = null,
                 modifier = Modifier
                     .size(width = 60.dp, height = 100.dp)
+                    .clickable {
+                        onCardClick(card)
+                    }
             )
         }
     }

@@ -49,6 +49,9 @@ fun GameScreen(
                 discardedDeckCards = discardedDeckCards,
                 onBackButtonClick = {
                     navController.navigateUp()
+                },
+                onCardClick = {
+
                 }
             )
         }
