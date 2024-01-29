@@ -34,29 +34,10 @@ fun GameTable(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(R.string.available)
-                )
-
-                Box(
-                    modifier = Modifier
-                        .size(width = 35.dp, height = 60.dp)
-                        .border(width = 2.dp, color = Color.Black),
-                    contentAlignment = Alignment.Center
-                ) {
-                    if (availableCards.isNotEmpty()) {
-                        Image(
-                            painter = painterResource(R.drawable.back_dark),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .fillMaxSize()
-                        )
-                    }
-                }
-            }
+            DeckCardInGameTable(
+                title = stringResource(R.string.available),
+                size = availableCards.size
+            )
         }
 
         Box(
@@ -65,29 +46,44 @@ fun GameTable(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(R.string.discarded)
-                )
+            DeckCardInGameTable(
+                title = stringResource(R.string.discarded),
+                size = discardedCards.size
+            )
+        }
+    }
+}
 
-                Box(
+@Composable
+fun DeckCardInGameTable(
+    title: String,
+    size: Int,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = title
+        )
+
+        Box(
+            modifier = Modifier
+                .size(width = 35.dp, height = 60.dp)
+                .border(width = 2.dp, color = Color.Black),
+            contentAlignment = Alignment.Center
+        ) {
+            if (size != 0) {
+                Image(
+                    painter = painterResource(R.drawable.back_dark),
+                    contentDescription = null,
                     modifier = Modifier
-                        .size(width = 35.dp, height = 60.dp)
-                        .border(width = 2.dp, color = Color.Black),
-                    contentAlignment = Alignment.Center
-                ) {
-                    if (discardedCards.isNotEmpty()) {
-                        Image(
-                            painter = painterResource(R.drawable.back_dark),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .fillMaxSize()
-                        )
-                    }
-                }
+                        .fillMaxSize()
+                )
             }
         }
+
+        Text(
+            text = size.toString()
+        )
     }
 }
