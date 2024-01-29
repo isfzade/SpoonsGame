@@ -62,6 +62,7 @@ class GameViewModel: ViewModel() {
                 nextPlayer = availablePlayers.firstOrNull { currentChairId == it.chair.chairId }
             }
             nextPlayer.setFirstPlayerInRounds(true)
+            nextPlayer.setPlayTurn(true)
         }
     }
 
