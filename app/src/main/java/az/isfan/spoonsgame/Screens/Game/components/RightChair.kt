@@ -21,6 +21,7 @@ fun RightChair(
         val cards = player.cards.collectAsStateWithLifecycle().value
         val isPlaying = player.isPlaying.collectAsStateWithLifecycle().value
         val playTurn = player.playTurn.collectAsStateWithLifecycle().value
+        val letterSize = player.lettersCollected.collectAsStateWithLifecycle().value
 
         Row(
             modifier = Modifier
@@ -32,10 +33,10 @@ fun RightChair(
                     .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = player.name,
-                    fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
-                    color = if (playTurn) Color.Blue else Color.Black
+                PlayerInfo(
+                    name = player.name,
+                    playTurn = playTurn,
+                    letterSize = letterSize,
                 )
             }
 

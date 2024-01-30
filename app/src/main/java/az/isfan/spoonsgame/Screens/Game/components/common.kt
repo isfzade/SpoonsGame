@@ -7,14 +7,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import az.isfan.spoonsgame.Data.Models.CardData
+import az.isfan.spoonsgame.General.Constants
 import az.isfan.spoonsgame.R
 
 @Composable
@@ -39,7 +42,10 @@ fun SideBotCards(
                     .then(
                         Modifier
                             .size(width = 60.dp, height = 35.dp)
-                            .border(if (playTurn) 1.dp else 0.dp, color  = if (playTurn) Color.Blue else Color.Transparent)
+                            .border(
+                                if (playTurn) 1.dp else 0.dp,
+                                color = if (playTurn) Color.Blue else Color.Transparent
+                            )
                     )
             )
         }
@@ -65,8 +71,35 @@ fun TopBotCards(
                 contentDescription = null,
                 modifier = Modifier
                     .size(height = 60.dp, width = 35.dp)
-                    .border(if (playTurn) 1.dp else 0.dp, color  = if (playTurn) Color.Blue else Color.Transparent)
+                    .border(
+                        if (playTurn) 1.dp else 0.dp,
+                        color = if (playTurn) Color.Blue else Color.Transparent
+                    )
             )
         }
     }
+}
+
+@Composable
+fun PlayerInfo(
+    name: String,
+    playTurn: Boolean,
+    letterSize: Int
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = name,
+            fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
+            color = if (playTurn) Color.Blue else Color.Black
+        )
+
+        Text(
+            text = Constants.SPOON.slice(IntRange(0, letterSize-1)),
+            fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
+            color = if (playTurn) Color.Blue else Color.Black
+        )
+    }
+
 }
