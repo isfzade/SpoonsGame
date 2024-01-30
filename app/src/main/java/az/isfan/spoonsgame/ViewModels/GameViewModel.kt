@@ -9,6 +9,7 @@ import az.isfan.spoonsgame.Data.Enums.GameResultEnum
 import az.isfan.spoonsgame.Data.Enums.RankEnum
 import az.isfan.spoonsgame.Data.Enums.SuitEnum
 import az.isfan.spoonsgame.Data.Models.CardData
+import az.isfan.spoonsgame.Data.Models.GameData
 import az.isfan.spoonsgame.Data.Models.PlayerData
 import az.isfan.spoonsgame.General.Cavab
 import az.isfan.spoonsgame.General.Constants
@@ -49,6 +50,9 @@ class GameViewModel @Inject constructor(
     private val _tookSpoon = MutableStateFlow(false)
     val tookSpoon = _tookSpoon.asStateFlow()
 
+    private val _gameInfo = MutableStateFlow<GameData?>(null)
+    val gameInfo = _gameInfo.asStateFlow()
+
     private val _allCards = MutableStateFlow<List<CardData>>(emptyList())
 
     init {
@@ -66,7 +70,7 @@ class GameViewModel @Inject constructor(
                                 }
 
                                 if (playTurn && !player.isLocalUser && player.cards.value.size == 5) {
-                                    discardCardFromBot(player)
+                                    getWorstCardFromBot(player)
                                 }
                             }
                         }
@@ -221,19 +225,52 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    private fun finalizeGame(type: GameResultEnum) {
-        Log.i(TAG, "finalizeGame: type=$type")
+    fun handleCardSelectionOfLocal(card: CardData) {
+        Log.i(TAG, "handleCardSelectionOfLocal: card = $card")
 
-        _allCards.update { emptyList() }
-        _availableDeckCards.update { emptyList() }
-        _discardedDeckCards.update { emptyList() }
-        (players.value as Cavab.Success).data.forEach { it.setCards(emptyList()) }
-        repo.deleteAllCards()
-        repo.deleteAllPlayers()
+        viewModelScope.launch {
+            discardCard(card)
+            val availablePlayers = (players.value as Cavab.Success).data.filter{it.isPlaying.value}
+            val player = availablePlayers.first {it.name == card.holder.value}
+            if (player.has4EqualCards()) {
+                gameInfo.value!!.setCurrentRoundFinished(true)
+            } else {
+                passTurnToNextPlayer(player)
+            }
+        }
     }
 
-    private fun discardCardFromBot(player: PlayerData) {
-        Log.i(TAG, "discardCardFromBot: player = $player")
+    fun handleCardSelectionOfBot(player: PlayerData) {
+        Log.i(TAG, "handleCardSelectionOfBot:")
+
+        viewModelScope.launch {
+            val card = getWorstCardFromBot(player)
+            discardCard(card)
+            if (player.has4EqualCards()) {
+                gameInfo.value!!.setCurrentRoundFinished(true)
+            } else {
+                passTurnToNextPlayer(player)
+            }
+        }
+    }
+
+    private fun discardCard(card: CardData) {
+        Log.i(TAG, "discardCard: card=$card")
+
+        card.holder.value?.let{ holder ->
+            val availablePlayers = (players.value as Cavab.Success).data.filter{it.isPlaying.value}
+            val fromPlayer = availablePlayers.first { it.name == holder }
+            if (fromPlayer.lastPlayerInRound.value) {
+                discardCardFromLastPlayer(fromPlayer, card)
+            }
+            else {
+                passCardToNextPlayer(fromPlayer, card)
+            }
+        }
+    }
+
+    private fun getWorstCardFromBot(player: PlayerData): CardData {
+        Log.i(TAG, "getWorstCardFromBot: player = $player")
 
         val cardCount = hashMapOf<SuitEnum, Int>()
         SuitEnum.entries.forEach {  suit ->
@@ -242,54 +279,55 @@ class GameViewModel @Inject constructor(
                 cardCount[suit] = count
             }
         }
-        discardCard(player.cards.value.first { card ->
+        return player.cards.value.first { card ->
             card.suit == cardCount.minBy { it.value }.key
-        })
+        }
     }
 
-    fun discardCard(card: CardData) {
-        Log.i(TAG, "discardCard: card=$card")
+    private fun discardCardFromLastPlayer(player:PlayerData, card: CardData) {
+        Log.i(TAG, "discardCardFromLastPlayer: player = $player, card=$card")
 
-        viewModelScope.launch {
-            card.holder.value?.let{ holder ->
-                val availablePlayers = (players.value as Cavab.Success).data.filter{it.isPlaying.value}
-                val fromPlayer = availablePlayers.first { it.name == holder }
-                if (fromPlayer.lastPlayerInRound.value) {
-                    fromPlayer.removeCard(card)
-                    card.setHolder(Constants.DISCARDED)
-                    _discardedDeckCards.update {
-                        it + card
-                    }
-                    if (!fromPlayer.has4EqualCards()) {
-                        fromPlayer.setPlayTurn(false)
-                        availablePlayers.first{it.firstPlayerInRound.value}.setPlayTurn(true)
-                    }
-                    else {
-                        fromPlayer.setRoundWinner(true)
-                    }
-                }
-                else {
-                    var currentChairId = fromPlayer.chair.chairId
-                    var nextPlayer: PlayerData? = null
-                    while (nextPlayer == null) {
-                        currentChairId += 1
-                        if (currentChairId > availablePlayers.maxOf { it.chair.chairId }) {
-                            currentChairId = 0
-                        }
-                        nextPlayer = availablePlayers.firstOrNull { currentChairId == it.chair.chairId }
-                    }
-                    fromPlayer.removeCard(card)
-                    if (!fromPlayer.has4EqualCards()) {
-                        fromPlayer.setPlayTurn(false)
-                        nextPlayer.addCard(card)
-                        nextPlayer.setPlayTurn(true)
-                    }
-                    else {
-                        fromPlayer.setRoundWinner(true)
-                    }
-                }
+        if (player.lastPlayerInRound.value) {
+            player.removeCard(card)
+            card.setHolder(Constants.DISCARDED)
+            _discardedDeckCards.update {
+                it + card
             }
         }
+    }
+
+    private fun passCardToNextPlayer(fromPlayer: PlayerData, card: CardData) {
+        Log.i(TAG, "passCardToNextPlayer: fromPlayer=$fromPlayer, card=$card")
+
+        val availablePlayers = (players.value as Cavab.Success).data.filter{it.isPlaying.value}
+        var currentChairId = fromPlayer.chair.chairId
+        var nextPlayer: PlayerData? = null
+        while (nextPlayer == null) {
+            currentChairId += 1
+            if (currentChairId > availablePlayers.maxOf { it.chair.chairId }) {
+                currentChairId = 0
+            }
+            nextPlayer = availablePlayers.firstOrNull { currentChairId == it.chair.chairId }
+        }
+        fromPlayer.removeCard(card)
+        nextPlayer.addCard(card)
+    }
+
+    private fun passTurnToNextPlayer(fromPlayer: PlayerData) {
+        Log.i(TAG, "passTurnToNextPlayer: fromPlayer=$fromPlayer")
+
+        val availablePlayers = (players.value as Cavab.Success).data.filter{it.isPlaying.value}
+        var currentChairId = fromPlayer.chair.chairId
+        var nextPlayer: PlayerData? = null
+        while (nextPlayer == null) {
+            currentChairId += 1
+            if (currentChairId > availablePlayers.maxOf { it.chair.chairId }) {
+                currentChairId = 0
+            }
+            nextPlayer = availablePlayers.firstOrNull { currentChairId == it.chair.chairId }
+        }
+        fromPlayer.setPlayTurn(false)
+        nextPlayer.setPlayTurn(true)
     }
 
     private fun pickCardFromDeck(toPlayer: PlayerData) {
@@ -362,5 +400,16 @@ class GameViewModel @Inject constructor(
             }
         }
         return mutableCards
+    }
+
+    private fun finalizeGame(type: GameResultEnum) {
+        Log.i(TAG, "finalizeGame: type=$type")
+
+        _allCards.update { emptyList() }
+        _availableDeckCards.update { emptyList() }
+        _discardedDeckCards.update { emptyList() }
+        (players.value as Cavab.Success).data.forEach { it.setCards(emptyList()) }
+        repo.deleteAllCards()
+        repo.deleteAllPlayers()
     }
 }
