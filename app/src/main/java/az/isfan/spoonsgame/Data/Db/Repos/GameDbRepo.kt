@@ -2,7 +2,6 @@ package az.isfan.spoonsgame.Data.Db.Repos
 
 import az.isfan.spoonsgame.Data.Db.Dao.CardDao
 import az.isfan.spoonsgame.Data.Db.Dao.PlayerDao
-import az.isfan.spoonsgame.Data.Db.Entities.CardEntity
 import az.isfan.spoonsgame.Data.Mappers.toData
 import az.isfan.spoonsgame.Data.Mappers.toEntity
 import az.isfan.spoonsgame.Data.Models.CardData
