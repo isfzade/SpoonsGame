@@ -69,7 +69,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    // Collector
+    // Flow State Collector
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 
     // Navigation
@@ -81,9 +81,9 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-compiler:2.46.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.46.1")
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-compiler:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
 
     // Coil
     implementation("io.coil-kt:coil-compose:2.5.0")
