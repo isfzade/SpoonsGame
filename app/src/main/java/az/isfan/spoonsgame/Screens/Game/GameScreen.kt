@@ -64,11 +64,13 @@ fun GameSetupLogic(
     val players = viewModel.players.collectAsStateWithLifecycle().value
     val availableDeckCards = viewModel.availableDeckCards.collectAsStateWithLifecycle().value
     val discardedDeckCards = viewModel.discardedDeckCards.collectAsStateWithLifecycle().value
+    val showTakeSpoonButton = viewModel.showTakeSpoon.collectAsStateWithLifecycle().value
 
     when (players) {
         is Cavab.Success -> {
             GameContent(
                 title = title,
+                showTakeSpoonButton = showTakeSpoonButton,
                 players = players.data,
                 availableDeckCards = availableDeckCards,
                 discardedDeckCards = discardedDeckCards,
@@ -77,6 +79,9 @@ fun GameSetupLogic(
                 },
                 onCardClick = { card ->
                     viewModel.discardCard(card)
+                },
+                onShowSpoonButtonClick = {
+                    viewModel.setTookSpoon(true)
                 }
             )
         }

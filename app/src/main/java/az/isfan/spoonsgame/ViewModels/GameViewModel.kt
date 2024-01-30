@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import az.isfan.spoonsgame.Data.Db.Repos.GameDbRepoInterface
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
+import az.isfan.spoonsgame.Data.Enums.GameResultEnum
 import az.isfan.spoonsgame.Data.Enums.RankEnum
 import az.isfan.spoonsgame.Data.Enums.SuitEnum
 import az.isfan.spoonsgame.Data.Models.CardData
@@ -12,8 +13,11 @@ import az.isfan.spoonsgame.Data.Models.PlayerData
 import az.isfan.spoonsgame.General.Cavab
 import az.isfan.spoonsgame.General.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -28,6 +32,8 @@ class GameViewModel @Inject constructor(
 ): ViewModel() {
     private val TAG = "isf_GameViewModel"
 
+    private val DURATION_TO_TAKE_SPOON = 1000L //milliseconds
+
     private val _players = MutableStateFlow<Cavab<List<PlayerData>>>(Cavab.StandBy)
     val players = _players.asStateFlow()
 
@@ -36,6 +42,12 @@ class GameViewModel @Inject constructor(
 
     private val _availableDeckCards = MutableStateFlow<List<CardData>>(emptyList())
     val availableDeckCards = _availableDeckCards.asStateFlow()
+
+    private val _showTakeSpoon = MutableStateFlow(false)
+    val showTakeSpoon = _showTakeSpoon.asStateFlow()
+
+    private val _tookSpoon = MutableStateFlow(false)
+    val tookSpoon = _tookSpoon.asStateFlow()
 
     private val _allCards = MutableStateFlow<List<CardData>>(emptyList())
 
@@ -49,12 +61,35 @@ class GameViewModel @Inject constructor(
                         launch {
                             player.playTurn.collect { playTurn ->
                                 Log.i(TAG, "init: player=$player, playTurn=$playTurn")
-                                if (playTurn && player.firstPlayerInRound.value && player.cards.value.size == 4) {
+                                if (playTurn && player.firstPlayerInRound.value && player.cards.value.size == 4 && !player.has4EqualCards()) {
                                     pickCardFromDeck(player)
                                 }
 
                                 if (playTurn && !player.isLocalUser && player.cards.value.size == 5) {
                                     discardCardFromBot(player)
+                                }
+                            }
+                        }
+
+                        launch {
+                            player.roundWinner.collect { isRoundWinner ->
+                                if (isRoundWinner) {
+                                    if (!player.isLocalUser) {
+                                        launch {
+                                            _showTakeSpoon.update { true }
+                                            delay(DURATION_TO_TAKE_SPOON)
+                                            _showTakeSpoon.update { false }
+                                            if (tookSpoon.value) {
+                                                cavab.data.firstOrNull { !it.isLocalUser && !it.roundWinner.value }
+                                                    ?.incLetterCollected()
+                                            }
+                                            else {
+                                                cavab.data.firstOrNull { it.isLocalUser }
+                                                    ?.incLetterCollected()
+                                            }
+                                            setupNewRound()
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -78,37 +113,52 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    fun setupNewRound() {
+    private fun setupNewRound() {
         Log.i(TAG, "setupNewRound: ")
 
         viewModelScope.launch {
-            val allPlayers = (players.value as Cavab.Success).data
-            allPlayers.forEach {
-                it.removeAllCards()
-            }
-            val generatedCards = getAllCards()
-            val availablePlayers = (players.value as Cavab.Success).data.filter{it.isPlaying.value}
-            val deckCards = giveFourCardsToPlayersAndGetRemainingCards(generatedCards, availablePlayers)
-            _allCards.update { generatedCards }
-            _availableDeckCards.update { deckCards }
-            _discardedDeckCards.update { emptyList()}
-
-            val oldFirstPlayer = availablePlayers.first{it.firstPlayerInRound.value}
-            availablePlayers.forEach { it.setFirstPlayerInRounds(false) }
-            availablePlayers.forEach { it.setLastPlayerInRounds(false) }
-            availablePlayers.forEach { it.setPlayTurn(false) }
-            oldFirstPlayer.setLastPlayerInRounds(true)
-            var nextPlayer: PlayerData? = null
-            var currentChairId = oldFirstPlayer.chair.chairId
-            while (nextPlayer == null) {
-                currentChairId += 1
-                if (currentChairId > availablePlayers.maxOf { it.chair.chairId }) {
-                    currentChairId = 0
+            try {
+                val allPlayers = (players.value as Cavab.Success).data
+                allPlayers.forEach {
+                    it.removeAllCards()
+                    it.setRoundWinner(false)
+                    if (it.lettersCollected.value >= 5) it.setIsPlaying(false)
                 }
-                nextPlayer = availablePlayers.firstOrNull { currentChairId == it.chair.chairId }
+                setTookSpoon(false)
+                val generatedCards = getAllCards()
+                val availablePlayers = (players.value as Cavab.Success).data.filter{it.isPlaying.value}
+                if (availablePlayers.none {it.isLocalUser}) {
+                    finalizeGame(GameResultEnum.LOST)
+                    this.cancel()
+                }
+                if (availablePlayers.none { !it.isLocalUser }) {
+                    finalizeGame(GameResultEnum.WON)
+                    this.cancel()
+                }
+                availablePlayers.forEach { it.incRoundsAlive() }
+                val deckCards = giveFourCardsToPlayersAndGetRemainingCards(generatedCards, availablePlayers)
+                _allCards.update { generatedCards }
+                _availableDeckCards.update { deckCards }
+                _discardedDeckCards.update { emptyList()}
+
+                val oldFirstPlayer = availablePlayers.first{it.firstPlayerInRound.value}
+                availablePlayers.forEach { it.setFirstPlayerInRounds(false) }
+                availablePlayers.forEach { it.setLastPlayerInRounds(false) }
+                availablePlayers.forEach { it.setPlayTurn(false) }
+                oldFirstPlayer.setLastPlayerInRounds(true)
+                var nextPlayer: PlayerData? = null
+                var currentChairId = oldFirstPlayer.chair.chairId
+                while (nextPlayer == null) {
+                    currentChairId += 1
+                    if (currentChairId > availablePlayers.maxOf { it.chair.chairId }) {
+                        currentChairId = 0
+                    }
+                    nextPlayer = availablePlayers.firstOrNull { currentChairId == it.chair.chairId }
+                }
+                nextPlayer.setFirstPlayerInRounds(true)
+                nextPlayer.setPlayTurn(true)
             }
-            nextPlayer.setFirstPlayerInRounds(true)
-            nextPlayer.setPlayTurn(true)
+            catch (e: CancellationException) {}
         }
     }
 
@@ -139,6 +189,12 @@ class GameViewModel @Inject constructor(
         }
     }
 
+    fun setTookSpoon(took: Boolean) {
+        Log.i(TAG, "setTookSpoon: took=$took")
+
+        _tookSpoon.update { took }
+    }
+
     fun save() {
         Log.i(TAG, "save: ")
 
@@ -163,6 +219,17 @@ class GameViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun finalizeGame(type: GameResultEnum) {
+        Log.i(TAG, "finalizeGame: type=$type")
+
+        _allCards.update { emptyList() }
+        _availableDeckCards.update { emptyList() }
+        _discardedDeckCards.update { emptyList() }
+        (players.value as Cavab.Success).data.forEach { it.setCards(emptyList()) }
+        repo.deleteAllCards()
+        repo.deleteAllPlayers()
     }
 
     private fun discardCardFromBot(player: PlayerData) {
@@ -198,7 +265,7 @@ class GameViewModel @Inject constructor(
                         availablePlayers.first{it.firstPlayerInRound.value}.setPlayTurn(true)
                     }
                     else {
-                        setupNewRound()
+                        fromPlayer.setRoundWinner(true)
                     }
                 }
                 else {
@@ -218,7 +285,7 @@ class GameViewModel @Inject constructor(
                         nextPlayer.setPlayTurn(true)
                     }
                     else {
-                        setupNewRound()
+                        fromPlayer.setRoundWinner(true)
                     }
                 }
             }

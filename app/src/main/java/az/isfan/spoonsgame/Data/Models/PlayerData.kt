@@ -28,6 +28,15 @@ data class PlayerData(
     private val _isPlaying = MutableStateFlow(true)
     val isPlaying = _isPlaying.asStateFlow()
 
+    private val _lettersCollected = MutableStateFlow(0)
+    val lettersCollected = _lettersCollected.asStateFlow()
+
+    private val _roundWinner = MutableStateFlow(false)
+    val roundWinner = _roundWinner.asStateFlow()
+
+    private val _roundsAlive = MutableStateFlow(0)
+    val roundsAlive = _roundsAlive.asStateFlow()
+
     fun setCards(newCards: List<CardData>){
         _cards.update { newCards }
     }
@@ -77,10 +86,40 @@ data class PlayerData(
         _isPlaying.update { playing }
     }
 
+    fun setLettersCollected(size: Int) {
+        Log.i(TAG, "setLettersCollected: size=$size, player=$this")
+
+        _lettersCollected.update { size }
+    }
+
+    fun incLetterCollected() {
+        Log.i(TAG, "incLetterCollected: player = $this")
+
+        _lettersCollected.update { it+1 }
+    }
+
+    fun setRoundWinner(isWinner: Boolean) {
+        Log.i(TAG, "setRoundWinner: isWinner=$isWinner, player=$this")
+
+        _roundWinner.update { isWinner }
+    }
+
     fun has4EqualCards(): Boolean {
         Log.i(TAG, "has4EqualCards: player=$this")
 
         if (cards.value.size != 4) return false
         return cards.value.count {it.suit == cards.value.first().suit} == 4
+    }
+
+    fun setRoundsAlive(rounds: Int) {
+        Log.i(TAG, "setRoundsAlive: rounds=$rounds, player=$this")
+
+        _roundsAlive.update { rounds }
+    }
+
+    fun incRoundsAlive(){
+        Log.i(TAG, "incRoundsAlive: player=$this")
+
+        _roundsAlive.update { it+1 }
     }
 }
