@@ -28,7 +28,7 @@ data class PlayerData(
     private val _isPlaying = MutableStateFlow(true)
     val isPlaying = _isPlaying.asStateFlow()
 
-    private fun setCards(newCards: List<CardData>){
+    fun setCards(newCards: List<CardData>){
         _cards.update { newCards }
     }
 

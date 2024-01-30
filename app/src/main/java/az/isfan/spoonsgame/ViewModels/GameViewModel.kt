@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toCollection
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -112,6 +113,33 @@ class GameViewModel @Inject constructor(
             }
             nextPlayer.setFirstPlayerInRounds(true)
             nextPlayer.setPlayTurn(true)
+        }
+    }
+
+    fun loadLastGame() {
+        Log.i(TAG, "loadLastGame: ")
+
+        viewModelScope.launch {
+            _players.update { Cavab.Loading }
+            val savedPlayers = withContext(Dispatchers.IO) {
+                repo.getAllPlayers()
+            }
+            val savedCards = withContext(Dispatchers.IO) {
+                repo.getAllCards()
+            }
+
+            _allCards.update { savedCards }
+            _availableDeckCards.update {
+                savedCards.filter { it.holder.value == Constants.AVAILABLE }
+            }
+            _discardedDeckCards.update {
+                savedCards.filter { it.holder.value == Constants.DISCARDED }
+            }
+
+            savedPlayers.forEach { player ->
+                player.setCards(savedCards.filter { it.holder.value == player.name })
+            }
+            _players.update { Cavab.Success(savedPlayers) }
         }
     }
 

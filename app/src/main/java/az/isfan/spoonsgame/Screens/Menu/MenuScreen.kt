@@ -56,7 +56,7 @@ fun MenuScreen(
 
                 },
                 onLoadLastGameButtonClick = {
-
+                    navController.navigate(RouteEnum.LAST_GAME.name)
                 }
             )
         }
