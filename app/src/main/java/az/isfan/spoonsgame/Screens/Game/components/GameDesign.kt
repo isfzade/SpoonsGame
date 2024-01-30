@@ -19,6 +19,7 @@ fun GameDesign(
     players: List<PlayerData>,
     availableDeckCards: List<CardData>,
     discardedDeckCards: List<CardData>,
+    onShowSpoonButtonClick: () -> Unit,
     onCardClick: (card: CardData) -> Unit,
 ) {
     Column(
@@ -57,6 +58,7 @@ fun GameDesign(
                         .background(color = Color.Green.copy(alpha=0.4f)),
                 ) {
                     GameTable(
+                        onShowSpoonButtonClick = onShowSpoonButtonClick,
                         showTakeSpoonButton = showTakeSpoonButton,
                         availableCards = availableDeckCards,
                         discardedCards = discardedDeckCards

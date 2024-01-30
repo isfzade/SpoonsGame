@@ -26,6 +26,7 @@ fun GameContent(
     discardedDeckCards: List<CardData>,
     onBackButtonClick: () -> Unit,
     onCardClick: (card: CardData) -> Unit,
+    onShowSpoonButtonClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -59,6 +60,7 @@ fun GameContent(
                 availableDeckCards = availableDeckCards,
                 discardedDeckCards = discardedDeckCards,
                 onCardClick = onCardClick,
+                onShowSpoonButtonClick = onShowSpoonButtonClick,
             )
         }
     }

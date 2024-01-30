@@ -79,6 +79,9 @@ fun GameSetupLogic(
                 },
                 onCardClick = { card ->
                     viewModel.discardCard(card)
+                },
+                onShowSpoonButtonClick = {
+                    viewModel.setTookSpoon(true)
                 }
             )
         }
