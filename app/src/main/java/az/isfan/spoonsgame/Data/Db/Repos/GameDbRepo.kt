@@ -15,19 +15,27 @@ class GameDbRepo @Inject constructor(
     private val cardDao: CardDao,
     private val playerDao: PlayerDao,
 ): GameDbRepoInterface {
-    override suspend fun insert(card: CardData) {
+    override fun insert(card: CardData) {
         cardDao.insert(card.toEntity())
     }
 
-    override suspend fun insert(player: PlayerData) {
+    override fun insert(player: PlayerData) {
         playerDao.insert(player.toEntity())
     }
 
-    override suspend fun getAllCards(): List<CardData> {
+    override fun getAllCards(): List<CardData> {
         return cardDao.getAll().map { it.toData() }
     }
 
-    override suspend fun getAllPlayers(): List<PlayerData> {
+    override fun getAllPlayers(): List<PlayerData> {
         return playerDao.getAll().map { it.toData() }
+    }
+
+    override fun deleteAllCards() {
+        cardDao.deleteAll()
+    }
+
+    override fun deleteAllPlayers() {
+        playerDao.deleteAll()
     }
 }

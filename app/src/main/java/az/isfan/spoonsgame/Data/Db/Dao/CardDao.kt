@@ -14,4 +14,7 @@ interface CardDao {
 
     @Query("SELECT * FROM cards")
     fun getAll(): List<CardEntity>
+
+    @Query("DELETE FROM cards")
+    fun deleteAll()
 }

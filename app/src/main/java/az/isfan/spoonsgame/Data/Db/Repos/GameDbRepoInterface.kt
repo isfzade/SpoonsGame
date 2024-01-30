@@ -4,11 +4,15 @@ import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.PlayerData
 
 interface  GameDbRepoInterface {
-    suspend fun insert(card: CardData)
+    fun insert(card: CardData)
 
-    suspend fun insert(player: PlayerData)
+    fun insert(player: PlayerData)
 
-    suspend fun getAllCards(): List<CardData>
+    fun getAllCards(): List<CardData>
 
-    suspend fun getAllPlayers(): List<PlayerData>
+    fun getAllPlayers(): List<PlayerData>
+
+    fun deleteAllCards()
+
+    fun deleteAllPlayers()
 }

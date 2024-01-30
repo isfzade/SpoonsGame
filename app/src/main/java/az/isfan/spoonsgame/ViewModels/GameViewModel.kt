@@ -13,6 +13,7 @@ import az.isfan.spoonsgame.General.Cavab
 import az.isfan.spoonsgame.General.Constants
 import az.isfan.spoonsgame.General.getCardImageResource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -111,6 +112,30 @@ class GameViewModel @Inject constructor(
             }
             nextPlayer.setFirstPlayerInRounds(true)
             nextPlayer.setPlayTurn(true)
+        }
+    }
+
+    fun save() {
+        Log.i(TAG, "save: ")
+
+        CoroutineScope(Dispatchers.IO).launch {
+            launch {
+                repo.deleteAllCards()
+                _allCards.value.forEach {
+                    launch {
+                        repo.insert(it)
+                    }
+                }
+            }
+
+            launch {
+                repo.deleteAllPlayers()
+                (players.value as Cavab.Success).data.forEach {
+                    launch {
+                        repo.insert(it)
+                    }
+                }
+            }
         }
     }
 
