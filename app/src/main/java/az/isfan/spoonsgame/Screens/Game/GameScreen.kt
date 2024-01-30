@@ -15,7 +15,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,6 +27,7 @@ import az.isfan.spoonsgame.General.Cavab
 import az.isfan.spoonsgame.R
 import az.isfan.spoonsgame.Screens.Game.components.GameContent
 import az.isfan.spoonsgame.ViewModels.GameViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 @ExperimentalMaterial3Api
@@ -64,6 +67,8 @@ fun GameScreen(
         playerCount = playerCount,
         viewModel = gameViewModel
     )
+
+    SaveGame(viewModel = gameViewModel)
 }
 
 @Composable
@@ -73,5 +78,16 @@ fun GetPlayersInGameScreen(
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.setupGame(playerCount)
+    }
+}
+
+@Composable
+fun SaveGame(
+    viewModel: GameViewModel
+) {
+    DisposableEffect(key1 = Unit) {
+        onDispose {
+            viewModel.save()
+        }
     }
 }

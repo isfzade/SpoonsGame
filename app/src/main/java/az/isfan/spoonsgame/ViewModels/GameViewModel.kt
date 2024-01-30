@@ -119,20 +119,22 @@ class GameViewModel @Inject constructor(
         Log.i(TAG, "save: ")
 
         CoroutineScope(Dispatchers.IO).launch {
-            launch {
-                repo.deleteAllCards()
-                _allCards.value.forEach {
-                    launch {
-                        repo.insert(it)
+            if (players.value is Cavab.Success) {
+                launch {
+                    repo.deleteAllCards()
+                    _allCards.value.forEach {
+                        launch {
+                            repo.insert(it)
+                        }
                     }
                 }
-            }
 
-            launch {
-                repo.deleteAllPlayers()
-                (players.value as Cavab.Success).data.forEach {
-                    launch {
-                        repo.insert(it)
+                launch {
+                    repo.deleteAllPlayers()
+                    (players.value as Cavab.Success).data.forEach {
+                        launch {
+                            repo.insert(it)
+                        }
                     }
                 }
             }
