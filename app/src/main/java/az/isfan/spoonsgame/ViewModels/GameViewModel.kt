@@ -3,6 +3,7 @@ package az.isfan.spoonsgame.ViewModels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import az.isfan.spoonsgame.Data.Db.Repos.GameDbRepoInterface
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
 import az.isfan.spoonsgame.Data.Enums.RankEnum
 import az.isfan.spoonsgame.Data.Enums.SuitEnum
@@ -10,18 +11,21 @@ import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.PlayerData
 import az.isfan.spoonsgame.General.Cavab
 import az.isfan.spoonsgame.General.Constants
-import az.isfan.spoonsgame.General.getCardImageResource
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.toCollection
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 import kotlin.random.Random
 
-class GameViewModel: ViewModel() {
+@HiltViewModel
+class GameViewModel @Inject constructor(
+    private val repo: GameDbRepoInterface
+): ViewModel() {
     private val TAG = "isf_GameViewModel"
 
     private val _players = MutableStateFlow<Cavab<List<PlayerData>>>(Cavab.StandBy)
@@ -45,11 +49,11 @@ class GameViewModel: ViewModel() {
                         launch {
                             player.playTurn.collect { playTurn ->
                                 Log.i(TAG, "init: player=$player, playTurn=$playTurn")
-                                if (playTurn && player.firstPlayerInRound.value) {
+                                if (playTurn && player.firstPlayerInRound.value && player.cards.value.size == 4) {
                                     pickCardFromDeck(player)
                                 }
 
-                                if (playTurn && !player.isLocalUser) {
+                                if (playTurn && !player.isLocalUser && player.cards.value.size == 5) {
                                     discardCardFromBot(player)
                                 }
                             }
@@ -105,6 +109,59 @@ class GameViewModel: ViewModel() {
             }
             nextPlayer.setFirstPlayerInRounds(true)
             nextPlayer.setPlayTurn(true)
+        }
+    }
+
+    fun loadLastGame() {
+        Log.i(TAG, "loadLastGame: ")
+
+        viewModelScope.launch {
+            _players.update { Cavab.Loading }
+            val savedPlayers = withContext(Dispatchers.IO) {
+                repo.getAllPlayers()
+            }
+            val savedCards = withContext(Dispatchers.IO) {
+                repo.getAllCards()
+            }
+
+            _allCards.update { savedCards }
+            _availableDeckCards.update {
+                savedCards.filter { it.holder.value == Constants.AVAILABLE }
+            }
+            _discardedDeckCards.update {
+                savedCards.filter { it.holder.value == Constants.DISCARDED }
+            }
+
+            savedPlayers.forEach { player ->
+                player.setCards(savedCards.filter { it.holder.value == player.name })
+            }
+            _players.update { Cavab.Success(savedPlayers) }
+        }
+    }
+
+    fun save() {
+        Log.i(TAG, "save: ")
+
+        CoroutineScope(Dispatchers.IO).launch {
+            if (players.value is Cavab.Success) {
+                launch {
+                    repo.deleteAllCards()
+                    _allCards.value.forEach {
+                        launch {
+                            repo.insert(it)
+                        }
+                    }
+                }
+
+                launch {
+                    repo.deleteAllPlayers()
+                    (players.value as Cavab.Success).data.forEach {
+                        launch {
+                            repo.insert(it)
+                        }
+                    }
+                }
+            }
         }
     }
 

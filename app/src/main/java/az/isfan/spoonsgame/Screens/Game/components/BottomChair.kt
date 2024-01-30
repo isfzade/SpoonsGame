@@ -14,18 +14,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import az.isfan.spoonsgame.Data.Enums.ChairEnum
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.PlayerData
 import az.isfan.spoonsgame.General.getCardImageResource
-import az.isfan.spoonsgame.R
-import coil.compose.AsyncImage
 
 @Composable
 fun BottomChair(

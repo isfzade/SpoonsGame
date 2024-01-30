@@ -48,5 +48,12 @@ fun NavGraph(
                 navController = navController
             )
         }
+
+        composable(route = RouteEnum.LAST_GAME.name) {
+            Log.i(TAG, "NavGraph: route=${RouteEnum.LAST_GAME}")
+            GameScreen(
+                navController = navController
+            )
+        }
     }
 }
