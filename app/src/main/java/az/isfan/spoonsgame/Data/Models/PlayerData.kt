@@ -28,6 +28,12 @@ data class PlayerData(
     private val _isPlaying = MutableStateFlow(true)
     val isPlaying = _isPlaying.asStateFlow()
 
+    private val _lettersCollected = MutableStateFlow(0)
+    val lettersCollected = _lettersCollected.asStateFlow()
+
+    private val _roundWinner = MutableStateFlow(false)
+    val roundWinner = _roundWinner.asStateFlow()
+
     fun setCards(newCards: List<CardData>){
         _cards.update { newCards }
     }
@@ -75,6 +81,24 @@ data class PlayerData(
         Log.i(TAG, "setIsPlaying: playing=$playing, player=$this")
 
         _isPlaying.update { playing }
+    }
+
+    fun setLettersCollected(size: Int) {
+        Log.i(TAG, "setLettersCollected: size=$size, player=$this")
+
+        _lettersCollected.update { size }
+    }
+
+    fun incLetterCollected() {
+        Log.i(TAG, "incLetterCollected: player = $this")
+
+        _lettersCollected.update { it+1 }
+    }
+
+    fun setRoundWinner(isWinner: Boolean) {
+        Log.i(TAG, "setRoundWinner: isWinner=$isWinner, player=$this")
+
+        _roundWinner.update { isWinner }
     }
 
     fun has4EqualCards(): Boolean {

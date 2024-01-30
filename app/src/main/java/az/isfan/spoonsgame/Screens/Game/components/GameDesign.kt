@@ -15,6 +15,7 @@ import az.isfan.spoonsgame.Data.Models.PlayerData
 
 @Composable
 fun GameDesign(
+    showTakeSpoonButton: Boolean,
     players: List<PlayerData>,
     availableDeckCards: List<CardData>,
     discardedDeckCards: List<CardData>,
@@ -56,6 +57,7 @@ fun GameDesign(
                         .background(color = Color.Green.copy(alpha=0.4f)),
                 ) {
                     GameTable(
+                        showTakeSpoonButton = showTakeSpoonButton,
                         availableCards = availableDeckCards,
                         discardedCards = discardedDeckCards
                     )

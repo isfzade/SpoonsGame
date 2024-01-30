@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.time.delay
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.random.Random
@@ -37,6 +38,9 @@ class GameViewModel @Inject constructor(
     private val _availableDeckCards = MutableStateFlow<List<CardData>>(emptyList())
     val availableDeckCards = _availableDeckCards.asStateFlow()
 
+    private val _showTakeSpoon = MutableStateFlow(false)
+    val showTakeSpoon = _showTakeSpoon.asStateFlow()
+
     private val _allCards = MutableStateFlow<List<CardData>>(emptyList())
 
     init {
@@ -49,12 +53,24 @@ class GameViewModel @Inject constructor(
                         launch {
                             player.playTurn.collect { playTurn ->
                                 Log.i(TAG, "init: player=$player, playTurn=$playTurn")
-                                if (playTurn && player.firstPlayerInRound.value && player.cards.value.size == 4) {
+                                if (playTurn && player.firstPlayerInRound.value && player.cards.value.size == 4 && !player.has4EqualCards()) {
                                     pickCardFromDeck(player)
                                 }
 
                                 if (playTurn && !player.isLocalUser && player.cards.value.size == 5) {
                                     discardCardFromBot(player)
+                                }
+                            }
+                        }
+
+                        launch {
+                            player.roundWinner.collect { isRoundWinner ->
+                                if (isRoundWinner) {
+                                    if (!player.isLocalUser) {
+                                        launch {
+                                            _showTakeSpoon.update {true}
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -198,7 +214,7 @@ class GameViewModel @Inject constructor(
                         availablePlayers.first{it.firstPlayerInRound.value}.setPlayTurn(true)
                     }
                     else {
-                        setupNewRound()
+                        fromPlayer.setRoundWinner(true)
                     }
                 }
                 else {
@@ -218,7 +234,7 @@ class GameViewModel @Inject constructor(
                         nextPlayer.setPlayTurn(true)
                     }
                     else {
-                        setupNewRound()
+                        fromPlayer.setRoundWinner(true)
                     }
                 }
             }

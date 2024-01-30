@@ -1,12 +1,16 @@
 package az.isfan.spoonsgame.Screens.Game.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,36 +24,55 @@ import az.isfan.spoonsgame.R
 
 @Composable
 fun GameTable(
+    showTakeSpoonButton: Boolean,
     availableCards: List<CardData>,
     discardedCards: List<CardData>
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxSize(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalArrangement = Arrangement.Center
     ) {
-        Box(
+        Row(
             modifier = Modifier
-                .weight(1f)
+                .weight(2f)
                 .fillMaxSize(),
-            contentAlignment = Alignment.Center
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            DeckCardInGameTable(
-                title = stringResource(R.string.available),
-                size = availableCards.size
-            )
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                DeckCardInGameTable(
+                    title = stringResource(R.string.available),
+                    size = availableCards.size
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                DeckCardInGameTable(
+                    title = stringResource(R.string.discarded),
+                    size = discardedCards.size
+                )
+            }
         }
 
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            DeckCardInGameTable(
-                title = stringResource(R.string.discarded),
-                size = discardedCards.size
-            )
+        if (showTakeSpoonButton) {
+            Button(
+                onClick = {  },
+                modifier = Modifier
+                    .background(color=Color.Red)
+                    .fillMaxWidth(),
+            ) {
+                Text(stringResource(R.string.take_spoon))
+            }
         }
     }
 }

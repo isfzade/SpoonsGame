@@ -20,6 +20,7 @@ import az.isfan.spoonsgame.Data.Models.PlayerData
 @ExperimentalMaterial3Api
 fun GameContent(
     title: String,
+    showTakeSpoonButton: Boolean,
     players: List<PlayerData>,
     availableDeckCards: List<CardData>,
     discardedDeckCards: List<CardData>,
@@ -53,6 +54,7 @@ fun GameContent(
                 .fillMaxWidth()
         ) {
             GameDesign(
+                showTakeSpoonButton = showTakeSpoonButton,
                 players = players,
                 availableDeckCards = availableDeckCards,
                 discardedDeckCards = discardedDeckCards,
