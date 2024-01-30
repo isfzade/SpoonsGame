@@ -49,11 +49,11 @@ class GameViewModel @Inject constructor(
                         launch {
                             player.playTurn.collect { playTurn ->
                                 Log.i(TAG, "init: player=$player, playTurn=$playTurn")
-                                if (playTurn && player.firstPlayerInRound.value) {
+                                if (playTurn && player.firstPlayerInRound.value && player.cards.value.size == 4) {
                                     pickCardFromDeck(player)
                                 }
 
-                                if (playTurn && !player.isLocalUser) {
+                                if (playTurn && !player.isLocalUser && player.cards.value.size == 5) {
                                     discardCardFromBot(player)
                                 }
                             }
