@@ -3,7 +3,7 @@ package az.isfan.spoonsgame.Data.Db.Repos
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.PlayerData
 
-interface  FootballDbRepoInterface {
+interface  GameDbRepoInterface {
     suspend fun insert(card: CardData)
 
     suspend fun insert(player: PlayerData)

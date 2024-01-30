@@ -3,6 +3,7 @@ package az.isfan.spoonsgame.ViewModels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import az.isfan.spoonsgame.Data.Db.Repos.GameDbRepoInterface
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
 import az.isfan.spoonsgame.Data.Enums.RankEnum
 import az.isfan.spoonsgame.Data.Enums.SuitEnum
@@ -11,6 +12,7 @@ import az.isfan.spoonsgame.Data.Models.PlayerData
 import az.isfan.spoonsgame.General.Cavab
 import az.isfan.spoonsgame.General.Constants
 import az.isfan.spoonsgame.General.getCardImageResource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,9 +21,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toCollection
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.random.Random
 
-class GameViewModel: ViewModel() {
+@HiltViewModel
+class GameViewModel @Inject constructor(
+    private val repo: GameDbRepoInterface
+): ViewModel() {
     private val TAG = "isf_GameViewModel"
 
     private val _players = MutableStateFlow<Cavab<List<PlayerData>>>(Cavab.StandBy)

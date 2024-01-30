@@ -14,7 +14,7 @@ import javax.inject.Singleton
 class GameDbRepo @Inject constructor(
     private val cardDao: CardDao,
     private val playerDao: PlayerDao,
-): FootballDbRepoInterface {
+): GameDbRepoInterface {
     override suspend fun insert(card: CardData) {
         cardDao.insert(card.toEntity())
     }
