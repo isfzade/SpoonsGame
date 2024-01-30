@@ -7,4 +7,5 @@
     <string name="load_last_game">Load last game</string>
     <string name="available">Available</string>
     <string name="discarded">Discarded</string>
+    <string name="take_spoon">Take spoon</string>
 </resources>
