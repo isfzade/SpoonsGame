@@ -1,6 +1,6 @@
 package az.isfan.spoonsgame.Data.Enums
 
-enum class GameResultEnum {
+enum class GameStatusEnum {
     NOT_FINISHED,
     WON,
     LOST
