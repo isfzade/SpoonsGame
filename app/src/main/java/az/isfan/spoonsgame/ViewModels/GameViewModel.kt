@@ -114,9 +114,18 @@ class GameViewModel @Inject constructor(
                             repo.insert(card)
                         }
                     }
+                }
+                else {
+                    launch(Dispatchers.IO) {
+                        repo.deleteAllPlayers()
+                    }
 
                     launch(Dispatchers.IO) {
+                        repo.deleteAllCards()
                     }
+                }
+                launch(Dispatchers.IO) {
+                    repo.insert(currentGame)
                 }
             }
         }
