@@ -15,12 +15,14 @@ import az.isfan.spoonsgame.Data.Models.PlayerData
 
 @Composable
 fun GameDesign(
-    showTakeSpoonButton: Boolean,
     players: List<PlayerData>,
     availableDeckCards: List<CardData>,
     discardedDeckCards: List<CardData>,
-    onShowSpoonButtonClick: () -> Unit,
+    showTakeSpoonButton: Boolean,
+    showGiveLetterButton: Boolean,
     onCardClick: (card: CardData) -> Unit,
+    onSpoonButtonClick: () -> Unit,
+    onGiveLetterButtonClick: (player: PlayerData) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -31,7 +33,11 @@ fun GameDesign(
                 .weight(1f)
                 .fillMaxSize()
         ) {
-            TopChairs(players = players.filter { it.chair == ChairEnum.TOP_LEFT || it.chair == ChairEnum.TOP_RIGHT })
+            TopChairs(
+                showGiveLetterButton = showGiveLetterButton,
+                onGiveLetterButtonClick = onGiveLetterButtonClick,
+                players = players.filter { it.chair == ChairEnum.TOP_LEFT || it.chair == ChairEnum.TOP_RIGHT }
+            )
         }
 
         Box(
@@ -48,7 +54,11 @@ fun GameDesign(
                         .weight(1f)
                         .fillMaxSize()
                 ) {
-                    LeftChair(players = players.filter { it.chair == ChairEnum.LEFT })
+                    LeftChair(
+                        showGiveLetterButton = showGiveLetterButton,
+                        onGiveLetterButtonClick = onGiveLetterButtonClick,
+                        players = players.filter { it.chair == ChairEnum.LEFT }
+                    )
                 }
 
                 Box(
@@ -58,8 +68,8 @@ fun GameDesign(
                         .background(color = Color.Green.copy(alpha=0.4f)),
                 ) {
                     GameTable(
-                        onShowSpoonButtonClick = onShowSpoonButtonClick,
                         showTakeSpoonButton = showTakeSpoonButton,
+                        onSpoonButtonClick = onSpoonButtonClick,
                         availableCards = availableDeckCards,
                         discardedCards = discardedDeckCards
                     )
@@ -70,7 +80,11 @@ fun GameDesign(
                         .weight(1f)
                         .fillMaxSize()
                 ) {
-                    RightChair(players = players.filter { it.chair == ChairEnum.RIGHT })
+                    RightChair(
+                        showGiveLetterButton = showGiveLetterButton,
+                        onGiveLetterButtonClick = onGiveLetterButtonClick,
+                        players = players.filter { it.chair == ChairEnum.RIGHT }
+                    )
                 }
             }
         }

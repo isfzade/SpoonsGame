@@ -24,8 +24,8 @@ import az.isfan.spoonsgame.R
 
 @Composable
 fun GameTable(
-    onShowSpoonButtonClick: () -> Unit,
     showTakeSpoonButton: Boolean,
+    onSpoonButtonClick: () -> Unit,
     availableCards: List<CardData>,
     discardedCards: List<CardData>
 ) {
@@ -67,7 +67,7 @@ fun GameTable(
 
         if (showTakeSpoonButton) {
             Button(
-                onClick = onShowSpoonButtonClick,
+                onClick = onSpoonButtonClick,
                 modifier = Modifier
                     .background(color=Color.Red)
                     .fillMaxWidth(),
