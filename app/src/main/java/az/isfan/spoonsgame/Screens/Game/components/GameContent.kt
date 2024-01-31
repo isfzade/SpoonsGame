@@ -14,6 +14,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import az.isfan.spoonsgame.Data.Enums.GameStatusEnum
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.GameData
 import az.isfan.spoonsgame.Data.Models.PlayerData
@@ -25,6 +26,7 @@ fun GameContent(
     title: String,
     showTakeSpoonButton: Boolean,
     showGiveLetterButton: Boolean,
+    gameStatus: GameStatusEnum,
     onBackButtonClick: () -> Unit,
     onCardClick: (card: CardData) -> Unit,
     onSpoonButtonClick: () -> Unit,
@@ -66,6 +68,7 @@ fun GameContent(
                 discardedDeckCards = discardedDeckCards,
                 showGiveLetterButton = showGiveLetterButton,
                 showTakeSpoonButton = showTakeSpoonButton,
+                gameStatus = gameStatus,
                 onCardClick = onCardClick,
                 onSpoonButtonClick = onSpoonButtonClick,
                 onGiveLetterButtonClick = onGiveLetterButtonClick,

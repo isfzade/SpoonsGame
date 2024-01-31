@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
+import az.isfan.spoonsgame.Data.Enums.GameStatusEnum
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.PlayerData
 
@@ -20,6 +21,7 @@ fun GameDesign(
     discardedDeckCards: List<CardData>,
     showTakeSpoonButton: Boolean,
     showGiveLetterButton: Boolean,
+    gameStatus: GameStatusEnum,
     onCardClick: (card: CardData) -> Unit,
     onSpoonButtonClick: () -> Unit,
     onGiveLetterButtonClick: (player: PlayerData) -> Unit,
