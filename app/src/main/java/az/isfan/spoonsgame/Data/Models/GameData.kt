@@ -13,6 +13,7 @@ import kotlin.random.Random
 
 data class GameData(
     val playerCount: Int,
+    val saveTimestamp: Long? = null,
 ) {
     private val TAG = "isf_GameData"
 
@@ -35,24 +36,6 @@ data class GameData(
         Log.i(TAG, "setPlayers: ")
 
         _players.update { newPlayers }
-    }
-
-    fun setAvailableDeckCards(newCards: List<CardData>) {
-        Log.i(TAG, "setAvailableDeckCards: ")
-
-        _availableDeckCards.update { newCards }
-    }
-
-    fun setDiscardedDeckCards(newCards: List<CardData>) {
-        Log.i(TAG, "setDiscardedDeckCards: ")
-
-        _discardedDeckCards.update { newCards }
-    }
-
-    fun setAllCards(newCards: List<CardData>) {
-        Log.i(TAG, "setAllCards: ")
-
-        _allCards.update { newCards }
     }
 
     fun setRoundCount(newCount: Int) {
@@ -203,6 +186,16 @@ data class GameData(
         _availableDeckCards.update { emptyList() }
         _allCards.value.forEach { it.setHolder(Constants.DISCARDED) }
         _discardedDeckCards.update { allCards.value }
+    }
+
+    fun load(newPlayers: List<PlayerData>, newCards: List<CardData>) {
+        newPlayers.forEach { player->
+            player.setCards(newCards.filter { it.holder.value == player.name })
+        }
+        _players.update { newPlayers }
+        _allCards.update { newCards }
+        _availableDeckCards.update{ newCards.filter{it.holder.value == Constants.AVAILABLE} }
+        _discardedDeckCards.update { newCards.filter{it.holder.value == Constants.DISCARDED} }
     }
 
     private fun incRoundCount() {

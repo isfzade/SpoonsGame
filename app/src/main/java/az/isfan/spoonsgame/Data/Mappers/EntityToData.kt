@@ -31,24 +31,10 @@ fun PlayerEntity.toData(): PlayerData {
     return player
 }
 
-fun GameEntity.toData(players: List<PlayerData>, cards: List<CardData>): GameData {
-    val game = GameData(
-        playerCount = playerCount
-    )
-    game.setPlayers(players)
-    players.forEach { player->
-        player.setCards(cards.filter { it.holder.value == player.name })
-    }
-    game.setAllCards(cards)
-    game.setAvailableDeckCards(cards.filter{it.holder.value == Constants.AVAILABLE})
-    game.setDiscardedDeckCards(cards.filter{it.holder.value == Constants.DISCARDED})
-    game.setRoundCount(roundCount)
-    return game
-}
-
 fun GameEntity.toData(): GameData {
     val game = GameData(
-        playerCount = playerCount
+        playerCount = playerCount,
+        saveTimestamp = saveTimestamp
     )
     game.setRoundCount(roundCount)
     return game

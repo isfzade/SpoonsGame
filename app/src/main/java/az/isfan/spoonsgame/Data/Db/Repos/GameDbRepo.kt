@@ -29,6 +29,10 @@ class GameDbRepo @Inject constructor(
         gameDao.insert(game.toEntity())
     }
 
+    override fun getLatestGame(): GameData? {
+        return gameDao.getLatest()?.toData()
+    }
+
     override fun getAllCards(): List<CardData> {
         return cardDao.getAll().map { it.toData() }
     }

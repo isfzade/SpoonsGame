@@ -11,6 +11,8 @@ interface  GameDbRepoInterface {
 
     fun insert(game: GameData)
 
+    fun getLatestGame(): GameData?
+
     fun getAllCards(): List<CardData>
 
     fun getAllPlayers(): List<PlayerData>

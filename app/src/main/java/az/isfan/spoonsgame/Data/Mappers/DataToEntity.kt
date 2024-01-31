@@ -32,6 +32,7 @@ fun GameData.toEntity(): GameEntity {
     return GameEntity(
         status = getGameStatus(),
         roundCount = roundCount.value,
-        playerCount = playerCount
+        playerCount = playerCount,
+        saveTimestamp = System.currentTimeMillis()
     )
 }

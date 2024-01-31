@@ -17,4 +17,7 @@ class GameEntity(
 
     @ColumnInfo(name = "round_count")
     val roundCount: Int,
+
+    @ColumnInfo(name = "save_timestamp")
+    val saveTimestamp: Long,
 )
