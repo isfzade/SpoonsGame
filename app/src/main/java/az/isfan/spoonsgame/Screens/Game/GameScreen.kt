@@ -79,7 +79,7 @@ fun GameSetupLogic(
                     viewModel.localSelectsCard(card)
                 },
                 onSpoonButtonClick = {
-                    viewModel.setTakeSpoonButtonClicked()
+                    viewModel.spoonButtonClicked()
                 },
                 onGiveLetterButtonClick = { player ->
                     viewModel.giveLetterToBot(player)

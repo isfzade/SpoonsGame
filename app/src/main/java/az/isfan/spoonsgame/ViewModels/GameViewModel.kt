@@ -25,7 +25,7 @@ class GameViewModel @Inject constructor(
 ): ViewModel() {
     private val TAG = "isf_GameViewModel"
 
-    private val DURATION_TO_TAKE_SPOON = 10000L //milliseconds
+    private val DURATION_TO_TAKE_SPOON = 5000L //milliseconds
 
     private val _game = MutableStateFlow<Cavab<GameData>>(Cavab.StandBy)
     val game = _game.asStateFlow()
@@ -47,9 +47,10 @@ class GameViewModel @Inject constructor(
         listenPlayerTurn()
     }
 
-    fun setTakeSpoonButtonClicked() {
+    fun spoonButtonClicked() {
         Log.i(TAG, "setTakeSpoonButtonClicked: ")
 
+        _showTakeSpoonButton.update { false }
         _takeSpoonButtonClicked.update { true }
     }
 
@@ -142,6 +143,7 @@ class GameViewModel @Inject constructor(
                                 launch {
                                     player.playTurn.collect { playTurn ->
                                         if (playTurn) {
+                                            Log.i(TAG, "listenPlayerTurn: player=$player")
                                             if (!player.isLocalUser) {
                                                 handleBotPlayTurn(player)
                                             }

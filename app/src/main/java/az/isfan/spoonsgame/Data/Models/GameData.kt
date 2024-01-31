@@ -31,11 +31,6 @@ data class GameData(
     private val _allCards = MutableStateFlow<List<CardData>>(emptyList())
     val allCards = _allCards.asStateFlow()
 
-    fun incRoundCount() {
-        Log.i(TAG, "incRoundCount:")
-        _roundCount.update { it+1 }
-    }
-
     fun setupNewRound() {
         Log.i(TAG, "setupNewRound: ")
 
@@ -178,6 +173,11 @@ data class GameData(
         _availableDeckCards.update { emptyList() }
         _allCards.value.forEach { it.setHolder(Constants.DISCARDED) }
         _discardedDeckCards.update { allCards.value }
+    }
+
+    private fun incRoundCount() {
+        Log.i(TAG, "incRoundCount:")
+        _roundCount.update { it+1 }
     }
 
     private fun discardCardFromLastPlayer(card: CardData) {
