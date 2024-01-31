@@ -69,7 +69,7 @@ class GameViewModel @Inject constructor(
         viewModelScope.launch {
             player.incLetterCollected()
             _showGiveLetterButton.update { false }
-            continueTheGameIfPossible()
+            processNewRound()
         }
     }
 
@@ -77,7 +77,7 @@ class GameViewModel @Inject constructor(
         Log.i(TAG, "localSelectsCard: card = $card")
 
         viewModelScope.launch {
-            handlePlayTurn(card)
+            discardAndCheckIfAffects(card)
         }
     }
 
@@ -113,8 +113,8 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    private fun continueTheGameIfPossible() {
-        Log.i(TAG, "continueTheGameIfPossible: ")
+    private fun processNewRound() {
+        Log.i(TAG, "processNewRound: ")
 
         if (game.value is Cavab.Success) {
             val currentGame = (game.value as Cavab.Success).data
@@ -144,7 +144,7 @@ class GameViewModel @Inject constructor(
                                                 handleBotPlayTurn(player)
                                             }
                                             else {
-                                                handleLocalPlayTurn(player)
+                                                pickCardForLocal(player)
                                             }
                                         }
                                     }
@@ -157,7 +157,7 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    private fun handleLocalPlayTurn(player: PlayerData) {
+    private fun pickCardForLocal(player: PlayerData) {
         Log.i(TAG, "handleBotPlayTurn: player = $player")
 
         if (game.value is Cavab.Success) {
@@ -173,12 +173,12 @@ class GameViewModel @Inject constructor(
             val currentGame = (game.value as Cavab.Success).data
             currentGame.pickCardFromDeckIfFirstPlayer(player)
             val card = currentGame.getWorstCard(player)
-            handlePlayTurn(card)
+            discardAndCheckIfAffects(card)
         }
     }
 
-    private suspend fun handlePlayTurn(card: CardData) {
-        Log.i(TAG, "handlePlayTurn: card=$card")
+    private suspend fun discardAndCheckIfAffects(card: CardData) {
+        Log.i(TAG, "discardAndCheckIfAffects: card=$card")
 
         if (game.value is Cavab.Success) {
             val currentGame = (game.value as Cavab.Success).data
@@ -202,7 +202,7 @@ class GameViewModel @Inject constructor(
                 delay(DURATION_TO_TAKE_SPOON)
                 _showTakeSpoonButton.update { false }
                 checkTakeSpoonClicked(player)
-                continueTheGameIfPossible()
+                processNewRound()
             }
         }
     }
