@@ -31,6 +31,36 @@ data class GameData(
     private val _allCards = MutableStateFlow<List<CardData>>(emptyList())
     val allCards = _allCards.asStateFlow()
 
+    fun setPlayers(newPlayers: List<PlayerData>) {
+        Log.i(TAG, "setPlayers: ")
+
+        _players.update { newPlayers }
+    }
+
+    fun setAvailableDeckCards(newCards: List<CardData>) {
+        Log.i(TAG, "setAvailableDeckCards: ")
+
+        _availableDeckCards.update { newCards }
+    }
+
+    fun setDiscardedDeckCards(newCards: List<CardData>) {
+        Log.i(TAG, "setDiscardedDeckCards: ")
+
+        _discardedDeckCards.update { newCards }
+    }
+
+    fun setAllCards(newCards: List<CardData>) {
+        Log.i(TAG, "setAllCards: ")
+
+        _allCards.update { newCards }
+    }
+
+    fun setRoundCount(newCount: Int) {
+        Log.i(TAG, "setRoundCount: ")
+
+        _roundCount.update { newCount }
+    }
+
     fun setupNewRound() {
         Log.i(TAG, "setupNewRound: ")
 
