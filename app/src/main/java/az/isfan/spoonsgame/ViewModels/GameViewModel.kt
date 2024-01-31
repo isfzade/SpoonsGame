@@ -73,6 +73,14 @@ class GameViewModel @Inject constructor(
         }
     }
 
+    fun localSelectsCard(card: CardData) {
+        Log.i(TAG, "localSelectsCard: card = $card")
+
+        viewModelScope.launch {
+            handlePlayTurn(card)
+        }
+    }
+
     fun loadLastGame() {
         Log.i(TAG, "loadLastGame: ")
 
@@ -85,33 +93,23 @@ class GameViewModel @Inject constructor(
         Log.i(TAG, "save: ")
 
         CoroutineScope(Dispatchers.Default).launch {
-            val currentGame = (game.value as Cavab.Success).data
-            if (currentGame.getGameStatus() == GameStatusEnum.NOT_FINISHED) {
-                launch(Dispatchers.IO) {
-                    repo.deleteAllPlayers()
-                    currentGame.players.value.forEach { player ->
-                        repo.insert(player)
+            if (game.value is Cavab.Success) {
+                val currentGame = (game.value as Cavab.Success).data
+                if (currentGame.getGameStatus() == GameStatusEnum.NOT_FINISHED) {
+                    launch(Dispatchers.IO) {
+                        repo.deleteAllPlayers()
+                        currentGame.players.value.forEach { player ->
+                            repo.insert(player)
+                        }
                     }
-                }
 
-                launch(Dispatchers.IO) {
-                    currentGame.allCards.value.forEach { card ->
-                        repo.insert(card)
+                    launch(Dispatchers.IO) {
+                        currentGame.allCards.value.forEach { card ->
+                            repo.insert(card)
+                        }
                     }
                 }
             }
-        }
-    }
-
-    suspend fun handlePlayTurn(card: CardData) {
-        Log.i(TAG, "handlePlayTurn: card=$card")
-
-        if (game.value is Cavab.Success) {
-            val currentGame = (game.value as Cavab.Success).data
-            val player = currentGame.getCardHolder(card)
-            currentGame.discardCard(card)
-            if (player.has4EqualCards()) thereIsWinner(player)
-            else currentGame.play()
         }
     }
 
@@ -145,6 +143,9 @@ class GameViewModel @Inject constructor(
                                             if (!player.isLocalUser) {
                                                 handleBotPlayTurn(player)
                                             }
+                                            else {
+                                                handleLocalPlayTurn(player)
+                                            }
                                         }
                                     }
                                 }
@@ -156,6 +157,15 @@ class GameViewModel @Inject constructor(
         }
     }
 
+    private fun handleLocalPlayTurn(player: PlayerData) {
+        Log.i(TAG, "handleBotPlayTurn: player = $player")
+
+        if (game.value is Cavab.Success) {
+            val currentGame = (game.value as Cavab.Success).data
+            currentGame.pickCardFromDeckIfFirstPlayer(player)
+        }
+    }
+
     private suspend fun handleBotPlayTurn(player: PlayerData) {
         Log.i(TAG, "handleBotPlayTurn: player = $player")
 
@@ -164,6 +174,18 @@ class GameViewModel @Inject constructor(
             currentGame.pickCardFromDeckIfFirstPlayer(player)
             val card = currentGame.getWorstCard(player)
             handlePlayTurn(card)
+        }
+    }
+
+    private suspend fun handlePlayTurn(card: CardData) {
+        Log.i(TAG, "handlePlayTurn: card=$card")
+
+        if (game.value is Cavab.Success) {
+            val currentGame = (game.value as Cavab.Success).data
+            val player = currentGame.getCardHolder(card)
+            currentGame.discardCard(card)
+            if (player.has4EqualCards()) thereIsWinner(player)
+            else currentGame.play()
         }
     }
 
