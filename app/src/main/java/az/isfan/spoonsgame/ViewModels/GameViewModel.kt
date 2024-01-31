@@ -26,7 +26,7 @@ class GameViewModel @Inject constructor(
 ): ViewModel() {
     private val TAG = "isf_GameViewModel"
 
-    private val DURATION_TO_TAKE_SPOON = 5000L //milliseconds
+    private val DURATION_TO_TAKE_SPOON = 1000L //milliseconds
 
     private val _game = MutableStateFlow<Cavab<GameData>>(Cavab.StandBy)
     val game = _game.asStateFlow()
