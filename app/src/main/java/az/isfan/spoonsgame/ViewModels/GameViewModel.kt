@@ -125,9 +125,9 @@ class GameViewModel @Inject constructor(
         if (game.value is Cavab.Success) {
             val currentGame = (game.value as Cavab.Success).data
             currentGame.identifyLostPlayers()
-            val status = currentGame.getGameStatus()
-            _status.update { GameStatusEnum.NOT_FINISHED }
-            if (status == GameStatusEnum.NOT_FINISHED) {
+            val gameStatus = currentGame.getGameStatus()
+            _status.update { gameStatus }
+            if (gameStatus == GameStatusEnum.NOT_FINISHED) {
                 currentGame.setupNewRound()
                 listenPlayerTurn()
                 currentGame.play()

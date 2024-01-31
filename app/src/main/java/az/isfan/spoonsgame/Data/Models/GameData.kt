@@ -139,7 +139,7 @@ data class GameData(
     }
 
     fun getGameStatus(): GameStatusEnum {
-        Log.i(TAG, "checkGameStatus: ")
+        Log.i(TAG, "getGameStatus: ")
 
         players.value.filter { it.isPlaying.value }.firstOrNull{it.isLocalUser} ?: return GameStatusEnum.LOST
 
