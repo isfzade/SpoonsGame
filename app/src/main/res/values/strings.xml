@@ -8,4 +8,5 @@
     <string name="available">Available</string>
     <string name="discarded">Discarded</string>
     <string name="take_spoon">Take spoon</string>
+    <string name="give_letter">Give letter</string>
 </resources>

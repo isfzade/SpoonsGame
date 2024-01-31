@@ -61,27 +61,28 @@ fun GameSetupLogic(
     viewModel: GameViewModel,
     navController: NavHostController,
 ) {
-    val players = viewModel.players.collectAsStateWithLifecycle().value
-    val availableDeckCards = viewModel.availableDeckCards.collectAsStateWithLifecycle().value
-    val discardedDeckCards = viewModel.discardedDeckCards.collectAsStateWithLifecycle().value
-    val showTakeSpoonButton = viewModel.showTakeSpoon.collectAsStateWithLifecycle().value
+    val game = viewModel.game.collectAsStateWithLifecycle().value
+    val showTakeSpoonButton = viewModel.showTakeSpoonButton.collectAsStateWithLifecycle().value
+    val showGiveLetterButton = viewModel.showGiveLetterButton.collectAsStateWithLifecycle().value
 
-    when (players) {
+    when (game) {
         is Cavab.Success -> {
             GameContent(
+                game = game.data,
                 title = title,
                 showTakeSpoonButton = showTakeSpoonButton,
-                players = players.data,
-                availableDeckCards = availableDeckCards,
-                discardedDeckCards = discardedDeckCards,
+                showGiveLetterButton = showGiveLetterButton,
                 onBackButtonClick = {
                     navController.navigateUp()
                 },
                 onCardClick = { card ->
-                    viewModel.discardCard(card)
+                    viewModel.localSelectsCard(card)
                 },
-                onShowSpoonButtonClick = {
-                    viewModel.setTookSpoon(true)
+                onSpoonButtonClick = {
+                    viewModel.setTakeSpoonButtonClicked()
+                },
+                onGiveLetterButtonClick = { player ->
+                    viewModel.giveLetterToBot(player)
                 }
             )
         }

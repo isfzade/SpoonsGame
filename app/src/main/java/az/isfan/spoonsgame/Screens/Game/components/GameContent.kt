@@ -13,21 +13,27 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import az.isfan.spoonsgame.Data.Models.CardData
+import az.isfan.spoonsgame.Data.Models.GameData
 import az.isfan.spoonsgame.Data.Models.PlayerData
 
 @Composable
 @ExperimentalMaterial3Api
 fun GameContent(
+    game: GameData,
     title: String,
     showTakeSpoonButton: Boolean,
-    players: List<PlayerData>,
-    availableDeckCards: List<CardData>,
-    discardedDeckCards: List<CardData>,
+    showGiveLetterButton: Boolean,
     onBackButtonClick: () -> Unit,
     onCardClick: (card: CardData) -> Unit,
-    onShowSpoonButtonClick: () -> Unit,
+    onSpoonButtonClick: () -> Unit,
+    onGiveLetterButtonClick: (player: PlayerData) -> Unit,
 ) {
+    val players = game.players.collectAsStateWithLifecycle().value
+    val availableDeckCards = game.availableDeckCards.collectAsStateWithLifecycle().value
+    val discardedDeckCards = game.discardedDeckCards.collectAsStateWithLifecycle().value
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -55,12 +61,14 @@ fun GameContent(
                 .fillMaxWidth()
         ) {
             GameDesign(
-                showTakeSpoonButton = showTakeSpoonButton,
                 players = players,
                 availableDeckCards = availableDeckCards,
                 discardedDeckCards = discardedDeckCards,
+                showGiveLetterButton = showGiveLetterButton,
+                showTakeSpoonButton = showTakeSpoonButton,
                 onCardClick = onCardClick,
-                onShowSpoonButtonClick = onShowSpoonButtonClick,
+                onSpoonButtonClick = onSpoonButtonClick,
+                onGiveLetterButtonClick = onGiveLetterButtonClick,
             )
         }
     }

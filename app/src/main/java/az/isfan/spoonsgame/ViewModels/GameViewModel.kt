@@ -57,9 +57,11 @@ class GameViewModel @Inject constructor(
         Log.i(TAG, "setupGame: playerCount=$playerCount")
 
         viewModelScope.launch {
+            _game.update { Cavab.Loading }
             val newGame = GameData(playerCount)
             newGame.setupNewRound()
             newGame.play()
+            _game.update { Cavab.Success(newGame) }
         }
     }
 
