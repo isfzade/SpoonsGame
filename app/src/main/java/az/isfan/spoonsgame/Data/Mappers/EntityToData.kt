@@ -45,3 +45,11 @@ fun GameEntity.toData(players: List<PlayerData>, cards: List<CardData>): GameDat
     game.setRoundCount(roundCount)
     return game
 }
+
+fun GameEntity.toData(): GameData {
+    val game = GameData(
+        playerCount = playerCount
+    )
+    game.setRoundCount(roundCount)
+    return game
+}

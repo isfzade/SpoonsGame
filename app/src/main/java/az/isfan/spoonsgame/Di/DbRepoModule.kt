@@ -1,6 +1,7 @@
 package az.isfan.spoonsgame.Di
 
 import az.isfan.spoonsgame.Data.Db.Dao.CardDao
+import az.isfan.spoonsgame.Data.Db.Dao.GameDao
 import az.isfan.spoonsgame.Data.Db.Dao.PlayerDao
 import az.isfan.spoonsgame.Data.Db.Repos.GameDbRepo
 import az.isfan.spoonsgame.Data.Db.Repos.GameDbRepoInterface
@@ -15,5 +16,5 @@ import dagger.hilt.android.scopes.ViewModelScoped
 class DbRepoModule {
     @ViewModelScoped
     @Provides
-    fun provideGameRepo(cardDao: CardDao, playerDao: PlayerDao): GameDbRepoInterface = GameDbRepo(cardDao, playerDao)
+    fun provideGameRepo(cardDao: CardDao, playerDao: PlayerDao, gameDao: GameDao): GameDbRepoInterface = GameDbRepo(cardDao, playerDao, gameDao)
 }

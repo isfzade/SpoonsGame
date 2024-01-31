@@ -114,6 +114,9 @@ class GameViewModel @Inject constructor(
                             repo.insert(card)
                         }
                     }
+
+                    launch(Dispatchers.IO) {
+                    }
                 }
             }
         }
