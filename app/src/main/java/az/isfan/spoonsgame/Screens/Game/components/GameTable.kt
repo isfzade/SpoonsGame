@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import az.isfan.spoonsgame.Data.Enums.GameStatusEnum
@@ -40,9 +41,13 @@ fun GameTable(
     ) {
         if (gameStatus != GameStatusEnum.NOT_FINISHED) {
             Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
                 text = stringResource(if (gameStatus==GameStatusEnum.WON) R.string.you_won else R.string.you_lost),
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+                fontSize = 25.sp,
+                color = Color.Red,
+                textAlign = TextAlign.Center
             )
         }
 
