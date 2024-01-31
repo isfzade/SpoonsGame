@@ -71,6 +71,7 @@ fun GameDesign(
                 ) {
                     GameTable(
                         showTakeSpoonButton = showTakeSpoonButton,
+                        gameStatus = gameStatus,
                         onSpoonButtonClick = onSpoonButtonClick,
                         availableCards = availableDeckCards,
                         discardedCards = discardedDeckCards
