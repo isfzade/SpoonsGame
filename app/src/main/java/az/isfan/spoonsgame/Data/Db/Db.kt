@@ -19,7 +19,7 @@ import az.isfan.spoonsgame.Data.Db.Entities.PlayerEntity
         PlayerEntity::class,
         GameEntity::class,
     ],
-    version=2,
+    version=3,
     exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class Db: RoomDatabase() {
