@@ -12,6 +12,7 @@ import az.isfan.spoonsgame.General.Cavab
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,6 +42,8 @@ class GameViewModel @Inject constructor(
 
     private val _status = MutableStateFlow(GameStatusEnum.NOT_FINISHED)
     val status = _status.asStateFlow()
+
+    var listenJob: Job? = null
 
     init {
         Log.i(TAG, "init: ")
@@ -126,6 +129,7 @@ class GameViewModel @Inject constructor(
             _status.update { GameStatusEnum.NOT_FINISHED }
             if (status == GameStatusEnum.NOT_FINISHED) {
                 currentGame.setupNewRound()
+                listenPlayerTurn()
                 currentGame.play()
             }
         }
@@ -134,7 +138,10 @@ class GameViewModel @Inject constructor(
     private fun listenPlayerTurn() {
         Log.i(TAG, "listenPlayerTurn: ")
 
-        viewModelScope.launch {
+        listenJob?.let {
+            if (it.isActive) it.cancel()
+        }
+        listenJob = viewModelScope.launch {
             game.collect { cavab ->
                 if (cavab is Cavab.Success) {
                     launch {
