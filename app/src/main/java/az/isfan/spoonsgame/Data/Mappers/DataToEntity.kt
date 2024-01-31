@@ -22,5 +22,6 @@ fun PlayerData.toEntity(): PlayerEntity {
         firstPlayerInRound = firstPlayerInRound.value,
         lastPlayerInRound = lastPlayerInRound.value,
         playTurn = playTurn.value,
+        lettersCollected = lettersCollected.value
     )
 }

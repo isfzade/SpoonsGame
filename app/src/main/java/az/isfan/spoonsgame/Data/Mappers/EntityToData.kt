@@ -24,5 +24,6 @@ fun PlayerEntity.toData(): PlayerData {
     player.setFirstPlayerInRounds(firstPlayerInRound)
     player.setLastPlayerInRounds(lastPlayerInRound)
     player.setPlayTurn(playTurn)
+    player.setLettersCollected(lettersCollected)
     return player
 }

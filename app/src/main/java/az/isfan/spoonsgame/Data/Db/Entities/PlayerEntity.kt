@@ -26,4 +26,7 @@ data class PlayerEntity(
 
     @ColumnInfo(name="play_turn")
     var playTurn: Boolean = false,
+
+    @ColumnInfo(name="letters_collected")
+    var lettersCollected: Int = 0,
 )
