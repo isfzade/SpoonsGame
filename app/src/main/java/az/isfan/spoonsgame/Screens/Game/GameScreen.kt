@@ -64,6 +64,7 @@ fun GameSetupLogic(
     val game = viewModel.game.collectAsStateWithLifecycle().value
     val showTakeSpoonButton = viewModel.showTakeSpoonButton.collectAsStateWithLifecycle().value
     val showGiveLetterButton = viewModel.showGiveLetterButton.collectAsStateWithLifecycle().value
+    val gameStatus = viewModel.status.collectAsStateWithLifecycle().value
 
     when (game) {
         is Cavab.Success -> {
@@ -72,6 +73,7 @@ fun GameSetupLogic(
                 title = title,
                 showTakeSpoonButton = showTakeSpoonButton,
                 showGiveLetterButton = showGiveLetterButton,
+                gameStatus = gameStatus,
                 onBackButtonClick = {
                     navController.navigateUp()
                 },

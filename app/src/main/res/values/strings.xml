@@ -9,4 +9,6 @@
     <string name="discarded">Discarded</string>
     <string name="take_spoon">Take spoon</string>
     <string name="give_letter">Give letter</string>
+    <string name="you_lost">You lost</string>
+    <string name="you_won">You won</string>
 </resources>

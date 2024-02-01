@@ -13,6 +13,7 @@ import kotlin.random.Random
 
 data class GameData(
     val playerCount: Int,
+    val saveTimestamp: Long? = null,
 ) {
     private val TAG = "isf_GameData"
 
@@ -30,6 +31,18 @@ data class GameData(
 
     private val _allCards = MutableStateFlow<List<CardData>>(emptyList())
     val allCards = _allCards.asStateFlow()
+
+    fun setPlayers(newPlayers: List<PlayerData>) {
+        Log.i(TAG, "setPlayers: ")
+
+        _players.update { newPlayers }
+    }
+
+    fun setRoundCount(newCount: Int) {
+        Log.i(TAG, "setRoundCount: ")
+
+        _roundCount.update { newCount }
+    }
 
     fun setupNewRound() {
         Log.i(TAG, "setupNewRound: ")
@@ -139,7 +152,7 @@ data class GameData(
     }
 
     fun getGameStatus(): GameStatusEnum {
-        Log.i(TAG, "checkGameStatus: ")
+        Log.i(TAG, "getGameStatus: ")
 
         players.value.filter { it.isPlaying.value }.firstOrNull{it.isLocalUser} ?: return GameStatusEnum.LOST
 
@@ -173,6 +186,16 @@ data class GameData(
         _availableDeckCards.update { emptyList() }
         _allCards.value.forEach { it.setHolder(Constants.DISCARDED) }
         _discardedDeckCards.update { allCards.value }
+    }
+
+    fun load(newPlayers: List<PlayerData>, newCards: List<CardData>) {
+        newPlayers.forEach { player->
+            player.setCards(newCards.filter { it.holder.value == player.name })
+        }
+        _players.update { newPlayers }
+        _allCards.update { newCards }
+        _availableDeckCards.update{ newCards.filter{it.holder.value == Constants.AVAILABLE} }
+        _discardedDeckCards.update { newCards.filter{it.holder.value == Constants.DISCARDED} }
     }
 
     private fun incRoundCount() {

@@ -26,7 +26,7 @@ class GameViewModel @Inject constructor(
 ): ViewModel() {
     private val TAG = "isf_GameViewModel"
 
-    private val DURATION_TO_TAKE_SPOON = 5000L //milliseconds
+    private val DURATION_TO_TAKE_SPOON = 1000L //milliseconds
 
     private val _game = MutableStateFlow<Cavab<GameData>>(Cavab.StandBy)
     val game = _game.asStateFlow()
@@ -115,6 +115,18 @@ class GameViewModel @Inject constructor(
                         }
                     }
                 }
+                else {
+                    launch(Dispatchers.IO) {
+                        repo.deleteAllPlayers()
+                    }
+
+                    launch(Dispatchers.IO) {
+                        repo.deleteAllCards()
+                    }
+                }
+                launch(Dispatchers.IO) {
+                    repo.insert(currentGame)
+                }
             }
         }
     }
@@ -125,9 +137,9 @@ class GameViewModel @Inject constructor(
         if (game.value is Cavab.Success) {
             val currentGame = (game.value as Cavab.Success).data
             currentGame.identifyLostPlayers()
-            val status = currentGame.getGameStatus()
-            _status.update { GameStatusEnum.NOT_FINISHED }
-            if (status == GameStatusEnum.NOT_FINISHED) {
+            val gameStatus = currentGame.getGameStatus()
+            _status.update { gameStatus }
+            if (gameStatus == GameStatusEnum.NOT_FINISHED) {
                 currentGame.setupNewRound()
                 listenPlayerTurn()
                 currentGame.play()

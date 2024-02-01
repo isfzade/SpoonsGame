@@ -18,13 +18,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import az.isfan.spoonsgame.Data.Enums.GameStatusEnum
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.R
 
 @Composable
 fun GameTable(
     showTakeSpoonButton: Boolean,
+    gameStatus: GameStatusEnum,
     onSpoonButtonClick: () -> Unit,
     availableCards: List<CardData>,
     discardedCards: List<CardData>
@@ -34,6 +39,18 @@ fun GameTable(
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center
     ) {
+        if (gameStatus != GameStatusEnum.NOT_FINISHED) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = stringResource(if (gameStatus==GameStatusEnum.WON) R.string.you_won else R.string.you_lost),
+                fontWeight = FontWeight.Bold,
+                fontSize = 25.sp,
+                color = Color.Red,
+                textAlign = TextAlign.Center
+            )
+        }
+
         Row(
             modifier = Modifier
                 .weight(2f)
@@ -69,7 +86,7 @@ fun GameTable(
             Button(
                 onClick = onSpoonButtonClick,
                 modifier = Modifier
-                    .background(color=Color.Red)
+                    .background(color = Color.Red)
                     .fillMaxWidth(),
             ) {
                 Text(stringResource(R.string.take_spoon))

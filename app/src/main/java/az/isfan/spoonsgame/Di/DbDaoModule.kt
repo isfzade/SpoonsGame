@@ -2,6 +2,7 @@ package az.isfan.spoonsgame.Di
 
 import android.content.Context
 import az.isfan.spoonsgame.Data.Db.Dao.CardDao
+import az.isfan.spoonsgame.Data.Db.Dao.GameDao
 import az.isfan.spoonsgame.Data.Db.Dao.PlayerDao
 import az.isfan.spoonsgame.Data.Db.Db
 import dagger.Module
@@ -21,4 +22,8 @@ class DbDaoModule {
     @Singleton
     @Provides
     fun providePlayerDao(@ApplicationContext context: Context): PlayerDao = Db.getDB(context).playerDao()
+
+    @Singleton
+    @Provides
+    fun provideGameDao(@ApplicationContext context: Context): GameDao = Db.getDB(context).gameDao()
 }
