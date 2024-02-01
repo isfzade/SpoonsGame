@@ -87,7 +87,7 @@ class GameViewModel @Inject constructor(
         viewModelScope.launch {
             _game.update { Cavab.Loading }
             val latestGame = withContext(Dispatchers.IO) { repo.getLatestGame() }
-            if (latestGame != null) {
+            if (latestGame != null && latestGame.getGameStatus() == GameStatusEnum.NOT_FINISHED) {
                 val players = withContext(Dispatchers.IO) { repo.getAllPlayers() }
                 val cards = withContext(Dispatchers.IO) { repo.getAllCards() }
                 latestGame.load(players, cards)
