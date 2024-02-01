@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -84,7 +85,18 @@ class GameViewModel @Inject constructor(
         Log.i(TAG, "loadLastGame: ")
 
         viewModelScope.launch {
-
+            _game.update { Cavab.Loading }
+            val latestGame = withContext(Dispatchers.IO) { repo.getLatestGame() }
+            if (latestGame != null) {
+                val players = withContext(Dispatchers.IO) { repo.getAllPlayers() }
+                val cards = withContext(Dispatchers.IO) { repo.getAllCards() }
+                latestGame.load(players, cards)
+                _game.update { Cavab.Success(latestGame) }
+                nextPlayerTurn()
+            }
+            else {
+                _game.update { Cavab.StandBy }
+            }
         }
     }
 
