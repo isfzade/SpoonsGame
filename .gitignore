@@ -2,7 +2,7 @@
 .gradle
 ./idee
 /local.properties
-idea/
+.idea/
 /buildgradle.xml
 /captures
 .externalNativeBuild
