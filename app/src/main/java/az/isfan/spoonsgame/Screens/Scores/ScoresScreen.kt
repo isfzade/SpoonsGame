@@ -1,9 +1,13 @@
-package az.isfan.spoonsgame.Screens.Menu
+package az.isfan.spoonsgame.Screens.Scores
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -14,10 +18,11 @@ import androidx.navigation.NavHostController
 import az.isfan.spoonsgame.Data.Enums.RouteEnum
 import az.isfan.spoonsgame.R
 import az.isfan.spoonsgame.Screens.Menu.components.MenuContent
+import az.isfan.spoonsgame.Screens.Scores.components.ScoresContent
 
 @Composable
 @ExperimentalMaterial3Api
-fun MenuScreen(
+fun ScoresScreen(
     navController: NavHostController
 ) {
     Scaffold(
@@ -27,9 +32,21 @@ fun MenuScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.app_name)
+                        text = stringResource(R.string.high_scores)
                     )
                 },
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            navController.navigateUp()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "backButton"
+                        )
+                    }
+                }
             )
         }
     ) { padding ->
@@ -38,23 +55,7 @@ fun MenuScreen(
                 .padding(padding)
                 .fillMaxWidth()
         ) {
-            MenuContent(
-                onThreePlayersButtonClick = {
-                    navController.navigate(RouteEnum.THREE_PLAYERS.name)
-                },
-                onFourPlayersButtonClick = {
-                    navController.navigate(RouteEnum.FOUR_PLAYERS.name)
-                },
-                onFivePlayersButtonClick = {
-                    navController.navigate(RouteEnum.FIVE_PLAYERS.name)
-                },
-                onHighScoresButtonClick = {
-                    navController.navigate(RouteEnum.HIGH_SCORES.name)
-                },
-                onLoadLastGameButtonClick = {
-                    navController.navigate(RouteEnum.LAST_GAME.name)
-                }
-            )
+            ScoresContent()
         }
     }
 }
