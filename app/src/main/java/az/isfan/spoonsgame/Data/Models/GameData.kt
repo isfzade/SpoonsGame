@@ -82,8 +82,8 @@ data class GameData(
         _allCards.update { generatedCards }
     }
 
-    fun play() {
-        Log.i(TAG, "play: ")
+    fun nextPlayerTurn(): PlayerData {
+        Log.i(TAG, "nextPlayerTurn: ")
 
         val availablePlayers = players.value.filter { it.isPlaying.value }
         val lastTurnPlayer = availablePlayers.firstOrNull { it.playTurn.value }
@@ -92,11 +92,14 @@ data class GameData(
                 val nextPlayer = getNextPlayer(lastTurnPlayer)
                 lastTurnPlayer.setPlayTurn(false)
                 nextPlayer.setPlayTurn(true)
+                return nextPlayer
             }
+            return lastTurnPlayer
         }
         else {
             val firstPlayer = availablePlayers.first { it.firstPlayerInRound.value }
             firstPlayer.setPlayTurn(true)
+            return firstPlayer
         }
     }
 
