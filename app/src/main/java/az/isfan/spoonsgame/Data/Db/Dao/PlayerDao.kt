@@ -15,6 +15,6 @@ interface PlayerDao {
     @Query("SELECT * FROM players")
     fun getAll(): List<PlayerEntity>
 
-    @Query("DELETE FROM cards")
+    @Query("DELETE FROM players")
     fun deleteAll()
 }
