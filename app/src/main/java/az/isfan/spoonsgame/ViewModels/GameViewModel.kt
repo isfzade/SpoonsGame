@@ -43,13 +43,6 @@ class GameViewModel @Inject constructor(
     private val _status = MutableStateFlow(GameStatusEnum.NOT_FINISHED)
     val status = _status.asStateFlow()
 
-    var listenJob: Job? = null
-
-    init {
-        Log.i(TAG, "init: ")
-        listenPlayerTurn()
-    }
-
     fun spoonButtonClicked() {
         Log.i(TAG, "setTakeSpoonButtonClicked: ")
 
@@ -63,8 +56,7 @@ class GameViewModel @Inject constructor(
         viewModelScope.launch {
             _game.update { Cavab.Loading }
             val newGame = GameData(playerCount)
-            newGame.setupNewRound()
-            newGame.play()
+            processNewRound()
             _game.update { Cavab.Success(newGame) }
         }
     }
@@ -131,6 +123,23 @@ class GameViewModel @Inject constructor(
         }
     }
 
+    private fun nextPlayerTurn() {
+        Log.i(TAG, "nextPlayerTurn: ")
+
+        viewModelScope.launch {
+            if (game.value is Cavab.Success) {
+                val currentGame = (game.value as Cavab.Success).data
+                val turnPlayer = currentGame.nextPlayerTurn()
+                if (!turnPlayer.isLocalUser) {
+                    handleBotPlayTurn(turnPlayer)
+                }
+                else {
+                    pickCardForLocal(turnPlayer)
+                }
+            }
+        }
+    }
+
     private fun processNewRound() {
         Log.i(TAG, "processNewRound: ")
 
@@ -141,41 +150,7 @@ class GameViewModel @Inject constructor(
             _status.update { gameStatus }
             if (gameStatus == GameStatusEnum.NOT_FINISHED) {
                 currentGame.setupNewRound()
-                listenPlayerTurn()
-                currentGame.play()
-            }
-        }
-    }
-
-    private fun listenPlayerTurn() {
-        Log.i(TAG, "listenPlayerTurn: ")
-
-        listenJob?.let {
-            if (it.isActive) it.cancel()
-        }
-        listenJob = viewModelScope.launch {
-            game.collect { cavab ->
-                if (cavab is Cavab.Success) {
-                    launch {
-                        cavab.data.players.collect { players ->
-                            players.forEach {  player ->
-                                launch {
-                                    player.playTurn.collect { playTurn ->
-                                        if (playTurn) {
-                                            Log.i(TAG, "listenPlayerTurn: player=$player")
-                                            if (!player.isLocalUser) {
-                                                handleBotPlayTurn(player)
-                                            }
-                                            else {
-                                                pickCardForLocal(player)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                nextPlayerTurn()
             }
         }
     }
@@ -208,7 +183,7 @@ class GameViewModel @Inject constructor(
             val player = currentGame.getCardHolder(card)
             currentGame.discardCard(card)
             if (player.has4EqualCards()) thereIsWinner(player)
-            else currentGame.play()
+            else nextPlayerTurn()
         }
     }
 
