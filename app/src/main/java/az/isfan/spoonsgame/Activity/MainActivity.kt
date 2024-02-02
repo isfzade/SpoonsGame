@@ -1,4 +1,4 @@
-package az.isfan.spoonsgame.Activity
+package az.isfan.spoonsgame.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,7 +8,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import az.isfan.spoonsgame.Navigation.NavGraph
+import az.isfan.spoonsgame.navigation.NavGraph
 import az.isfan.spoonsgame.ui.theme.SpoonsGameTheme
 import dagger.hilt.android.AndroidEntryPoint
 
