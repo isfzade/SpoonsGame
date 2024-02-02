@@ -1,10 +1,10 @@
 package az.isfan.spoonsgame.di
 
 import android.content.Context
+import az.isfan.spoonsgame.data.db.Db
 import az.isfan.spoonsgame.data.db.dao.CardDao
 import az.isfan.spoonsgame.data.db.dao.GameDao
 import az.isfan.spoonsgame.data.db.dao.PlayerDao
-import az.isfan.spoonsgame.data.db.Db
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

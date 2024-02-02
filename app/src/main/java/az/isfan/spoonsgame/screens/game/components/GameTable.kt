@@ -22,9 +22,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import az.isfan.spoonsgame.R
 import az.isfan.spoonsgame.data.enums.GameStatusEnum
 import az.isfan.spoonsgame.data.models.CardData
-import az.isfan.spoonsgame.R
 
 @Composable
 fun GameTable(

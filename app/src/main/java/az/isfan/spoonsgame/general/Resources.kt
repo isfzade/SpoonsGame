@@ -1,8 +1,8 @@
 package az.isfan.spoonsgame.general
 
+import az.isfan.spoonsgame.R
 import az.isfan.spoonsgame.data.enums.RankEnum
 import az.isfan.spoonsgame.data.enums.SuitEnum
-import az.isfan.spoonsgame.R
 
 fun getCardImageResource(rank: RankEnum, suitEnum: SuitEnum): Int {
     return when("$rank-$suitEnum") {

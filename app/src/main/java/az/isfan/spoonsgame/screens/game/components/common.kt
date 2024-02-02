@@ -16,9 +16,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import az.isfan.spoonsgame.R
 import az.isfan.spoonsgame.data.models.CardData
 import az.isfan.spoonsgame.general.Constants
-import az.isfan.spoonsgame.R
 
 @Composable
 fun SideBotCards(
