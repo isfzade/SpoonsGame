@@ -320,8 +320,8 @@ class GameViewModel @Inject constructor(
                 it.copy(cards = emptyList())
             }
         }
-        _discardedDeckCards.update {
-            availableDeckCards.value.map { it.copy() } + playerCards
+        _discardedDeckCards.update { discardedCards ->
+            discardedCards.map{it.copy()} + availableDeckCards.value.map { it.copy() } + playerCards
         }
         _availableDeckCards.update { emptyList() }
     }
