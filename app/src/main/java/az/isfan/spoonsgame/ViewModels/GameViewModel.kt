@@ -142,7 +142,8 @@ class GameViewModel @Inject constructor(
         if (roundCount != 1) {
             val oldFirstPlayer = availablePlayers.first{ it.firstPlayer }
             val newFirstPlayer = getNextPlayer(oldFirstPlayer)
-            availablePlayers = availablePlayers.map { it.copy(firstPlayer = newFirstPlayer.name == it.name) }
+            availablePlayers = availablePlayers.map { it.copy(firstPlayer = newFirstPlayer.isSame(it)) }
+            availablePlayers = availablePlayers.map { it.copy(firstPlayer = newFirstPlayer.isSame(it)§§) }
         }
 
         val generatedCards = getNewCards()
@@ -230,7 +231,7 @@ class GameViewModel @Inject constructor(
 
         _players.update { oldPlayers ->
             oldPlayers.map { it.copy(
-                lettersSize =  if (it == player) it.lettersSize+1 else it.lettersSize
+                lettersSize =  if (it.isSame(player)) it.lettersSize+1 else it.lettersSize
             ) }
         }
     }
@@ -260,7 +261,7 @@ class GameViewModel @Inject constructor(
 
         return players.value.first { player ->
             player.cards.any {
-                it.suit == card.suit && it.rank == card.rank
+                it == card
             }
         }
     }
@@ -293,7 +294,7 @@ class GameViewModel @Inject constructor(
         Log.i(TAG, "kickPlayers: ")
 
         _players.update { oldPlayers ->
-            oldPlayers.map { it.copy(kicked = it.lettersSize >= 5) }
+            oldPlayers.map { it.copy(kicked = it.lettersSize > 4) }
         }
     }
 
@@ -302,7 +303,7 @@ class GameViewModel @Inject constructor(
 
         val randomPlayer = players.value.filter {
             !it.kicked && !it.isLocalUser &&
-            if (except != null) it.name != except.name else true}
+            if (except != null) it.isSame(except) else true}
             .shuffled(random = Random(System.currentTimeMillis())).firstOrNull()?.let{
                 giveLetterTo(it)
             }
@@ -412,7 +413,7 @@ class GameViewModel @Inject constructor(
         val mutableCards = generatedCards.toMutableList()
         generatedPlayers.forEach { player ->
             player.cards.forEach { card ->
-                mutableCards.removeIf{it.rank == card.rank && it.suit == card.suit}
+                mutableCards.removeIf{it == card}
             }
         }
         return mutableCards
@@ -444,7 +445,7 @@ class GameViewModel @Inject constructor(
     private fun isLastPlayer(player: PlayerData): Boolean {
         Log.i(TAG, "isLastPlayer: ")
 
-        return getPreviousPlayer(getFirstPlayer()).name == player.name
+        return getPreviousPlayer(getFirstPlayer()).isSame(player)
     }
 
     private fun addCardToPlayer(player: PlayerData, card:CardData) {
@@ -453,7 +454,7 @@ class GameViewModel @Inject constructor(
         _players.update { oldPlayers ->
             oldPlayers.map { oldPlayer ->
                 oldPlayer.copy(
-                    cards = if (oldPlayer == player) oldPlayer.cards+card
+                    cards = if (oldPlayer.isSame(player)) oldPlayer.cards+card
                             else oldPlayer.cards
                 )
             }
@@ -466,7 +467,7 @@ class GameViewModel @Inject constructor(
         _players.update { oldPlayers ->
             oldPlayers.map { oldPlayer ->
                 oldPlayer.copy(
-                    cards = if (oldPlayer == player) oldPlayer.cards.filter { it!=card }
+                    cards = if (oldPlayer.isSame(player)) oldPlayer.cards.filter { it!=card }
                     else oldPlayer.cards
                 )
             }
@@ -502,7 +503,7 @@ class GameViewModel @Inject constructor(
         _players.update { oldPlayers ->
             oldPlayers.map {
                 it.copy(
-                    playTurn = it == player
+                    playTurn = it.isSame(player)
                 )
             }
         }

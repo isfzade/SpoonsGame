@@ -16,10 +16,7 @@ data class PlayerData(
     val kicked: Boolean = false,
     val lettersSize: Int = 0,
 ) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is PlayerData) return false
-
+    fun isSame(other: PlayerData): Boolean {
         return name == other.name
     }
 }
