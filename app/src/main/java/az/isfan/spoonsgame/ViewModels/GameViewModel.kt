@@ -393,11 +393,10 @@ class GameViewModel @Inject constructor(
     private fun giveFourCardsToPlayers(generatedCards: List<CardData>, generatedPlayers: List<PlayerData>): List<PlayerData> {
         Log.i(TAG, "giveFourCardsToPlayers: ")
 
-        var startIndex = -generatedPlayers.size
-        var endIndex = startIndex + generatedPlayers.size
-        return generatedPlayers.mapIndexed { index, player ->
-            startIndex += generatedPlayers.size
-            endIndex += generatedPlayers.size
+        var startIndex = -4
+        return generatedPlayers.map { player ->
+            startIndex += 4
+            val endIndex = startIndex + 4
             player.copy(
                 cards = if (player.kicked) emptyList()
                     else {
