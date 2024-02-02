@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import az.isfan.spoonsgame.data.enums.RouteEnum
 import az.isfan.spoonsgame.R
+import az.isfan.spoonsgame.data.enums.RouteEnum
 import az.isfan.spoonsgame.screens.menu.components.MenuContent
 
 @Composable

@@ -13,7 +13,6 @@ import az.isfan.spoonsgame.data.enums.ChairEnum
 import az.isfan.spoonsgame.data.enums.GameStatusEnum
 import az.isfan.spoonsgame.data.models.CardData
 import az.isfan.spoonsgame.data.models.PlayerData
-import az.isfan.spoonsgame.screens.game.components.BottomChair
 
 @Composable
 fun GameDesign(

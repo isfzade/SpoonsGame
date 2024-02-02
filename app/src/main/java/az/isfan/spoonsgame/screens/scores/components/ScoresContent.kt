@@ -14,8 +14,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import az.isfan.spoonsgame.data.models.GameData
 import az.isfan.spoonsgame.R
+import az.isfan.spoonsgame.data.models.GameData
 
 @Composable
 @ExperimentalMaterial3Api

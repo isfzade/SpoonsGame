@@ -10,8 +10,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import az.isfan.spoonsgame.general.Cavab
 import az.isfan.spoonsgame.R
+import az.isfan.spoonsgame.general.Cavab
 import az.isfan.spoonsgame.screens.game.components.GameContent
 import az.isfan.spoonsgame.viewmodels.GameViewModel
 
