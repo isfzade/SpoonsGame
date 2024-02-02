@@ -26,11 +26,6 @@ fun BottomChair(
     player: PlayerData,
     onCardClick: (card: CardData) -> Unit,
 ) {
-    val cards = player.cards.collectAsStateWithLifecycle().value
-    val isPlaying = player.isPlaying.collectAsStateWithLifecycle().value
-    val playTurn = player.playTurn.collectAsStateWithLifecycle().value
-    val letterSize = player.lettersCollected.collectAsStateWithLifecycle().value
-
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -44,12 +39,12 @@ fun BottomChair(
         ) {
             PlayerInfo(
                 name = player.name,
-                playTurn = playTurn,
-                letterSize = letterSize,
+                playTurn = player.playTurn,
+                letterSize = player.lettersSize,
             )
         }
 
-        if (isPlaying) {
+        if (!player.kicked) {
             Box(
                 modifier = Modifier
                     .weight(2f)
@@ -57,8 +52,8 @@ fun BottomChair(
                 contentAlignment = Alignment.Center
             ) {
                 LocalPlayerCards(
-                    playTurn = playTurn,
-                    cards = cards,
+                    playTurn = player.playTurn,
+                    cards = player.cards,
                     onCardClick = onCardClick
                 )
             }

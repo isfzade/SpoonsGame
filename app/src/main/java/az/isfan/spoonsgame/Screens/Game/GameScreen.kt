@@ -5,6 +5,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -61,18 +62,21 @@ fun GameSetupLogic(
     viewModel: GameViewModel,
     navController: NavHostController,
 ) {
-    val game = viewModel.game.collectAsStateWithLifecycle().value
-    val showTakeSpoonButton = viewModel.showTakeSpoonButton.collectAsStateWithLifecycle().value
-    val showGiveLetterButton = viewModel.showGiveLetterButton.collectAsStateWithLifecycle().value
-    val gameStatus = viewModel.status.collectAsStateWithLifecycle().value
+    val isReady by viewModel.isGameReady.collectAsStateWithLifecycle()
+    val players by viewModel.players.collectAsStateWithLifecycle()
+    val availableDeckCards by viewModel.availableDeckCards.collectAsStateWithLifecycle()
+    val discardedDeckCards by viewModel.discardedDeckCards.collectAsStateWithLifecycle()
+    val showTakeSpoonButton by viewModel.showTakeSpoonButton.collectAsStateWithLifecycle()
+    val gameStatus by viewModel.status.collectAsStateWithLifecycle()
 
-    when (game) {
+    when (isReady) {
         is Cavab.Success -> {
             GameContent(
-                game = game.data,
                 title = title,
+                players = players,
+                availableDeckCards = availableDeckCards,
+                discardedDeckCards = discardedDeckCards,
                 showTakeSpoonButton = showTakeSpoonButton,
-                showGiveLetterButton = showGiveLetterButton,
                 gameStatus = gameStatus,
                 onBackButtonClick = {
                     navController.navigateUp()
@@ -83,9 +87,6 @@ fun GameSetupLogic(
                 onSpoonButtonClick = {
                     viewModel.spoonButtonClicked()
                 },
-                onGiveLetterButtonClick = { player ->
-                    viewModel.giveLetterToBot(player)
-                }
             )
         }
         is Cavab.Loading -> CircularProgressIndicator()
@@ -101,7 +102,7 @@ fun SetupNewGame(
     viewModel: GameViewModel
 ) {
     LaunchedEffect(key1 = Unit) {
-        viewModel.setupGame(playerCount)
+        viewModel.setupNewGame(playerCount)
     }
 }
 

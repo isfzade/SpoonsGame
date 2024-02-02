@@ -18,16 +18,10 @@ import az.isfan.spoonsgame.R
 
 @Composable
 fun RightChair(
-    showGiveLetterButton: Boolean,
-    onGiveLetterButtonClick: (player: PlayerData) -> Unit,
     players: List<PlayerData>
 ) {
     if (players.isNotEmpty()) {
         val player = players.first()
-        val cards = player.cards.collectAsStateWithLifecycle().value
-        val isPlaying = player.isPlaying.collectAsStateWithLifecycle().value
-        val playTurn = player.playTurn.collectAsStateWithLifecycle().value
-        val letterSize = player.lettersCollected.collectAsStateWithLifecycle().value
 
         Row(
             modifier = Modifier
@@ -46,33 +40,13 @@ fun RightChair(
                 ) {
                     PlayerInfo(
                         name = player.name,
-                        playTurn = playTurn,
-                        letterSize = letterSize,
+                        playTurn = player.playTurn,
+                        letterSize = player.lettersSize,
                     )
-                }
-
-                if (showGiveLetterButton) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Button(
-                            onClick = {
-                                onGiveLetterButtonClick(player)
-                            },
-                            modifier = Modifier.background(Color.Red)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.give_letter)
-                            )
-                        }
-                    }
                 }
             }
 
-            if (isPlaying) {
+            if (!player.kicked) {
                 Box(
                     modifier = Modifier
                         .weight(1f)
@@ -80,8 +54,8 @@ fun RightChair(
                     contentAlignment = Alignment.Center
                 ) {
                     SideBotCards(
-                        playTurn = playTurn,
-                        cards = cards
+                        playTurn = player.playTurn,
+                        cards = player.cards
                     )
                 }
             }

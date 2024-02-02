@@ -22,20 +22,16 @@ import az.isfan.spoonsgame.Data.Models.PlayerData
 @Composable
 @ExperimentalMaterial3Api
 fun GameContent(
-    game: GameData,
     title: String,
+    players: List<PlayerData>,
+    availableDeckCards: List<CardData>,
+    discardedDeckCards: List<CardData>,
     showTakeSpoonButton: Boolean,
-    showGiveLetterButton: Boolean,
     gameStatus: GameStatusEnum,
     onBackButtonClick: () -> Unit,
     onCardClick: (card: CardData) -> Unit,
     onSpoonButtonClick: () -> Unit,
-    onGiveLetterButtonClick: (player: PlayerData) -> Unit,
 ) {
-    val players = game.players.collectAsStateWithLifecycle().value
-    val availableDeckCards = game.availableDeckCards.collectAsStateWithLifecycle().value
-    val discardedDeckCards = game.discardedDeckCards.collectAsStateWithLifecycle().value
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -66,12 +62,10 @@ fun GameContent(
                 players = players,
                 availableDeckCards = availableDeckCards,
                 discardedDeckCards = discardedDeckCards,
-                showGiveLetterButton = showGiveLetterButton,
                 showTakeSpoonButton = showTakeSpoonButton,
                 gameStatus = gameStatus,
                 onCardClick = onCardClick,
                 onSpoonButtonClick = onSpoonButtonClick,
-                onGiveLetterButtonClick = onGiveLetterButtonClick,
             )
         }
     }
