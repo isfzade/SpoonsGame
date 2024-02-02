@@ -6,7 +6,6 @@ import az.isfan.spoonsgame.Data.Db.Entities.PlayerEntity
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.GameData
 import az.isfan.spoonsgame.Data.Models.PlayerData
-import az.isfan.spoonsgame.General.Constants
 
 fun CardEntity.toData(): CardData {
     val card = CardData(
