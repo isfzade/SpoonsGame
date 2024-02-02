@@ -16,6 +16,6 @@ interface GameDao {
     @Query("SELECT *, MAX(save_timestamp) FROM games")
     fun getLatest(): GameEntity?
 
-    @Query("SELECT * FROM games WHERE status!=:status")
+    @Query("SELECT * FROM games WHERE status!=:status ORDER BY save_timestamp DESC")
     fun getAll(status: GameStatusEnum): List<GameEntity>
 }

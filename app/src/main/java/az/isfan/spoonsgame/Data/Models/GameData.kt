@@ -6,5 +6,5 @@ data class GameData(
     val status: GameStatusEnum,
     val roundCount: Int,
     val playerCount: Int,
-    val saveTimestamp: Long = System.currentTimeMillis(),
+    val dateTime: String? = null,
 )

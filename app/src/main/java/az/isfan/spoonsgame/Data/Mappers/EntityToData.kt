@@ -6,6 +6,7 @@ import az.isfan.spoonsgame.Data.Db.Entities.PlayerEntity
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.GameData
 import az.isfan.spoonsgame.Data.Models.PlayerData
+import az.isfan.spoonsgame.General.getDateTimeFromTimestamp
 
 fun CardEntity.toData(): CardData {
     return CardData(
@@ -32,6 +33,6 @@ fun GameEntity.toData(): GameData {
         status = status,
         roundCount = roundCount,
         playerCount = playerCount,
-        saveTimestamp = saveTimestamp
+        dateTime = getDateTimeFromTimestamp(saveTimestamp)
     )
 }

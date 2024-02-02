@@ -23,7 +23,7 @@ fun ItemInScores(
             .fillMaxWidth()
     ) {
         Text(
-            text = game.saveTimestamp.toString()
+            text = game.dateTime!!
         )
 
         Row(
