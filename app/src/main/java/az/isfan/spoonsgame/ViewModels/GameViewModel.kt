@@ -99,12 +99,12 @@ class GameViewModel @Inject constructor(
                 }
                 numberOfPlayers = latestGame.playerCount
                 roundCount = latestGame.roundCount
+                _isGameReady.update { Cavab.Success(true) }
                 playTurn()
             }
             else {
                 _isGameReady.update { Cavab.StandBy }
             }
-            _isGameReady.update { Cavab.Success(true) }
         }
     }
 
