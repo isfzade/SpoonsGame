@@ -1,5 +1,7 @@
 package az.isfan.spoonsgame.Data.Db.Repos
 
+import az.isfan.spoonsgame.Data.Db.Entities.CardEntity
+import az.isfan.spoonsgame.Data.Db.Entities.PlayerEntity
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.GameData
 import az.isfan.spoonsgame.Data.Models.PlayerData
@@ -13,11 +15,11 @@ interface  GameDbRepoInterface {
 
     fun getLatestGame(): GameData?
 
-    fun getAllCards(): List<CardData>
+    fun getAllCards(): List<CardEntity>
 
-    fun getAllPlayers(): List<PlayerData>
+    fun getAllPlayers(): List<PlayerEntity>
 
-    fun getAllGames(): List<GameData>
+    fun getAllFinishedGames(): List<GameData>
 
     fun deleteAllCards()
 

@@ -9,6 +9,7 @@ import az.isfan.spoonsgame.Data.Enums.ChairEnum
 import az.isfan.spoonsgame.Data.Enums.GameStatusEnum
 import az.isfan.spoonsgame.Data.Enums.RankEnum
 import az.isfan.spoonsgame.Data.Enums.SuitEnum
+import az.isfan.spoonsgame.Data.Mappers.toData
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.GameData
 import az.isfan.spoonsgame.Data.Models.PlayerData
@@ -78,7 +79,32 @@ class GameViewModel @Inject constructor(
         Log.i(TAG, "loadLastGame: ")
 
         viewModelScope.launch {
-
+            _isGameReady.update { Cavab.Loading }
+            val latestGame = withContext(Dispatchers.IO) { repo.getLatestGame() }
+            if (latestGame != null && latestGame.status == GameStatusEnum.NOT_FINISHED) {
+                val playerEntities = withContext(Dispatchers.IO) { repo.getAllPlayers() }
+                val cards = withContext(Dispatchers.IO) { repo.getAllCards() }
+                _players.update {
+                    playerEntities.map { playerEntity ->
+                        playerEntity.toData(
+                            cards = cards.filter {card -> card.owner == playerEntity.name }.map { card -> card.toData() }
+                        )
+                    }
+                }
+                _availableDeckCards.update {
+                    cards.filter { card -> card.owner == Constants.AVAILABLE }.map { card -> card.toData() }
+                }
+                _discardedDeckCards.update {
+                    cards.filter { card -> card.owner == Constants.DISCARDED }.map { card -> card.toData() }
+                }
+                numberOfPlayers = latestGame.playerCount
+                roundCount = latestGame.roundCount
+                playTurn()
+            }
+            else {
+                _isGameReady.update { Cavab.StandBy }
+            }
+            _isGameReady.update { Cavab.Success(true) }
         }
     }
 
@@ -263,6 +289,7 @@ class GameViewModel @Inject constructor(
                 _showTakeSpoonButton.update { false }
                 if (takeSpoonButtonClicked.value) {
                     giveLetterToRandomBot(except = player)
+                    _takeSpoonButtonClicked.update { false }
                 }
                 else giveLetterTo(getLocalPlayer())
             }

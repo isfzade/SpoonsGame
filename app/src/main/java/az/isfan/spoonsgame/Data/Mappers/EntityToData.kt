@@ -15,7 +15,7 @@ fun CardEntity.toData(): CardData {
     )
 }
 
-fun PlayerEntity.toData(): PlayerData {
+fun PlayerEntity.toData(cards: List<CardData>): PlayerData {
     return PlayerData(
         name = name,
         isLocalUser = isLocalUser,
@@ -23,6 +23,7 @@ fun PlayerEntity.toData(): PlayerData {
         playTurn = playTurn,
         firstPlayer = firstPlayerInRound,
         kicked = kicked,
+        cards = cards,
         lettersSize = lettersCollected
     )
 }
