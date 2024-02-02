@@ -46,15 +46,13 @@ class GameViewModel @Inject constructor(
     private val _availableDeckCards = MutableStateFlow<List<CardData>>(emptyList())
     val availableDeckCards = _availableDeckCards.asStateFlow()
 
-    private val _takeSpoonButtonClicked = MutableStateFlow(false)
-    val takeSpoonButtonClicked = _takeSpoonButtonClicked.asStateFlow()
-
     private val _showTakeSpoonButton = MutableStateFlow(false)
     val showTakeSpoonButton = _showTakeSpoonButton.asStateFlow()
 
     private val _status = MutableStateFlow(GameStatusEnum.NOT_FINISHED)
     val status = _status.asStateFlow()
 
+    private var takeSpoonButtonClicked = false
     private var numberOfPlayers: Int = 0
     private var roundCount: Int = 0
 
@@ -173,7 +171,7 @@ class GameViewModel @Inject constructor(
         Log.i(TAG, "setTakeSpoonButtonClicked: ")
 
         _showTakeSpoonButton.update { false }
-        _takeSpoonButtonClicked.update { true }
+        takeSpoonButtonClicked = true
     }
 
     private suspend fun proceedNewRound() {
@@ -282,9 +280,9 @@ class GameViewModel @Inject constructor(
                 _showTakeSpoonButton.update { true }
                 delay(DURATION_TO_TAKE_SPOON)
                 _showTakeSpoonButton.update { false }
-                if (takeSpoonButtonClicked.value) {
+                if (takeSpoonButtonClicked) {
                     giveLetterToRandomBot(except = player)
-                    _takeSpoonButtonClicked.update { false }
+                    takeSpoonButtonClicked = false
                 }
                 else giveLetterTo(getLocalPlayer())
             }
