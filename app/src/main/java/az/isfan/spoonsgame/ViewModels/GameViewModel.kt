@@ -74,21 +74,6 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    private fun pickCardFromDeckIfFirstPlayer() {
-        Log.i(TAG, "pickCardFromDeckIfFirstPlayer: ")
-
-        val player = getTurnPlayer()
-        if (player.firstPlayer && player.cards.size == 4) {
-            var card = availableDeckCards.value.firstOrNull()
-            if (card == null) {
-                generateAvailableCardsFromDiscarded()
-                card = availableDeckCards.value.first()
-            }
-            addCardToPlayer(player, card)
-            removeCardFromAvailableSet(card)
-        }
-    }
-
     fun loadLastGame() {
         Log.i(TAG, "loadLastGame: ")
 
@@ -112,8 +97,10 @@ class GameViewModel @Inject constructor(
             discardCard(card)
             if (isRoundFinished()) {
                 endRound()
-                giveLetterToRandomBot()
+                giveLetter()
                 proceedNewRound()
+            } else {
+                playTurn()
             }
         }
     }
@@ -125,7 +112,7 @@ class GameViewModel @Inject constructor(
         _takeSpoonButtonClicked.update { true }
     }
 
-    private fun proceedNewRound() {
+    private suspend fun proceedNewRound() {
         Log.i(TAG, "proceedNewRound: ")
 
         kickPlayers()
@@ -133,6 +120,7 @@ class GameViewModel @Inject constructor(
         _status.update { gameStatus }
         if (gameStatus == GameStatusEnum.NOT_FINISHED) {
             setupNewRound()
+            playTurn()
         }
     }
 
@@ -168,7 +156,7 @@ class GameViewModel @Inject constructor(
     private fun isRoundFinished(): Boolean {
         Log.i(TAG, "isRoundFinished:")
 
-        val player = getTurnPlayer()
+        val player = getTurnPlayer()!!
         return has4EqualCards(player)
     }
 
@@ -199,12 +187,28 @@ class GameViewModel @Inject constructor(
                 giveLetter()
                 proceedNewRound()
             }
+            else playTurn()
+        }
+    }
+
+    private fun pickCardFromDeckIfFirstPlayer() {
+        Log.i(TAG, "pickCardFromDeckIfFirstPlayer: ")
+
+        val player = getTurnPlayer()!!
+        if (player.firstPlayer && player.cards.size == 4) {
+            var card = availableDeckCards.value.firstOrNull()
+            if (card == null) {
+                generateAvailableCardsFromDiscarded()
+                card = availableDeckCards.value.first()
+            }
+            addCardToPlayer(player, card)
+            removeCardFromAvailableSet(card)
         }
     }
 
     private suspend fun giveLetter() {
         Log.i(TAG, "giveLetter: ")
-        val player = getTurnPlayer()
+        val player = getTurnPlayer()!!
         if (player.isLocalUser) {
             giveLetterToRandomBot()
         }
@@ -234,7 +238,7 @@ class GameViewModel @Inject constructor(
     private fun discardCardFromBot() {
         Log.i(TAG, "discardCardFromBot: ")
 
-        val player = getTurnPlayer()
+        val player = getTurnPlayer()!!
         val card = getWorstCardFromPlayer(player)
         discardCard(card)
     }
@@ -508,8 +512,8 @@ class GameViewModel @Inject constructor(
         return players.value.first { !it.kicked && it.playTurn}.isLocalUser
     }
 
-    private fun getTurnPlayer(): PlayerData {
-        return players.value.first { !it.kicked && it.playTurn }
+    private fun getTurnPlayer(): PlayerData? {
+        return players.value.firstOrNull { !it.kicked && it.playTurn }
     }
 
     private fun getFirstPlayer(): PlayerData {
