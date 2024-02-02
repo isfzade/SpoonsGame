@@ -27,6 +27,7 @@ class ScoresViewModel @Inject constructor(
 
     init {
         Log.i(TAG, "init: ")
+        loadGames()
     }
 
     private fun loadGames() {
