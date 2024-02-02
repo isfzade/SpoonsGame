@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
 import az.isfan.spoonsgame.Data.Models.PlayerData
@@ -19,8 +20,6 @@ import az.isfan.spoonsgame.R
 
 @Composable
 fun TopChairs(
-    showGiveLetterButton: Boolean,
-    onGiveLetterButtonClick: (player: PlayerData) -> Unit,
     players: List<PlayerData>
 ) {
     Row(
@@ -34,8 +33,6 @@ fun TopChairs(
         ) {
             if (players.any { it.chair == ChairEnum.TOP_LEFT }) {
                 TopChair(
-                    showGiveLetterButton = showGiveLetterButton,
-                    onGiveLetterButtonClick = onGiveLetterButtonClick,
                     player = players.first { it.chair == ChairEnum.TOP_LEFT },
                 )
             }
@@ -48,8 +45,6 @@ fun TopChairs(
         ) {
             if (players.any { it.chair == ChairEnum.TOP_RIGHT }) {
                 TopChair(
-                    showGiveLetterButton = showGiveLetterButton,
-                    onGiveLetterButtonClick = onGiveLetterButtonClick,
                     player = players.first { it.chair == ChairEnum.TOP_RIGHT }
                 )
             }
@@ -60,20 +55,13 @@ fun TopChairs(
 @Composable
 fun TopChair(
     player: PlayerData,
-    showGiveLetterButton: Boolean,
-    onGiveLetterButtonClick: (player: PlayerData) -> Unit,
 ) {
-    val cards = player.cards.collectAsStateWithLifecycle().value
-    val isPlaying = player.isPlaying.collectAsStateWithLifecycle().value
-    val playTurn = player.playTurn.collectAsStateWithLifecycle().value
-    val letterSize = player.lettersCollected.collectAsStateWithLifecycle().value
-
     Column(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (isPlaying) {
+        if (!player.kicked) {
             Box(
                 modifier = Modifier
                     .weight(2f)
@@ -81,8 +69,8 @@ fun TopChair(
                 contentAlignment = Alignment.Center
             ) {
                 TopBotCards(
-                    playTurn = playTurn,
-                    cards = cards,
+                    playTurn = player.playTurn,
+                    cards = player.cards,
                 )
             }
         }
@@ -95,29 +83,9 @@ fun TopChair(
         ) {
             PlayerInfo(
                 name = player.name,
-                playTurn = playTurn,
-                letterSize = letterSize,
+                playTurn = player.playTurn,
+                letterSize = player.lettersSize,
             )
-        }
-
-        if (showGiveLetterButton) {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Button(
-                    onClick = {
-                        onGiveLetterButtonClick(player)
-                    },
-                    modifier = Modifier.background(Color.Red)
-                ) {
-                    Text(
-                        text = stringResource(R.string.give_letter)
-                    )
-                }
-            }
         }
     }
 }

@@ -3,6 +3,7 @@ package az.isfan.spoonsgame.Data.Models
 import android.util.Log
 import az.isfan.spoonsgame.Data.Enums.RankEnum
 import az.isfan.spoonsgame.Data.Enums.SuitEnum
+import az.isfan.spoonsgame.General.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -11,14 +12,10 @@ data class CardData(
     val suit: SuitEnum,
     val rank: RankEnum,
 ) {
-    private val TAG = "isf_CardData"
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is CardData) return false
 
-    private val _holder = MutableStateFlow<String?>(null)
-    val holder = _holder.asStateFlow()
-
-    fun setHolder(name: String?) {
-        Log.i(TAG, "setHolder: name=$name")
-
-        _holder.update { name }
+        return suit == other.suit && rank == other.rank
     }
 }

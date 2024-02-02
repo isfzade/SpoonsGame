@@ -4,7 +4,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import az.isfan.spoonsgame.Data.Db.Entities.CardEntity
 import az.isfan.spoonsgame.Data.Db.Entities.GameEntity
+import az.isfan.spoonsgame.Data.Enums.GameStatusEnum
 
 
 @Dao
@@ -15,6 +17,6 @@ interface GameDao {
     @Query("SELECT *, MAX(save_timestamp) FROM games")
     fun getLatest(): GameEntity?
 
-    @Query("SELECT * FROM games")
-    fun getAll(): List<GameEntity>
+    @Query("SELECT * FROM games WHERE status!=:status")
+    fun getAll(status: GameStatusEnum): List<GameEntity>
 }

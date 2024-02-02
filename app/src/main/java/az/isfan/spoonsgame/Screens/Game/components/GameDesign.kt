@@ -20,11 +20,9 @@ fun GameDesign(
     availableDeckCards: List<CardData>,
     discardedDeckCards: List<CardData>,
     showTakeSpoonButton: Boolean,
-    showGiveLetterButton: Boolean,
     gameStatus: GameStatusEnum,
     onCardClick: (card: CardData) -> Unit,
     onSpoonButtonClick: () -> Unit,
-    onGiveLetterButtonClick: (player: PlayerData) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -36,8 +34,6 @@ fun GameDesign(
                 .fillMaxSize()
         ) {
             TopChairs(
-                showGiveLetterButton = showGiveLetterButton,
-                onGiveLetterButtonClick = onGiveLetterButtonClick,
                 players = players.filter { it.chair == ChairEnum.TOP_LEFT || it.chair == ChairEnum.TOP_RIGHT }
             )
         }
@@ -57,8 +53,6 @@ fun GameDesign(
                         .fillMaxSize()
                 ) {
                     LeftChair(
-                        showGiveLetterButton = showGiveLetterButton,
-                        onGiveLetterButtonClick = onGiveLetterButtonClick,
                         players = players.filter { it.chair == ChairEnum.LEFT }
                     )
                 }
@@ -84,8 +78,6 @@ fun GameDesign(
                         .fillMaxSize()
                 ) {
                     RightChair(
-                        showGiveLetterButton = showGiveLetterButton,
-                        onGiveLetterButtonClick = onGiveLetterButtonClick,
                         players = players.filter { it.chair == ChairEnum.RIGHT }
                     )
                 }
