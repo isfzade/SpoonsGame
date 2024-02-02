@@ -221,6 +221,7 @@ class GameViewModel @Inject constructor(
                 if (takeSpoonButtonClicked.value) {
                     giveLetterToRandomBot(except = player)
                 }
+                else giveLetterTo(getLocalPlayer())
             }
             else giveLetterTo(getLocalPlayer())
         }
@@ -301,7 +302,7 @@ class GameViewModel @Inject constructor(
     private fun giveLetterToRandomBot(except: PlayerData? = null) {
         Log.i(TAG, "giveLetterToRandomBot: except=$except")
 
-        val randomPlayer = players.value.filter {
+        players.value.filter {
             !it.kicked && !it.isLocalUser &&
             if (except != null) it.isSame(except) else true}
             .shuffled(random = Random(System.currentTimeMillis())).firstOrNull()?.let{
