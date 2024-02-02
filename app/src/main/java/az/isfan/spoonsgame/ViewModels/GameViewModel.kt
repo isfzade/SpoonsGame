@@ -143,7 +143,7 @@ class GameViewModel @Inject constructor(
             val oldFirstPlayer = availablePlayers.first{ it.firstPlayer }
             val newFirstPlayer = getNextPlayer(oldFirstPlayer)
             availablePlayers = availablePlayers.map { it.copy(firstPlayer = newFirstPlayer.isSame(it)) }
-            availablePlayers = availablePlayers.map { it.copy(firstPlayer = newFirstPlayer.isSame(it)§§) }
+            availablePlayers = availablePlayers.map { it.copy(firstPlayer = newFirstPlayer.isSame(it)) }
         }
 
         val generatedCards = getNewCards()
