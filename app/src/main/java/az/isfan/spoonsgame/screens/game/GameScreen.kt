@@ -6,8 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import az.isfan.spoonsgame.R
@@ -119,9 +123,25 @@ fun LoadLastGame(
 fun SaveGame(
     viewModel: GameViewModel
 ) {
+    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+
     DisposableEffect(key1 = Unit) {
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_DESTROY -> {
+                    viewModel.save()
+                }
+                else -> {}
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
         onDispose {
             viewModel.save()
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
+
+
 }
