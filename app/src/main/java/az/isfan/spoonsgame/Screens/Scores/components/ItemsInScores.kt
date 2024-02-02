@@ -17,7 +17,7 @@ fun ItemsInScores(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         games.forEach { game ->
             item {
