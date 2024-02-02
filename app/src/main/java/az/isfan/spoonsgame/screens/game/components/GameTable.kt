@@ -1,4 +1,4 @@
-package az.isfan.spoonsgame.screens.Game.components
+package az.isfan.spoonsgame.screens.game.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

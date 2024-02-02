@@ -1,4 +1,4 @@
-package az.isfan.spoonsgame.screens.Game.components
+package az.isfan.spoonsgame.screens.game.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import az.isfan.spoonsgame.data.enums.GameStatusEnum
 import az.isfan.spoonsgame.data.models.CardData
 import az.isfan.spoonsgame.data.models.PlayerData
+import az.isfan.spoonsgame.screens.game.components.GameDesign
 
 @Composable
 @ExperimentalMaterial3Api

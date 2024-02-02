@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import az.isfan.spoonsgame.general.Cavab
-import az.isfan.spoonsgame.screens.Scores.components.ScoresContent
+import az.isfan.spoonsgame.screens.scores.components.ScoresContent
 import az.isfan.spoonsgame.viewmodels.ScoresViewModel
 
 @Composable

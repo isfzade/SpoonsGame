@@ -1,4 +1,4 @@
-package az.isfan.spoonsgame.screens.Menu.components
+package az.isfan.spoonsgame.screens.menu.components
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text

@@ -1,4 +1,4 @@
-package az.isfan.spoonsgame.screens.Scores.components
+package az.isfan.spoonsgame.screens.scores.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

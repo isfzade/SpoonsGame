@@ -1,4 +1,4 @@
-package az.isfan.spoonsgame.screens.Game.components
+package az.isfan.spoonsgame.screens.game.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import az.isfan.spoonsgame.data.enums.ChairEnum
 import az.isfan.spoonsgame.data.models.PlayerData
+import az.isfan.spoonsgame.screens.game.components.PlayerInfo
+import az.isfan.spoonsgame.screens.game.components.TopBotCards
 
 @Composable
 fun TopChairs(
