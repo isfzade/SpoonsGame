@@ -33,7 +33,7 @@ fun SideBotCards(
             alignment = Alignment.CenterVertically
         )
     ) {
-        cards.forEach{
+        repeat(cards.size) {
             Image(
                 painter = painterResource(R.drawable.back_dark),
                 contentDescription = null,
@@ -65,7 +65,7 @@ fun TopBotCards(
             alignment = Alignment.CenterHorizontally
         )
     ) {
-        cards.forEach{
+        repeat(cards.size) {
             Image(
                 painter = painterResource(R.drawable.back_dark),
                 contentDescription = null,
