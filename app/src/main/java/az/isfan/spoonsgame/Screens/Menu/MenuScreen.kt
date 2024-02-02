@@ -49,7 +49,7 @@ fun MenuScreen(
                     navController.navigate(RouteEnum.FIVE_PLAYERS.name)
                 },
                 onHighScoresButtonClick = {
-                    navController.navigate(RouteEnum.HIGH_SCORES.name)
+
                 },
                 onLoadLastGameButtonClick = {
                     navController.navigate(RouteEnum.LAST_GAME.name)

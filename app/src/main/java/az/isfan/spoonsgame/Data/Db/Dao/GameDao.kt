@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import az.isfan.spoonsgame.Data.Db.Entities.CardEntity
 import az.isfan.spoonsgame.Data.Db.Entities.GameEntity
 import az.isfan.spoonsgame.Data.Enums.GameStatusEnum
 
