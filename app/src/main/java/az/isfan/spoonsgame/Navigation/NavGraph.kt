@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import az.isfan.spoonsgame.Data.Enums.RouteEnum
 import az.isfan.spoonsgame.Screens.Game.GameScreen
 import az.isfan.spoonsgame.Screens.Menu.MenuScreen
+import az.isfan.spoonsgame.Screens.Scores.ScoresScreen
 
 @Composable
 @ExperimentalMaterial3Api
@@ -45,6 +46,13 @@ fun NavGraph(
             Log.i(TAG, "NavGraph: route=${RouteEnum.FIVE_PLAYERS}")
             GameScreen(
                 playerCount = 5,
+                navController = navController
+            )
+        }
+
+        composable(route = RouteEnum.HIGH_SCORES.name) {
+            Log.i(TAG, "NavGraph: route=${RouteEnum.HIGH_SCORES}")
+            ScoresScreen(
                 navController = navController
             )
         }

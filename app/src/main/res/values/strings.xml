@@ -11,4 +11,7 @@
     <string name="give_letter">Give letter</string>
     <string name="you_lost">You lost</string>
     <string name="you_won">You won</string>
+    <string name="players">Players</string>
+    <string name="rounds">Rounds</string>
+    <string name="result">Result</string>
 </resources>
