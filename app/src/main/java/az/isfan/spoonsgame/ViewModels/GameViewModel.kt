@@ -1,7 +1,6 @@
 package az.isfan.spoonsgame.ViewModels
 
 import android.util.Log
-import androidx.compose.animation.core.updateTransition
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import az.isfan.spoonsgame.Data.Db.Repos.GameDbRepoInterface
@@ -18,17 +17,13 @@ import az.isfan.spoonsgame.General.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.math.log
 import kotlin.random.Random
 
 @HiltViewModel
