@@ -8,9 +8,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import az.isfan.spoonsgame.data.enums.RouteEnum
-import az.isfan.spoonsgame.screens.Game.GameScreen
-import az.isfan.spoonsgame.screens.Menu.MenuScreen
-import az.isfan.spoonsgame.screens.Scores.ScoresScreen
+import az.isfan.spoonsgame.screens.game.GameScreen
+import az.isfan.spoonsgame.screens.menu.MenuScreen
+import az.isfan.spoonsgame.screens.scores.ScoresScreen
 
 @Composable
 @ExperimentalMaterial3Api

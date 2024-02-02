@@ -1,4 +1,4 @@
-package az.isfan.spoonsgame.screens.Menu
+package az.isfan.spoonsgame.screens.menu
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

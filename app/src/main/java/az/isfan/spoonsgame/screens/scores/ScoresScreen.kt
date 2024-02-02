@@ -1,4 +1,4 @@
-package az.isfan.spoonsgame.screens.Scores
+package az.isfan.spoonsgame.screens.scores
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
