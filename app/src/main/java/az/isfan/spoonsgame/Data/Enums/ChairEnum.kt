@@ -8,6 +8,6 @@ enum class ChairEnum(val chairId: Int) {
     LEFT(4);
 
     companion object {
-        fun getById(chairId: Int) = ChairEnum.values().first { it.chairId == chairId }
+        fun getById(chairId: Int) = entries.first { it.chairId == chairId }
     }
 }
