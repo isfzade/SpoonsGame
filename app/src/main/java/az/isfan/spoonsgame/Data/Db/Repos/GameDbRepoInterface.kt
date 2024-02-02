@@ -5,7 +5,7 @@ import az.isfan.spoonsgame.Data.Models.GameData
 import az.isfan.spoonsgame.Data.Models.PlayerData
 
 interface  GameDbRepoInterface {
-    fun insert(card: CardData)
+    fun insert(card: CardData, owner: String)
 
     fun insert(player: PlayerData)
 

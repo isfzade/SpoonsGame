@@ -11,4 +11,5 @@ import az.isfan.spoonsgame.Data.Enums.SuitEnum
 data class CardEntity(
     val suit: SuitEnum,
     val rank: RankEnum,
+    val owner: String,
 )

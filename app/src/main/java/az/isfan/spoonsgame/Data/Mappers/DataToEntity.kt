@@ -8,10 +8,11 @@ import az.isfan.spoonsgame.Data.Models.GameData
 import az.isfan.spoonsgame.Data.Models.PlayerData
 import kotlin.math.round
 
-fun CardData.toEntity(): CardEntity {
+fun CardData.toEntity(owner: String): CardEntity {
     return CardEntity(
         rank = rank,
         suit = suit,
+        owner = owner,
     )
 }
 

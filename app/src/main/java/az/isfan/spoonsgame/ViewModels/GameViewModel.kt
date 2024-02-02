@@ -86,7 +86,50 @@ class GameViewModel @Inject constructor(
         Log.i(TAG, "save: ")
 
         CoroutineScope(Dispatchers.Default).launch {
+            if (getGameStatus() == GameStatusEnum.NOT_FINISHED) {
+                launch(Dispatchers.IO) {
+                    repo.deleteAllPlayers()
+                    players.value.forEach { player ->
+                        launch(Dispatchers.IO) {
+                            repo.insert(player)
+                        }
+                    }
+                }
 
+                launch(Dispatchers.IO) {
+                    availableDeckCards.value.forEach { card ->
+                        launch(Dispatchers.IO) {
+                            repo.insert(card, Constants.AVAILABLE)
+                        }
+                    }
+
+                    discardedDeckCards.value.forEach { card ->
+                        launch(Dispatchers.IO) {
+                            repo.insert(card, Constants.DISCARDED)
+                        }
+                    }
+
+                    players.value.forEach { player ->
+                        player.cards.forEach { card ->
+                            launch(Dispatchers.IO) {
+                                repo.insert(card, player.name)
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                launch(Dispatchers.IO) {
+                    repo.deleteAllPlayers()
+                }
+
+                launch(Dispatchers.IO) {
+                    repo.deleteAllCards()
+                }
+            }
+            launch(Dispatchers.IO) {
+                repo.insert(exportGameInfo())
+            }
         }
     }
 
@@ -523,5 +566,13 @@ class GameViewModel @Inject constructor(
 
     private fun getLocalPlayer(): PlayerData {
         return players.value.first {it.isLocalUser}
+    }
+
+    private fun exportGameInfo(): GameData {
+        return GameData(
+            status = getGameStatus(),
+            roundCount = roundCount,
+            playerCount = numberOfPlayers
+        )
     }
 }

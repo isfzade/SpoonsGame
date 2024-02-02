@@ -17,8 +17,8 @@ class GameDbRepo @Inject constructor(
     private val playerDao: PlayerDao,
     private val gameDao: GameDao,
 ): GameDbRepoInterface {
-    override fun insert(card: CardData) {
-        cardDao.insert(card.toEntity())
+    override fun insert(card: CardData, owner: String) {
+        cardDao.insert(card.toEntity(owner))
     }
 
     override fun insert(player: PlayerData) {
