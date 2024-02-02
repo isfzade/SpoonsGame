@@ -10,17 +10,16 @@ data class PlayerData(
     val name: String,
     val chair: ChairEnum,
     val cards: List<CardData> = emptyList(),
+    val playTurn: Boolean = false,
     val isLocalUser: Boolean = false,
     val firstPlayer: Boolean = false,
     val kicked: Boolean = false,
     val lettersSize: Int = 0,
 ) {
-    private val TAG = "isf_PlayerData"
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is PlayerData) return false
 
-    fun has4EqualCards(): Boolean {
-        Log.i(TAG, "has4EqualCards: name=$name")
-
-        if (cards.size != 4) return false
-        return cards.count { it.suit == cards.first().suit } == 4
+        return name == other.name
     }
 }

@@ -6,12 +6,12 @@ import az.isfan.spoonsgame.Data.Db.Entities.PlayerEntity
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.GameData
 import az.isfan.spoonsgame.Data.Models.PlayerData
+import kotlin.math.round
 
 fun CardData.toEntity(): CardEntity {
     return CardEntity(
         rank = rank,
         suit = suit,
-        holder = holder.value
     )
 }
 
@@ -20,18 +20,17 @@ fun PlayerData.toEntity(): PlayerEntity {
         name = name,
         isLocalUser = isLocalUser,
         chair = chair,
-        isPlaying = isPlaying.value,
-        firstPlayerInRound = firstPlayerInRound.value,
-        lastPlayerInRound = lastPlayerInRound.value,
-        playTurn = playTurn.value,
-        lettersCollected = lettersCollected.value
+        kicked = kicked,
+        firstPlayerInRound = firstPlayer,
+        playTurn = playTurn,
+        lettersCollected = lettersSize
     )
 }
 
 fun GameData.toEntity(): GameEntity {
     return GameEntity(
-        status = getGameStatus(),
-        roundCount = roundCount.value,
+        status = status,
+        roundCount = roundCount,
         playerCount = playerCount,
         saveTimestamp = System.currentTimeMillis()
     )

@@ -18,11 +18,7 @@ data class PlayerEntity(
     @ColumnInfo(name="first_player_in_round")
     var firstPlayerInRound: Boolean = false,
 
-    @ColumnInfo(name="last_player_in_round")
-    var lastPlayerInRound: Boolean = false,
-
-    @ColumnInfo(name="is_playing")
-    var isPlaying: Boolean = false,
+    var kicked: Boolean = false,
 
     @ColumnInfo(name="play_turn")
     var playTurn: Boolean = false,
