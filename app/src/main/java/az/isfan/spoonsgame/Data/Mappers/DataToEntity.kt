@@ -6,7 +6,6 @@ import az.isfan.spoonsgame.Data.Db.Entities.PlayerEntity
 import az.isfan.spoonsgame.Data.Models.CardData
 import az.isfan.spoonsgame.Data.Models.GameData
 import az.isfan.spoonsgame.Data.Models.PlayerData
-import kotlin.math.round
 
 fun CardData.toEntity(owner: String): CardEntity {
     return CardEntity(

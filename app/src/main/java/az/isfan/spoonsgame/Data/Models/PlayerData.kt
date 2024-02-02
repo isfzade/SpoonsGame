@@ -1,10 +1,6 @@
 package az.isfan.spoonsgame.Data.Models
 
-import android.util.Log
 import az.isfan.spoonsgame.Data.Enums.ChairEnum
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 
 data class PlayerData(
     val name: String,

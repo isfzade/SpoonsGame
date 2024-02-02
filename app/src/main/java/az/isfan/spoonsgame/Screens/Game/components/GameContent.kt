@@ -13,10 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import az.isfan.spoonsgame.Data.Enums.GameStatusEnum
 import az.isfan.spoonsgame.Data.Models.CardData
-import az.isfan.spoonsgame.Data.Models.GameData
 import az.isfan.spoonsgame.Data.Models.PlayerData
 
 @Composable
