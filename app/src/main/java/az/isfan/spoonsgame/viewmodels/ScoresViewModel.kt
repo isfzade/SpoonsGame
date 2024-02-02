@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import az.isfan.spoonsgame.data.db.repos.GameDbRepoInterface
+import az.isfan.spoonsgame.data.enums.GameStatusEnum
 import az.isfan.spoonsgame.data.models.GameData
 import az.isfan.spoonsgame.general.Cavab
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,12 +36,18 @@ class ScoresViewModel @Inject constructor(
             _games.update {
                 Cavab.Loading
             }
+
             val loadedGames = withContext(Dispatchers.IO) {
                 repo.getAllFinishedGames()
             }
 
             _games.update {
-                Cavab.Success(loadedGames)
+                Cavab.Success(
+                    loadedGames.filter { it.status == GameStatusEnum.WON }
+                        .sortedByDescending { it.roundCount } +
+                    loadedGames.filter { it.status == GameStatusEnum.LOST }
+                        .sortedByDescending { it.roundCount }
+                )
             }
         }
     }

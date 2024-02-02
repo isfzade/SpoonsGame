@@ -19,10 +19,8 @@ fun ItemsInScores(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        games.forEach { game ->
-            item {
-                ItemInScores(game = game)
-            }
+        items(games.size) { index ->
+            ItemInScores(game = games[index])
         }
     }
 }
