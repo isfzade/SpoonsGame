@@ -96,7 +96,7 @@ fun GameDesign(
 
         Box(
             modifier = Modifier
-                .weight(2f)
+                .weight(1f)
                 .fillMaxSize()
         ) {
             BottomChair(

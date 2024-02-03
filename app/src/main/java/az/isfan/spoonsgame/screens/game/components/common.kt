@@ -109,7 +109,7 @@ fun PlayerInfo(
                 text = name,
                 fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
                 color = if (playTurn) Color.Blue else Color.Black,
-                fontSize = 18.sp,
+                fontSize = 20.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -119,7 +119,7 @@ fun PlayerInfo(
             text = Constants.SPOON.slice(IntRange(0, letterSize-1)),
             fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
             color = if (playTurn) Color.Blue else Color.Black,
-            fontSize = 20.sp,
+            fontSize = 18.sp,
             modifier = Modifier
                 .border(
                     width = 1.dp,
