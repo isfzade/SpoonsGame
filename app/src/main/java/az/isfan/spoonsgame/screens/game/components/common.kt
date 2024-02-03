@@ -3,9 +3,11 @@ package az.isfan.spoonsgame.screens.game.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -109,12 +111,23 @@ fun PlayerInfo(
             )
         }
 
-        Text(
-            text = Constants.SPOON.slice(IntRange(0, letterSize-1)),
-            fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
-            color = if (playTurn) Color.Blue else Color.Black,
-            fontSize = 20.sp
-        )
+        Box(
+            modifier = Modifier
+                .border(
+                    width = 1.dp,
+                    color = if (playTurn) Color.Blue else Color.Black
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = Constants.SPOON.slice(IntRange(0, letterSize-1)),
+                fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
+                color = if (playTurn) Color.Blue else Color.Black,
+                fontSize = 20.sp,
+                modifier = Modifier
+                    .padding(2.dp)
+            )
+        }
     }
 
 }
