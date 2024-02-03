@@ -21,7 +21,7 @@ import az.isfan.spoonsgame.ui.theme.TopBarColor
 @ExperimentalMaterial3Api
 fun TopBarScreen(
     title: String,
-    icon: ImageVector,
+    icon: ImageVector? = null,
     showBackButton: Boolean = false,
     onBackButtonClick: () -> Unit = {},
 ) {
@@ -31,10 +31,12 @@ fun TopBarScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = "logo"
-                )
+                if (icon != null) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = "logo"
+                    )
+                }
 
                 Text(
                     text = title
