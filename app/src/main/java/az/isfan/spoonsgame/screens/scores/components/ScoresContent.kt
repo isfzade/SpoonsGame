@@ -14,6 +14,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import az.isfan.spoonsgame.R
 import az.isfan.spoonsgame.data.models.GameData
 import az.isfan.spoonsgame.screens.common.TopBarScreen
@@ -38,6 +39,7 @@ fun ScoresContent(
         Box(
             modifier = Modifier
                 .padding(padding)
+                .padding(top = 10.dp)
                 .fillMaxWidth()
         ) {
             ItemsInScores(games)
