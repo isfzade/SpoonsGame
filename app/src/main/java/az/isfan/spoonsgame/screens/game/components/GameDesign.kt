@@ -60,8 +60,7 @@ fun GameDesign(
                 Box(
                     modifier = Modifier
                         .weight(2f)
-                        .fillMaxSize()
-                        .background(color = Color.Green.copy(alpha=0.4f)),
+                        .fillMaxSize(),
                 ) {
                     GameTable(
                         showTakeSpoonButton = showTakeSpoonButton,

@@ -10,7 +10,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FrontHand
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,57 +42,94 @@ fun GameTable(
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center
     ) {
-        if (gameStatus != GameStatusEnum.NOT_FINISHED) {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = stringResource(if (gameStatus==GameStatusEnum.WON) R.string.you_won else R.string.you_lost),
-                fontWeight = FontWeight.Bold,
-                fontSize = 25.sp,
-                color = Color.Red,
-                textAlign = TextAlign.Center
-            )
-        }
-
-        Row(
+        Box(
             modifier = Modifier
-                .weight(2f)
-                .fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically
+                .weight(4f),
+            contentAlignment = Alignment.Center
         ) {
             Box(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize(),
+                    .size(width = 200.dp, height = 200.dp)
+                    .background(color = Color.Green.copy(alpha=0.4f))
+                    .border(2.dp, Color.Black),
                 contentAlignment = Alignment.Center
             ) {
-                DeckCardInGameTable(
-                    title = stringResource(R.string.available),
-                    size = availableCards.size
-                )
-            }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        DeckCardInGameTable(
+                            title = stringResource(R.string.available),
+                            size = availableCards.size
+                        )
+                    }
 
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                DeckCardInGameTable(
-                    title = stringResource(R.string.discarded),
-                    size = discardedCards.size
-                )
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        DeckCardInGameTable(
+                            title = stringResource(R.string.discarded),
+                            size = discardedCards.size
+                        )
+                    }
+                }
             }
         }
 
-        if (showTakeSpoonButton) {
-            Button(
-                onClick = onSpoonButtonClick,
-                modifier = Modifier
-                    .background(color = Color.Red)
-                    .fillMaxWidth(),
-            ) {
-                Text(stringResource(R.string.take_spoon))
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            if (!showTakeSpoonButton) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    text = stringResource(when(gameStatus) {
+                        GameStatusEnum.LOST -> R.string.you_lost
+                        GameStatusEnum.WON -> R.string.you_won
+                        GameStatusEnum.NOT_FINISHED -> R.string.app_name
+                    }),
+                    fontWeight = if (gameStatus == GameStatusEnum.NOT_FINISHED) FontWeight.Normal else FontWeight.Bold,
+                    fontSize = 25.sp,
+                    color = when(gameStatus) {
+                        GameStatusEnum.LOST -> Color.Red
+                        GameStatusEnum.WON -> Color.Green
+                        GameStatusEnum.NOT_FINISHED -> Color.Black
+                    },
+                    textAlign = TextAlign.Center
+                )
+            }
+            else {
+                Button(
+                    onClick = onSpoonButtonClick,
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.FrontHand,
+                            contentDescription = "spoon"
+                        )
+
+                        Text(
+                            text = stringResource(R.string.take_spoon),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
             }
         }
     }
