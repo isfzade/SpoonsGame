@@ -14,11 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import az.isfan.spoonsgame.R
+import az.isfan.spoonsgame.data.enums.MoodEnum
 import az.isfan.spoonsgame.data.models.CardData
 import az.isfan.spoonsgame.general.Constants
+import az.isfan.spoonsgame.general.getMoodEmojiResource
 
 @Composable
 fun SideBotCards(
@@ -80,21 +84,36 @@ fun TopBotCards(
 fun PlayerInfo(
     name: String,
     playTurn: Boolean,
-    letterSize: Int
+    letterSize: Int,
+    mood: MoodEnum,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = name,
-            fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
-            color = if (playTurn) Color.Blue else Color.Black
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(
+                space = 5.dp
+            )
+        ) {
+            Text(
+                text = stringResource(getMoodEmojiResource(mood)),
+                fontSize = 22.sp
+            )
+
+            Text(
+                text = name,
+                fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
+                color = if (playTurn) Color.Blue else Color.Black,
+                fontSize = 18.sp
+            )
+        }
 
         Text(
             text = Constants.SPOON.slice(IntRange(0, letterSize-1)),
             fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
-            color = if (playTurn) Color.Blue else Color.Black
+            color = if (playTurn) Color.Blue else Color.Black,
+            fontSize = 20.sp
         )
     }
 

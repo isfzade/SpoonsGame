@@ -2,7 +2,6 @@ package az.isfan.spoonsgame.screens.game.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -10,30 +9,16 @@ import androidx.compose.ui.Modifier
 import az.isfan.spoonsgame.data.models.PlayerData
 
 @Composable
-fun LeftChair(
+fun SideChair(
     players: List<PlayerData>
 ) {
     if (players.isNotEmpty()) {
         val player = players.first()
 
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxSize(),
         ) {
-            if (!player.kicked) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    SideBotCards(
-                        playTurn = player.playTurn,
-                        cards = player.cards,
-                    )
-                }
-            }
-
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -49,6 +34,21 @@ fun LeftChair(
                         name = player.name,
                         playTurn = player.playTurn,
                         letterSize = player.lettersSize,
+                        mood = player.mood
+                    )
+                }
+            }
+
+            if (!player.kicked) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    SideBotCards(
+                        playTurn = player.playTurn,
+                        cards = player.cards,
                     )
                 }
             }

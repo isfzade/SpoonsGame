@@ -73,5 +73,6 @@ fun getMoodEmojiResource(mood: MoodEnum): Int {
         MoodEnum.NORMAL -> R.string.normal_emoji
         MoodEnum.GOOD -> R.string.good_emoji
         MoodEnum.HAPPY -> R.string.happy_emoji
+        MoodEnum.CELEBRATE -> R.string.celebrate_emoji
     }
 }

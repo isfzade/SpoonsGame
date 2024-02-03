@@ -52,7 +52,7 @@ fun GameDesign(
                         .weight(1f)
                         .fillMaxSize()
                 ) {
-                    LeftChair(
+                    SideChair(
                         players = players.filter { it.chair == ChairEnum.LEFT }
                     )
                 }
@@ -76,7 +76,7 @@ fun GameDesign(
                         .weight(1f)
                         .fillMaxSize()
                 ) {
-                    RightChair(
+                    SideChair(
                         players = players.filter { it.chair == ChairEnum.RIGHT }
                     )
                 }
