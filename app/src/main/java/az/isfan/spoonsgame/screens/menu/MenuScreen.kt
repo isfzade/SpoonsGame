@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EmojiFoodBeverage
+import androidx.compose.material.icons.filled.FrontHand
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -28,7 +29,7 @@ fun MenuScreen(
         topBar = {
             TopBarScreen(
                 title = stringResource(R.string.app_name),
-                icon = Icons.Default.EmojiFoodBeverage,
+                icon = Icons.Default.FrontHand,
             )
         }
     ) { padding ->
