@@ -13,9 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import az.isfan.spoonsgame.R
 import az.isfan.spoonsgame.data.enums.GameStatusEnum
 import az.isfan.spoonsgame.data.models.CardData
 import az.isfan.spoonsgame.data.models.PlayerData
+import az.isfan.spoonsgame.screens.common.TopBarScreen
 
 @Composable
 @ExperimentalMaterial3Api
@@ -32,28 +36,17 @@ fun GameContent(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = title
-                    )
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = onBackButtonClick
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "backButton"
-                        )
-                    }
-                }
+            TopBarScreen(
+                title = title,
+                showBackButton = true,
+                onBackButtonClick = onBackButtonClick
             )
         }
     ) { padding ->
         Box(
             modifier = Modifier
                 .padding(padding)
+                .padding(10.dp)
                 .fillMaxWidth()
         ) {
             GameDesign(
