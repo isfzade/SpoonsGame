@@ -79,7 +79,7 @@ fun LocalPlayerCards(
                 painter = painterResource(getCardImageResource(card.rank, card.suit)),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(width = 60.dp, height = 100.dp)
+                    .size(width = 60.dp, height = 84.dp)
                     .border(
                         width = if (playTurn) 2.dp else 1.dp,
                         color = if (playTurn) Color.Blue else Color.Black

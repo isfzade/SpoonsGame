@@ -157,7 +157,7 @@ fun DeckCardInGameTable(
         Box(
             modifier = Modifier
                 .size(width = 35.dp, height = 49.dp)
-                .border(width = 2.dp, color = Color.Black),
+                .border(width = 1.dp, color = Color.Black),
             contentAlignment = Alignment.Center
         ) {
             if (size != 0) {
