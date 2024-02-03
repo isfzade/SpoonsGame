@@ -115,25 +115,21 @@ fun PlayerInfo(
             )
         }
 
-        Box(
+        Text(
+            text = Constants.SPOON.slice(IntRange(0, letterSize-1)),
+            fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
+            color = if (playTurn) Color.Blue else Color.Black,
+            fontSize = 20.sp,
             modifier = Modifier
                 .border(
                     width = 1.dp,
                     color = if (playTurn) Color.Blue else Color.Black
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = Constants.SPOON.slice(IntRange(0, letterSize-1)),
-                fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
-                color = if (playTurn) Color.Blue else Color.Black,
-                fontSize = 20.sp,
-                modifier = Modifier
-                    .padding(2.dp),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
+                )
+                .padding(2.dp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+
+        )
     }
 
 }
