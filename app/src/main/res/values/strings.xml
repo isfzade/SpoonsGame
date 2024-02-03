@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Spoons Game</string>
-    <string name="three_players">Three players game</string>
-    <string name="four_players">Four players game</string>
-    <string name="five_players">Five players game</string>
+    <string name="three_players">Three-player game</string>
+    <string name="four_players">Four-player game</string>
+    <string name="five_players">Five-players game</string>
     <string name="high_scores">High scores</string>
-    <string name="load_last_game">Load last game</string>
+    <string name="load_last_game">Load the last game</string>
     <string name="available">Available</string>
     <string name="discarded">Discarded</string>
     <string name="take_spoon">Take spoon</string>
@@ -13,5 +13,5 @@
     <string name="players">Players</string>
     <string name="rounds">Rounds</string>
     <string name="result">Result</string>
-    <string name="dev_info">This game developed by Isfandiyar Rashidzade in the scope of TestDevLab seniority level assignment under supervision of Edijs Gorbunovs in 2024.</string>
+    <string name="dev_info">This game was developed by Isfandiyar Rashidzade as part of the TestDevLab seniority level assignment under the supervision of Edijs Gorbunovs in 2024.</string>
 </resources>
