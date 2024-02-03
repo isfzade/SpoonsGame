@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import az.isfan.spoonsgame.R
@@ -37,7 +38,8 @@ fun SideBotCards(
         verticalArrangement = Arrangement.spacedBy(
             space = 2.dp,
             alignment = Alignment.CenterVertically
-        )
+        ),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         repeat(cards.size) {
             Image(
@@ -107,7 +109,9 @@ fun PlayerInfo(
                 text = name,
                 fontWeight = if (playTurn) FontWeight.Bold else FontWeight.Normal,
                 color = if (playTurn) Color.Blue else Color.Black,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
 
@@ -125,7 +129,9 @@ fun PlayerInfo(
                 color = if (playTurn) Color.Blue else Color.Black,
                 fontSize = 20.sp,
                 modifier = Modifier
-                    .padding(2.dp)
+                    .padding(2.dp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }

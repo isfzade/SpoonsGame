@@ -1,11 +1,13 @@
 package az.isfan.spoonsgame.screens.game.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import az.isfan.spoonsgame.data.models.PlayerData
 
 @Composable
@@ -18,41 +20,25 @@ fun SideChair(
         Column(
             modifier = Modifier
                 .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(
+                space = 5.dp,
+                alignment = Alignment.CenterVertically
+            )
         ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize(),
-            ) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    PlayerInfo(
-                        name = player.name,
-                        playTurn = player.playTurn,
-                        letterSize = player.lettersSize,
-                        mood = player.mood
-                    )
-                }
-            }
+            PlayerInfo(
+                name = player.name,
+                playTurn = player.playTurn,
+                letterSize = player.lettersSize,
+                mood = player.mood
+            )
 
             if (!player.kicked) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    SideBotCards(
-                        playTurn = player.playTurn,
-                        cards = player.cards,
-                    )
-                }
+                SideBotCards(
+                    playTurn = player.playTurn,
+                    cards = player.cards,
+                )
             }
         }
     }
-
 }
