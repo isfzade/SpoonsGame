@@ -9,7 +9,6 @@ import az.isfan.spoonsgame.data.models.GameData
 import az.isfan.spoonsgame.general.Cavab
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
