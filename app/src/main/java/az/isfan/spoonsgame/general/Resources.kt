@@ -1,6 +1,7 @@
 package az.isfan.spoonsgame.general
 
 import az.isfan.spoonsgame.R
+import az.isfan.spoonsgame.data.enums.MoodEnum
 import az.isfan.spoonsgame.data.enums.RankEnum
 import az.isfan.spoonsgame.data.enums.SuitEnum
 
@@ -63,5 +64,15 @@ fun getCardImageResource(rank: RankEnum, suitEnum: SuitEnum): Int {
         "${RankEnum.SPADE}-${SuitEnum.TWO}" -> R.drawable.spades_2
 
         else -> R.drawable.back_dark
+    }
+}
+
+fun getMoodEmojiResource(mood: MoodEnum): Int {
+    return when(mood) {
+        MoodEnum.SLEEP -> R.string.sleep_emoji
+        MoodEnum.NORMAL -> R.string.normal_emoji
+        MoodEnum.GOOD -> R.string.good_emoji
+        MoodEnum.HAPPY -> R.string.happy_emoji
+        MoodEnum.CELEBRATE -> R.string.celebrate_emoji
     }
 }

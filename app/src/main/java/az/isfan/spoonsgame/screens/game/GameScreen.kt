@@ -1,6 +1,5 @@
 package az.isfan.spoonsgame.screens.game
 
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -16,6 +15,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import az.isfan.spoonsgame.R
 import az.isfan.spoonsgame.general.Cavab
+import az.isfan.spoonsgame.screens.common.LoadingScreen
+import az.isfan.spoonsgame.screens.common.NothingToShowScreen
 import az.isfan.spoonsgame.screens.game.components.GameContent
 import az.isfan.spoonsgame.viewmodels.GameViewModel
 
@@ -93,8 +94,12 @@ fun GameSetupLogic(
                 },
             )
         }
-        is Cavab.Loading -> CircularProgressIndicator()
-        else -> Unit
+        is Cavab.Loading -> LoadingScreen()
+        else -> {
+            NothingToShowScreen {
+                navController.navigateUp()
+            }
+        }
     }
 
     SaveGame(viewModel = viewModel)

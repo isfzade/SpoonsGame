@@ -25,7 +25,6 @@ class ScoresViewModel @Inject constructor(
     private val _games = MutableStateFlow<Cavab<List<GameData>>>(Cavab.StandBy)
     val games = _games.asStateFlow()
 
-
     init {
         Log.i(TAG, "init: ")
         loadGames()
@@ -36,19 +35,21 @@ class ScoresViewModel @Inject constructor(
             _games.update {
                 Cavab.Loading
             }
-
             val loadedGames = withContext(Dispatchers.IO) {
                 repo.getAllFinishedGames()
             }
 
-            _games.update {
-                Cavab.Success(
-                    loadedGames.filter { it.status == GameStatusEnum.WON }
-                        .sortedByDescending { it.roundCount } +
-                    loadedGames.filter { it.status == GameStatusEnum.LOST }
-                        .sortedByDescending { it.roundCount }
-                )
+            if (loadedGames.isNotEmpty()) {
+                _games.update {
+                    Cavab.Success(
+                        loadedGames.filter { it.status == GameStatusEnum.WON }
+                            .sortedByDescending { it.roundCount } +
+                                loadedGames.filter { it.status == GameStatusEnum.LOST }
+                                    .sortedByDescending { it.roundCount }
+                    )
+                }
             }
+            else _games.update { Cavab.StandBy }
         }
     }
 }

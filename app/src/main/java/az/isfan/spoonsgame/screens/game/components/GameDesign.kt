@@ -1,14 +1,17 @@
 package az.isfan.spoonsgame.screens.game.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import az.isfan.spoonsgame.data.enums.ChairEnum
 import az.isfan.spoonsgame.data.enums.GameStatusEnum
 import az.isfan.spoonsgame.data.models.CardData
@@ -45,14 +48,20 @@ fun GameDesign(
         ) {
             Row(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 5.dp,
+                    alignment = Alignment.CenterHorizontally
+                ),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
                     modifier = Modifier
                         .weight(1f)
-                        .fillMaxSize()
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    LeftChair(
+                    SideChair(
                         players = players.filter { it.chair == ChairEnum.LEFT }
                     )
                 }
@@ -60,8 +69,8 @@ fun GameDesign(
                 Box(
                     modifier = Modifier
                         .weight(2f)
-                        .fillMaxSize()
-                        .background(color = Color.Green.copy(alpha=0.4f)),
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
                     GameTable(
                         showTakeSpoonButton = showTakeSpoonButton,
@@ -75,9 +84,10 @@ fun GameDesign(
                 Box(
                     modifier = Modifier
                         .weight(1f)
-                        .fillMaxSize()
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    RightChair(
+                    SideChair(
                         players = players.filter { it.chair == ChairEnum.RIGHT }
                     )
                 }
@@ -86,7 +96,7 @@ fun GameDesign(
 
         Box(
             modifier = Modifier
-                .weight(2f)
+                .weight(1f)
                 .fillMaxSize()
         ) {
             BottomChair(

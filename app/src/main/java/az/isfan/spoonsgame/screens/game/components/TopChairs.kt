@@ -77,6 +77,7 @@ fun TopChair(
                 name = player.name,
                 playTurn = player.playTurn,
                 letterSize = player.lettersSize,
+                mood = player.mood
             )
         }
     }
