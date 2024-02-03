@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import az.isfan.spoonsgame.data.db.repos.GameDbRepoInterface
 import az.isfan.spoonsgame.data.enums.ChairEnum
 import az.isfan.spoonsgame.data.enums.GameStatusEnum
+import az.isfan.spoonsgame.data.enums.MoodEnum
 import az.isfan.spoonsgame.data.enums.RankEnum
 import az.isfan.spoonsgame.data.enums.SuitEnum
 import az.isfan.spoonsgame.data.mappers.toData
@@ -157,6 +158,7 @@ class GameViewModel @Inject constructor(
 
         viewModelScope.launch {
             discardCard(card)
+            updateMoods()
             if (isRoundFinished()) {
                 endRound()
                 giveLetter()
@@ -178,6 +180,7 @@ class GameViewModel @Inject constructor(
         Log.i(TAG, "proceedNewRound: ")
 
         kickPlayers()
+        updateMoods()
         val gameStatus = getGameStatus()
         _status.update { gameStatus }
         if (gameStatus == GameStatusEnum.NOT_FINISHED) {
@@ -245,6 +248,7 @@ class GameViewModel @Inject constructor(
         pickCardFromDeckIfFirstPlayer()
         if (!isLocalTurn()) {
             discardCardFromBot()
+            updateMoods()
             if (isRoundFinished()) {
                 endRound()
                 giveLetter()
@@ -562,6 +566,20 @@ class GameViewModel @Inject constructor(
         return player.cards.count { it.suit == player.cards.first().suit } == 4
     }
 
+    private fun has3EqualCards(player: PlayerData): Boolean {
+        Log.i(TAG, "has3EqualCards: player=$player")
+
+        if (player.cards.size != 4) return false
+        return player.cards.count { it.suit == player.cards.first().suit } == 3
+    }
+
+    private fun has2EqualCards(player: PlayerData): Boolean {
+        Log.i(TAG, "has2EqualCards: player=$player")
+
+        if (player.cards.size != 4) return false
+        return player.cards.count { it.suit == player.cards.first().suit } == 2
+    }
+
     private fun setTurnToPlayer(player: PlayerData) {
         _players.update { oldPlayers ->
             oldPlayers.map {
@@ -594,5 +612,21 @@ class GameViewModel @Inject constructor(
             roundCount = roundCount,
             playerCount = numberOfPlayers
         )
+    }
+
+    private fun updateMoods() {
+        _players.update { oldPlayers ->
+            oldPlayers.map {
+                it.copy(
+                    mood = when {
+                        has4EqualCards(it) -> MoodEnum.CELEBRATE
+                        has3EqualCards(it) -> MoodEnum.HAPPY
+                        has2EqualCards(it) -> MoodEnum.GOOD
+                        it.kicked -> MoodEnum.SLEEP
+                        else -> MoodEnum.NORMAL
+                    }
+                )
+            }
+        }
     }
 }

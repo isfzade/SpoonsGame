@@ -69,11 +69,9 @@ fun getCardImageResource(rank: RankEnum, suitEnum: SuitEnum): Int {
 
 fun getMoodEmojiResource(mood: MoodEnum): Int {
     return when(mood) {
-        MoodEnum.SLEEP -> R.string.cry_emoji
-        MoodEnum.CRY -> R.string.cry_emoji
+        MoodEnum.SLEEP -> R.string.sleep_emoji
         MoodEnum.NORMAL -> R.string.normal_emoji
         MoodEnum.GOOD -> R.string.good_emoji
         MoodEnum.HAPPY -> R.string.happy_emoji
-        MoodEnum.CELEBRATE -> R.string.celebrate_emoji
     }
 }
