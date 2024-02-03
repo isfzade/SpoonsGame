@@ -31,7 +31,7 @@ fun ItemInMenu(
         ) {
             Icon(
                 imageVector = icon,
-                contentDescription = text,
+                contentDescription = "buttonLogo",
             )
 
             Text(

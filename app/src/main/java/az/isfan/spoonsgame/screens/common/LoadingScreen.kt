@@ -38,12 +38,12 @@ fun LoadingScreen() {
             fontSize = 25.sp,
         )
 
-        LinearProgressIndicator(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp),
-            color = TopBarColor,
-            trackColor = Color.Transparent
-        )
+//        LinearProgressIndicator(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(start = 20.dp, end = 20.dp),
+//            color = TopBarColor,
+//            trackColor = Color.Transparent
+//        )
     }
 }
