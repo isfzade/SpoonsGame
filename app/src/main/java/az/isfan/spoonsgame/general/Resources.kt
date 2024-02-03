@@ -64,4 +64,6 @@ fun getCardImageResource(rank: RankEnum, suitEnum: SuitEnum): Int {
 
         else -> R.drawable.back_dark
     }
+
+
 }
