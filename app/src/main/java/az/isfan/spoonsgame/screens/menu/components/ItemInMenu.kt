@@ -26,7 +26,8 @@ fun ItemInMenu(
             horizontalArrangement = Arrangement.spacedBy(
                 space = 5.dp,
                 alignment = Alignment.CenterHorizontally
-            )
+            ),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = icon,
