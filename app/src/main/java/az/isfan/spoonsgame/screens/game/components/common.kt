@@ -35,17 +35,13 @@ fun SideBotCards(
     ) {
         repeat(cards.size) {
             Image(
-                painter = painterResource(R.drawable.back_dark),
+                painter = painterResource(R.drawable.back_rot),
                 contentDescription = null,
                 modifier = Modifier
-                    .rotate(90f)
-                    .then(
-                        Modifier
-                            .size(width = 60.dp, height = 35.dp)
-                            .border(
-                                if (playTurn) 1.dp else 0.dp,
-                                color = if (playTurn) Color.Blue else Color.Transparent
-                            )
+                    .size(width = 49.dp, height = 35.dp)
+                    .border(
+                        width = 1.dp,
+                        color = if (playTurn) Color.Blue else Color.Black
                     )
             )
         }
@@ -67,13 +63,13 @@ fun TopBotCards(
     ) {
         repeat(cards.size) {
             Image(
-                painter = painterResource(R.drawable.back_dark),
+                painter = painterResource(R.drawable.back),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(height = 60.dp, width = 35.dp)
+                    .size(width = 35.dp, height = 49.dp)
                     .border(
-                        if (playTurn) 1.dp else 0.dp,
-                        color = if (playTurn) Color.Blue else Color.Transparent
+                        width = 1.dp,
+                        color = if (playTurn) Color.Blue else Color.Black
                     )
             )
         }

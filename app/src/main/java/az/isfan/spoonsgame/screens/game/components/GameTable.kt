@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import az.isfan.spoonsgame.R
@@ -148,27 +149,29 @@ fun DeckCardInGameTable(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = title
+            text = title,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
 
         Box(
             modifier = Modifier
-                .size(width = 35.dp, height = 60.dp)
+                .size(width = 35.dp, height = 49.dp)
                 .border(width = 2.dp, color = Color.Black),
             contentAlignment = Alignment.Center
         ) {
             if (size != 0) {
                 Image(
-                    painter = painterResource(R.drawable.back_dark),
+                    painter = painterResource(R.drawable.back),
                     contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
                 )
             }
         }
 
         Text(
-            text = size.toString()
+            text = size.toString(),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
