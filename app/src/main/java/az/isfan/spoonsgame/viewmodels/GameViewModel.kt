@@ -371,7 +371,7 @@ class GameViewModel @Inject constructor(
 
         players.value.filter {
             !it.kicked && !it.isLocalUser &&
-            if (except != null) it.isSame(except) else true}
+            if (except != null) !it.isSame(except) else true}
             .shuffled(random = Random(System.currentTimeMillis())).firstOrNull()?.let{
                 giveLetterTo(it)
             }
