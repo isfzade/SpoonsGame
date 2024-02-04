@@ -13,7 +13,7 @@ interface GameDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(game: GameEntity)
 
-    @Query("SELECT *, MAX(save_timestamp) FROM games")
+    @Query("SELECT * FROM games ORDER BY save_timestamp DESC LIMIT 1")
     fun getLatest(): GameEntity?
 
     @Query("SELECT * FROM games WHERE status!=:status ORDER BY save_timestamp DESC")

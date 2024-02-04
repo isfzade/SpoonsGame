@@ -34,6 +34,7 @@ class GameViewModel @Inject constructor(
     private val TAG = "isf_GameViewModel"
 
     private val DURATION_TO_TAKE_SPOON = 1000L //milliseconds
+    private val DELAY_TURN = 200L //milliseconds
 
     private val _isGameReady = MutableStateFlow<Cavab<Boolean>>(Cavab.StandBy)
     val isGameReady = _isGameReady.asStateFlow()
@@ -140,15 +141,15 @@ class GameViewModel @Inject constructor(
             }
             else {
                 launch(Dispatchers.IO) {
-                    repo.deleteAllPlayers()
+                    if (players.value.isNotEmpty()) repo.deleteAllPlayers()
                 }
 
                 launch(Dispatchers.IO) {
-                    repo.deleteAllCards()
+                    if (players.value.isNotEmpty()) repo.deleteAllCards()
                 }
             }
             launch(Dispatchers.IO) {
-                repo.insert(exportGameInfo())
+                if (players.value.isNotEmpty()) repo.insert(exportGameInfo())
             }
         }
     }
@@ -249,6 +250,7 @@ class GameViewModel @Inject constructor(
         if (!isLocalTurn()) {
             discardCardFromBot()
             updateMoods()
+            delay(DELAY_TURN)
             if (isRoundFinished()) {
                 endRound()
                 giveLetter()
@@ -371,7 +373,7 @@ class GameViewModel @Inject constructor(
 
         players.value.filter {
             !it.kicked && !it.isLocalUser &&
-            if (except != null) it.isSame(except) else true}
+            if (except != null) !it.isSame(except) else true}
             .shuffled(random = Random(System.currentTimeMillis())).firstOrNull()?.let{
                 giveLetterTo(it)
             }

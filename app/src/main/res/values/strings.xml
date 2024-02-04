@@ -2,7 +2,7 @@
     <string name="app_name">Spoons Game</string>
     <string name="three_players">Three-player game</string>
     <string name="four_players">Four-player game</string>
-    <string name="five_players">Five-players game</string>
+    <string name="five_players">Five-player game</string>
     <string name="high_scores">High scores</string>
     <string name="load_last_game">Load the last game</string>
     <string name="available">Available</string>
