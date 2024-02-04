@@ -50,14 +50,16 @@ to following rules when a round is finished.
 
 <img src="./screenshots/play_2.png" alt="drawing" width="100" height="212"/>
 
-A game is finished when a player will collect all letter of SPOON. If the SPOON word collector
-is the real user then the game will be lost. Otherwise, the bot will be kicked from the game
-and next round will start with remaining players. If all bots will collect SPOON word then
-the real user will win the game.
+A game is finished when a player will collect all letters of SPOON. 
+
+- If the SPOON word collector is the real user then the game will be lost. 
+- if the collector is a bot then the bot will be kicked from the game 
+and next round will start with remaining players.
+- If all bots will collect SPOON word then the real user wins the game.
 
 <img src="./screenshots/play_3.png" alt="drawing" width="100" height="212"/>
 
-## High Scores
+### High Scores
 In this section a user can see the round count and game result of a finished game.
 
 <img src="./screenshots/high.png" alt="drawing" width="100" height="212"/>
