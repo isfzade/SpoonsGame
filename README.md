@@ -19,7 +19,7 @@ The application starts with menu screen which contains 5 buttons;
 - High scores: in this scree user can find won and lost game records.
 - Load the latest game: a user can continue to play the latest unfinished game.
 
-img[alt=screenshots/menu] { width: 200px; }
+![](./screenshots/menu.png = 100x212)
 
 ## Reference
 Card images was taken from:
