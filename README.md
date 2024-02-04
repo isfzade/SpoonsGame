@@ -36,17 +36,31 @@ the discarded cards are shuffled and added to available cards.
 The other players always gives card to next player. 
 After discarding a card the player will have four cards.
 
-A round is finished when a player will have four same suits (i.e. four Kings). 
-The player with four same suit is the winner of round. Following logic will happen
-depending on round winner.
+A round is finished when a player will have four same suits (i.e. four Kings) after discarding 5th card. 
+The player with four same suit is the winner of round. A player receives a letter according
+to following rules when a round is finished.
 
-- The round winner is the real user a random bot receives a letter
-- If round winner is a bot and there are more than 2 players in round then.
-the real user will see "Take spoon" button for 1 second on screen.
+- If The round winner is the real user then random bot receives a letter.
+- If round winner is a bot and there are more than 2 players in round then
+`Take spoon` button will appear on screen for 1 second.
   - If the real user will able to click the button then a random bot (except the winner)
   will receive a letter.
-  - If the will not click the button then the user will receive a letter.
+  - If the button is not clicked then the user receives a letter.
 - If round winner is a bot and only 2 players left in round then the real user receives a letter.
+
+<img src="./screenshots/play_2.png" alt="drawing" width="100" height="212"/>
+
+A game is finished when a player will collect all letter of SPOON. If the SPOON word collector
+is the real user then the game will be lost. Otherwise, the bot will be kicked from the game
+and next round will start with remaining players. If all bots will collect SPOON word then
+the real user will win the game.
+
+<img src="./screenshots/play_3.png" alt="drawing" width="100" height="212"/>
+
+## High Scores
+In this section a user can see the round count and game result of a finished game.
+
+<img src="./screenshots/high.png" alt="drawing" width="100" height="212"/>
 
 ## Reference
 Card images was taken from:
