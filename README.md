@@ -43,9 +43,9 @@ depending on round winner.
 - The round winner is the real user a random bot receives a letter
 - If round winner is a bot and there are more than 2 players in round then.
 the real user will see "Take spoon" button for 1 second on screen.
--- If the real user will able to click the button then a random bot (except the winner)
-will receive a letter.
--- If the will not click the button then the user will receive a letter.
+  - If the real user will able to click the button then a random bot (except the winner)
+  will receive a letter.
+  - If the will not click the button then the user will receive a letter.
 - If round winner is a bot and only 2 players left in round then the real user receives a letter.
 
 ## Reference
