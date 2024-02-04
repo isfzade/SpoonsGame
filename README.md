@@ -53,7 +53,7 @@ to following rules when a round is finished.
 A game is finished when a player will collect all letters of SPOON. 
 
 - If the SPOON word collector is the real user then the game will be lost. 
-- if the collector is a bot then the bot will be kicked from the game 
+- If the collector is a bot then the bot will be kicked from the game 
 and next round will start with remaining players.
 - If all bots will collect SPOON word then the real user wins the game.
 
