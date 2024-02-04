@@ -158,6 +158,7 @@ class GameViewModel @Inject constructor(
 
         viewModelScope.launch {
             discardCard(card)
+            delay(200)
             updateMoods()
             if (isRoundFinished()) {
                 endRound()
@@ -245,9 +246,11 @@ class GameViewModel @Inject constructor(
         Log.i(TAG, "proceedTurn: ")
 
         setTurnPlayer()
+        delay(200)
         pickCardFromDeckIfFirstPlayer()
         if (!isLocalTurn()) {
             discardCardFromBot()
+            delay(200)
             updateMoods()
             if (isRoundFinished()) {
                 endRound()
