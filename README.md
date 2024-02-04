@@ -5,7 +5,7 @@ by using Jetpack Compose. This game was developed by Isfandiyar Rashidzade in th
 seniority level assignment. The assignment was given by Edijs Gorbunovs and completion duration
 was two weeks.
 
-The application was delivered in 4 February 2024
+The application was delivered in 5 February 2024
 
 ## About the Application
 The game is mainly composed of menu, game play, high scores screens.
