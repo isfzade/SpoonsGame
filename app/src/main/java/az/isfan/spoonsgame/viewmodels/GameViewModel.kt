@@ -34,6 +34,7 @@ class GameViewModel @Inject constructor(
     private val TAG = "isf_GameViewModel"
 
     private val DURATION_TO_TAKE_SPOON = 1000L //milliseconds
+    private val DELAY_TURN = 1000L //milliseconds
 
     private val _isGameReady = MutableStateFlow<Cavab<Boolean>>(Cavab.StandBy)
     val isGameReady = _isGameReady.asStateFlow()
@@ -158,8 +159,8 @@ class GameViewModel @Inject constructor(
 
         viewModelScope.launch {
             discardCard(card)
-            delay(200)
             updateMoods()
+            delay(DELAY_TURN)
             if (isRoundFinished()) {
                 endRound()
                 giveLetter()
@@ -246,12 +247,11 @@ class GameViewModel @Inject constructor(
         Log.i(TAG, "proceedTurn: ")
 
         setTurnPlayer()
-        delay(200)
         pickCardFromDeckIfFirstPlayer()
         if (!isLocalTurn()) {
             discardCardFromBot()
-            delay(200)
             updateMoods()
+            delay(DELAY_TURN)
             if (isRoundFinished()) {
                 endRound()
                 giveLetter()
