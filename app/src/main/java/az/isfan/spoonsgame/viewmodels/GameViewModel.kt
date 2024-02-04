@@ -140,15 +140,15 @@ class GameViewModel @Inject constructor(
             }
             else {
                 launch(Dispatchers.IO) {
-                    repo.deleteAllPlayers()
+                    if (players.value.isNotEmpty()) repo.deleteAllPlayers()
                 }
 
                 launch(Dispatchers.IO) {
-                    repo.deleteAllCards()
+                    if (players.value.isNotEmpty()) repo.deleteAllCards()
                 }
             }
             launch(Dispatchers.IO) {
-                repo.insert(exportGameInfo())
+                if (players.value.isNotEmpty()) repo.insert(exportGameInfo())
             }
         }
     }
