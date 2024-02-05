@@ -61,6 +61,8 @@ and next round will start with remaining players.
 ### High Scores
 In this section a user can see the round count and game result of a finished game.
 
+<img src="./screenshots/high.png" alt="drawing" width="100" height="212"/>
+
 ### Play the Latest Game
 The unfinished game is saved to database when back button is clicked or the application is closed.
 The saved game can be reloaded by pressing the `Load the last game`.
