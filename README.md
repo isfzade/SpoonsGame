@@ -2,8 +2,7 @@
 ## Introduction
 The Spoons Game is a non-commercial and not-Play Store-published Android application which developed
 by using Jetpack Compose. This game was developed by Isfandiyar Rashidzade in the scope of TestDevLab 
-seniority level assignment. The assignment was given by Edijs Gorbunovs and completion duration
-was two weeks.
+seniority level assignment.
 
 The application was delivered in 5 February 2024
 

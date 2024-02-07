@@ -15,7 +15,7 @@
     <string name="result">Result</string>
     <string name="loading">Loading</string>
     <string name="nothing_to_show">Nothing to show</string>
-    <string name="dev_info">This game was developed by Isfandiyar Rashidzade as part of the TestDevLab seniority level assignment under the supervision of Edijs Gorbunovs in 2024.</string>
+    <string name="dev_info">This game was developed by Isfandiyar Rashidzade as part of the TestDevLab seniority level assignment in 2024.</string>
 
     <string name="sleep_emoji" translatable="false">&#x1F634;</string>
     <string name="normal_emoji" translatable="false">&#x1F610;</string>
