@@ -1,10 +1,8 @@
 name: Spoons Game CI/CD Workflow
-
 run-name: ${{ github.actor }} | ${{ github.ref }}
 
 on:
   push:
-
 
 jobs:
   hello-world-print:
@@ -12,7 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Output for run
-        run: echo "Hello World"
+        run:
+          echo "first line"
+          echo "second line"
 
 
 
