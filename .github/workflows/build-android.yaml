@@ -1,17 +1,18 @@
 name: Spoons Game CI/CD Workflow
 
-run-name: ${{ github.actor }} is learning GitHub Actions
-on: [push]
+run-name: ${{ github.actor }} | ${{ github.ref }}
+
+on:
+  push:
+
+
 jobs:
-  check-bats-version:
+  hello-world-print:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
+      - name: Output for run
+        run: echo "Hello World"
 
 
 
