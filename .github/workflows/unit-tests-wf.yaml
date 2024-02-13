@@ -5,19 +5,22 @@ on:
   push:
 
 jobs:
+  permissions:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+
+        - name: Permission for gradlew
+          run: chmod +x ./gradlew
+
+        - name: Set up Java
+          uses: actions/setup-java@v4
+
   run-unit-test-and-report:
     runs-on: ubuntu-latest
+    needs: [permissions]
     steps:
       - uses: actions/checkout@v4
-
-      - name: Permission for gradlew
-        run: chmod +x ./gradlew
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: 21
-          distribution: "zulu"
 
       - name: Run tests
         run: ./gradlew test
@@ -27,6 +30,3 @@ jobs:
         with:
           name: unit-test-report
           path: app/build/reports/tests/testDebugUnitTest/
-
-
-
