@@ -19,8 +19,35 @@ jobs:
           java-version: 21
           distribution: "zulu"
 
-      - name: Run tests
+      - name: Run unit tests
         run: ./gradlew test
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-report
+          path: app/build/reports/tests/testDebugUnitTest/
+
+  run-android-test-and-report:
+    needs: [run-unit-test-and-report]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: "zulu"
+
+      - name: Run Android tests
+        uses: reactivecircus/android-emulator-runner@v4
+        with:
+          api-level: 34
+          script: ./gradlew connectedCheck
 
       - name: Upload test report
         uses: actions/upload-artifact@v4
