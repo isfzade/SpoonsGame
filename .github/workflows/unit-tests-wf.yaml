@@ -30,7 +30,7 @@ jobs:
 
   run-android-test-and-report:
     needs: [run-unit-test-and-report]
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -44,7 +44,7 @@ jobs:
           distribution: "zulu"
 
       - name: Run Android tests
-        uses: reactivecircus/android-emulator-runner@v4
+        uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
           script: ./gradlew connectedCheck
