@@ -1,10 +1,8 @@
 # Spoons Game - Android Application
 ## Introduction
 The Spoons Game is a non-commercial and not-Play Store-published Android application which developed
-by using Jetpack Compose. This game was developed by Isfandiyar Rashidzade in the scope of TestDevLab 
-seniority level assignment.
+by using Jetpack Compose. This game was developed by Isfandiyar Rashidzade.
 
-The application was delivered in 5 February 2024
 
 ## About the Application
 The game is mainly composed of menu, game play, high scores screens.
